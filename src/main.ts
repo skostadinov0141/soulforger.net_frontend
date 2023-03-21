@@ -8,4 +8,6 @@ const app = createApp(App)
 
 app.use(router)
 
+app.provide<string>('apiBase', 'http://127.0.0.1:8000');
+
 app.mount('#app')
