@@ -41,48 +41,62 @@ onMounted(()=>{
         <pageSplitter title="Grundeigenschaften" margin-top="0px">
             Hier kannst du die wichtigsten Aspekte deines Charakters beschreiben. Dinge wie Name, Geburtsdatum, Spezies und Profession gehören hierher. Keines dieser Felder, außer dem Namen, muss ausgefüllt werden, aber es erleichtert dir die Suche in deiner vielleicht riesigen Sammlung von Charakteren.
         </pageSplitter>
-        <inputField label="Name"></inputField>
-        <inputField label="Spezies"></inputField>
+        <div class="horizontal-container gapped vertically-gapped">
+            <inputField label="Name" v-model="characterSchema.name"></inputField>
+            <inputField label="Erfahrungsgrad" v-model="characterSchema.level"></inputField>
+        </div>
+        <div class="horizontal-container gapped vertically-gapped">
+            <inputField label="Familie" v-model="characterSchema.family"></inputField>
+            <inputField label="Geburtsdatum" v-model="characterSchema.birth_date"></inputField>
+            <inputField label="Spezies" v-model="characterSchema.species"></inputField>
+        </div>
+        <div class="horizontal-container gapped vertically-gapped">
+            <inputField label="Kultur" v-model="characterSchema.culture"></inputField>
+            <inputField label="Profession" v-model="characterSchema.profession"></inputField>
+            <inputField label="Geschlecht" v-model="characterSchema.sex"></inputField>
+        </div>
+        <div class="horizontal-container gapped vertically-gapped">
+            <inputField label="Größe" type="number" v-model="characterSchema.height"></inputField>
+            <inputField label="Alter" type="number" v-model="characterSchema.age"></inputField>
+        </div>
         <pageSplitter title="Primäreigenschaften">
             Hier kannst du die Primäreigenschaften deines Charakters angeben.
             <br>Protip: Wenn du schneller navigieren möchtest benutze die TAB-Taste um zum nächsten Feld zu springen.
         </pageSplitter>
-        <div class="attribute-container">
-            <attField field-name="MU" v-model="characterSchema.primary_attributes.MU"/>
-            <attField field-name="KL" v-model="characterSchema.primary_attributes.KL"/>
-            <attField field-name="IN" v-model="characterSchema.primary_attributes.IN"/>
-            <attField field-name="CH" v-model="characterSchema.primary_attributes.CH"/>
-            <attField field-name="FF" v-model="characterSchema.primary_attributes.FF"/>
-            <attField field-name="KO" v-model="characterSchema.primary_attributes.KO"/>
-            <attField field-name="KK" v-model="characterSchema.primary_attributes.KK"/>
+        <div class="horizontal-container">
+            <attField v-for="(v,k) in characterSchema.primary_attributes" :field-name="k" v-model="characterSchema.primary_attributes[k]"/>
         </div>
         <pageSplitter title="Sekundäreigenschaften" margin-top="72px">
             Hier kannst du die Sekundäreigenschaften deines Charakters angeben.
             <br>TAB-Taste funktioniert hier auch.
         </pageSplitter>
-        <div class="attribute-container">
-            <attField field-name="LeP" v-model="characterSchema.secondary_attributes.LEP.max"/>
-            <attField field-name="AsP" v-model="characterSchema.secondary_attributes.ASP.max"/>
-            <attField field-name="KaP" v-model="characterSchema.secondary_attributes.KAP.max"/>
-            <attField field-name="SK" v-model="characterSchema.secondary_attributes.SK.max"/>
-            <attField field-name="ZK" v-model="characterSchema.secondary_attributes.ZK.max"/>
-            <attField field-name="AW" v-model="characterSchema.secondary_attributes.AW.max"/>
-            <attField field-name="INI" v-model="characterSchema.secondary_attributes.INI.max"/>
-            <attField field-name="GES" v-model="characterSchema.secondary_attributes.GES.max"/>
-            <attField field-name="WS" v-model="characterSchema.secondary_attributes.WS.max"/>
+        <div class="horizontal-container">
+            <attField v-for="(v,k) in characterSchema.secondary_attributes" :field-name="k" v-model="characterSchema.secondary_attributes[k].max"/>
         </div>
+        <pageSplitter title="Talente" margin-top="72px">
+            Hier kannst du die FWs für die Talente deines Charakters angeben.
+        </pageSplitter>
     </div>
 </template>
 
 
 <style scoped>
 
+.gapped{
+    gap:32px
+}
+
+.vertically-gapped{
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
 .main-content-container{
     min-width: 100%;
     min-height: 100vh;
 }
 
-.attribute-container{
+.horizontal-container{
     min-width: 100%;
     display: flex;
     justify-content: space-between;

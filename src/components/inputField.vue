@@ -2,14 +2,18 @@
 
 interface Props{
     label:string
-    modelValue?:string
+    modelValue?:string | number
     hint?:string
     type?:string
+    flex?:number
+    placeholder?:string
 }
 
 const emits = defineEmits(['update:modelValue']);
 const props = withDefaults(defineProps<Props>(),{
-    type:'text'
+    type:'text',
+    flex:1,
+    placeholder:'Hier schreiben...'
 });
 
 function getId(){
@@ -23,6 +27,7 @@ function getId(){
     <div class="container">
         <label :for="getId()">{{ label }}</label>
         <input 
+        :placeholder="placeholder"
         :type="type" 
         :id="getId()"
         :value="modelValue" 
@@ -51,7 +56,7 @@ input:focus{
 }
 
 .container{
-    margin: 16px;
+    flex: v-bind(flex);
     display: flex;
     flex-direction: column;
 }
