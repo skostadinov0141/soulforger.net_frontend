@@ -4,9 +4,11 @@ import type { Ref } from 'vue';
 import axios from 'axios';
 
 import type { DSACharacter } from '../interfaces/characterschema';
-import attField from '../components/attField.vue';
+import attField from '../components/characterCreation/attField.vue';
 import pageSplitter from '../components/pageSplitter.vue';
 import inputField from '../components/inputField.vue';
+import talentEditorElement from '../components/characterCreation/talentEditorElement.vue';
+import talentTableDefinition from '../components/characterCreation/talentTableDefinition.vue';
 
 let schemeLoaded : Ref<boolean> = ref(false);
 let characterSchema : Ref<DSACharacter> = ref({} as DSACharacter);
@@ -74,16 +76,116 @@ onMounted(()=>{
             <attField v-for="(v,k) in characterSchema.secondary_attributes" :field-name="k" v-model="characterSchema.secondary_attributes[k].max"/>
         </div>
         <pageSplitter title="Talente" margin-top="72px">
-            Hier kannst du die FWs für die Talente deines Charakters angeben.
+            Hier kannst du die FWs für die Talente deines Charakters angeben. Wenn du suchen willst kann ich dir Strg+F empfehlen.
+            <br>TAB-Taste funktioniert hier auch.
         </pageSplitter>
+        <div class="horizontal-container gapped">
+            <div class="vertical-container gapped-vertical">
+                <div class="vertical-container gapped-vertical">
+                    <h4 class="talent-splitter">Körpertalente</h4>
+                    <talentTableDefinition></talentTableDefinition>
+                    <talentEditorElement
+                    v-for="e in characterSchema.talents.filter((item) => { return item.category === 'Körpertalente'; })"
+                    :name="e.name"
+                    :fw="e.fw"
+                    :att1-name="e.att_1"
+                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att2-name="e.att_2"
+                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att3-name="e.att_3"
+                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    v-model="e.fw"
+                    ></talentEditorElement>
+                </div>
+                <div class="vertical-container gapped-vertical">
+                    <h4 class="talent-splitter">Gesellschaftstalente</h4>
+                    <talentTableDefinition></talentTableDefinition>
+                    <talentEditorElement
+                    v-for="e in characterSchema.talents.filter((item) => { return item.category === 'Gesellschaftstalente'; })"
+                    :name="e.name"
+                    :fw="e.fw"
+                    :att1-name="e.att_1"
+                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att2-name="e.att_2"
+                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att3-name="e.att_3"
+                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    v-model="e.fw"
+                    ></talentEditorElement>
+                </div>
+                <div class="vertical-container gapped-vertical">
+                    <h4 class="talent-splitter">Naturtalente</h4>
+                    <talentTableDefinition></talentTableDefinition>
+                    <talentEditorElement
+                    v-for="e in characterSchema.talents.filter((item) => { return item.category === 'Naturtalente'; })"
+                    :name="e.name"
+                    :fw="e.fw"
+                    :att1-name="e.att_1"
+                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att2-name="e.att_2"
+                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att3-name="e.att_3"
+                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    v-model="e.fw"
+                    ></talentEditorElement>
+                </div>
+            </div>
+            <div class="vertical-container gapped-vertical">
+                <div class="vertical-container gapped-vertical">
+                    <h4 class="talent-splitter">Wissenstalente</h4>
+                    <talentTableDefinition></talentTableDefinition>
+                    <talentEditorElement
+                    v-for="e in characterSchema.talents.filter((item) => { return item.category === 'Wissenstalente'; })"
+                    :name="e.name"
+                    :fw="e.fw"
+                    :att1-name="e.att_1"
+                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att2-name="e.att_2"
+                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att3-name="e.att_3"
+                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    v-model="e.fw"
+                    ></talentEditorElement>
+                </div>
+                <div class="vertical-container gapped-vertical">
+                    <h4 class="talent-splitter">Handwerkstalente</h4>
+                    <talentTableDefinition></talentTableDefinition>
+                    <talentEditorElement
+                    v-for="e in characterSchema.talents.filter((item) => { return item.category === 'Handwerkstalente'; })"
+                    :name="e.name"
+                    :fw="e.fw"
+                    :att1-name="e.att_1"
+                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att2-name="e.att_2"
+                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att3-name="e.att_3"
+                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    v-model="e.fw"
+                    ></talentEditorElement>
+                </div>
+                <div style="flex: 1;"></div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 
 <style scoped>
 
+.talent-splitter{
+    display: flex;
+    height: 42px;
+    align-items: center;
+    font-weight: 600;
+}
+
 .gapped{
     gap:32px
+}
+
+.gapped-vertical{
+    gap:8px;
 }
 
 .vertically-gapped{
@@ -98,8 +200,15 @@ onMounted(()=>{
 
 .horizontal-container{
     min-width: 100%;
+    max-width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.vertical-container{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 </style>

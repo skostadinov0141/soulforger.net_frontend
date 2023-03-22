@@ -1,0 +1,1 @@
+Add hover effects to all elements when focused
