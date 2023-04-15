@@ -12,7 +12,7 @@ export interface DSACharacter {
     primary_attributes: PrimaryAttributes
     secondary_attributes: SecondaryAttributes
     talents: Talent[]
-    combat_skills: CombatSkills
+    combat_skills: Array<CombatSkill>
     close_range_weapons: CloseRangeWeapons
     long_range_weapons: LongRangeWeapons
     armor: Armor
@@ -97,7 +97,12 @@ export interface DSACharacter {
     att_3: string
   }
   
-  export interface CombatSkills {}
+  export interface CombatSkill {
+    name: string
+    lf: string
+    at: number
+    pa: number
+  }
   
   export interface CloseRangeWeapons {}
   

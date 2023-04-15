@@ -166,7 +166,10 @@ onMounted(()=>{
                 <div style="flex: 1;"></div>
             </div>
         </div>
-
+        <pageSplitter title="Kampffähigkeiten und Waffen" margin-top="72px">
+            Hier kannst du deine Kampffähigkeiten und deine Waffen eintragen. 
+            <br>TAB-Taste funktioniert im Waffen Teil bedingt gut da man da immer mal wieder zur ersten Elemente zurückspringen muss was man mit der TAB-Taste nicht machen kann. Durch die Kampffähigkeiten kannst du aber ohne Probleme springen!
+        </pageSplitter>
     </div>
 </template>
 
