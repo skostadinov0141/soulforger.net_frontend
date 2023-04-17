@@ -8,6 +8,8 @@
 
   --outline1: #5265B7;
 
+  --error0: #e03800;
+
   --accent0: #8F5800;
   --accent1: #A36500;
   --accent2: #B87100;
@@ -30,10 +32,10 @@
 }
 
 body {
-  padding-top: 8vh;
+  /* padding-top: 8vh;
   padding-bottom: 8vh;
   padding-left: 12vw;
-  padding-right: 12vw;
+  padding-right: 12vw; */
   min-height: 100vh;
   color: var(--text3);
   background: var(--bg0);

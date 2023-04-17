@@ -44,7 +44,7 @@ onMounted(()=>{
             Hier kannst du die wichtigsten Aspekte deines Charakters beschreiben. Dinge wie Name, Geburtsdatum, Spezies und Profession gehören hierher. Keines dieser Felder, außer dem Namen, muss ausgefüllt werden, aber es erleichtert dir die Suche in deiner vielleicht riesigen Sammlung von Charakteren.
         </pageSplitter>
         <div class="horizontal-container gapped vertically-gapped">
-            <inputField label="Name" v-model="characterSchema.name"></inputField>
+            <inputField label="Name" v-model="characterSchema.name" hint="hello there mr bond"></inputField>
             <inputField label="Erfahrungsgrad" v-model="characterSchema.level"></inputField>
         </div>
         <div class="horizontal-container gapped vertically-gapped">

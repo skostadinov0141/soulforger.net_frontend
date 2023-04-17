@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import type { Account } from '../interfaces/authentication';
+
 interface Props{
     label:string
     modelValue?:string | number
@@ -7,13 +9,15 @@ interface Props{
     type?:string
     flex?:number
     placeholder?:string
+    errors?: string[]
 }
 
 const emits = defineEmits(['update:modelValue']);
 const props = withDefaults(defineProps<Props>(),{
     type:'text',
     flex:1,
-    placeholder:'Hier schreiben...'
+    placeholder:'Hier schreiben...',
+    errors: () => []
 });
 
 function getId(){
@@ -27,13 +31,19 @@ function getId(){
     <div class="container">
         <label :for="getId()">{{ label }}</label>
         <input 
+        :class="(errors?.length === 0)? '' : 'error'"
         :placeholder="placeholder"
         :type="type" 
         :id="getId()"
         :value="modelValue" 
-        @input="$emit('update:modelValue', $event.target!.value)">
+        @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)">
         <small v-if="hint !== undefined">{{ hint }}</small>
     </div>
+    <ul>
+       <li class="error" v-for="i in errors">
+        {{ i }}
+       </li> 
+    </ul>
 </template>
 
 
@@ -48,7 +58,12 @@ small{
 
 input{
     border: 1px solid var(--accent0);
+    color: var(--text3);
     transition: 150ms;
+}
+
+.error{
+    border: 1px solid var(--error0);
 }
 
 input:focus{
