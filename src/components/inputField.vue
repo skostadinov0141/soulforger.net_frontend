@@ -40,7 +40,7 @@ function getId(){
         <small v-if="hint !== undefined">{{ hint }}</small>
     </div>
     <ul>
-       <li class="error" v-for="i in errors">
+       <li v-for="i in errors">
         {{ i }}
        </li> 
     </ul>
@@ -64,6 +64,11 @@ input{
 
 .error{
     border: 1px solid var(--error0);
+}
+
+li{
+    color: var(--error0);
+    font-size: 12px;
 }
 
 input:focus{

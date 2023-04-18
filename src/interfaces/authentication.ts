@@ -4,3 +4,8 @@ export interface Account{
     password: string,
     eula: boolean
 }
+
+export interface RegistrationError{
+    category: string,
+    detail: string
+}

@@ -11,16 +11,10 @@ import type { RegistrationError } from '@/interfaces/authentication';
 import type { ApiError } from '@/interfaces/general';
 
 let email: Ref<string> = ref('');
-let displayName: Ref<string> = ref('');
 let password: Ref<string> = ref('');
-let passwordConfirm: Ref<string> = ref('');
-let eula: Ref<boolean> = ref(false);
 
 let emailE: Ref<Array<string>> = ref([]);
 let passwordE: Ref<Array<string>> = ref([]);
-let passwordConfE: Ref<Array<string>> = ref([]);
-let eulaE: Ref<Array<string>> = ref([]);
-let displayNameE: Ref<Array<string>> = ref([]);
 
 let loading: Ref<boolean> = ref(false);
 
@@ -31,17 +25,11 @@ function createAccount(){
     console.log(loading.value);
     let data = {
         email:email.value,
-        display_name:displayName.value,
         password:password.value,
-        password_confirmation: passwordConfirm.value,
-        eula:eula.value
     }
 
     emailE.value = [];
     passwordE.value = [];
-    eulaE.value = [];
-    passwordConfE.value = [];
-    displayNameE.value = [];
 
     axios.post(`${api}/auth/register`, data, {
         headers:{
@@ -53,11 +41,7 @@ function createAccount(){
         (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
             (element.category === 'email')? emailE.value.push(element.detail) : undefined;
             (element.category === 'password')? passwordE.value.push(element.detail) : undefined;
-            (element.category === 'password_confirmation')? passwordConfE.value.push(element.detail) : undefined;
-            (element.category === 'eula')? eulaE.value.push(element.detail) : undefined;
-            (element.category === 'display_name')? displayNameE.value.push(element.detail) : undefined;
         });
-        console.log(eulaE.value);
         loading.value = false;
     });
 }
@@ -68,15 +52,11 @@ function createAccount(){
 <template>
     <div class="main-container">
         <div class="form-container">
-            <PageSplitter title="Account Erstellen" margin-top="0" margin-bottom="24px">Das Anlegen eines Accounts ist kostenlos, dauert nur eine Minute und macht Schluss mit den Schwierigkeiten beim Verwalten und Spielen von DSA.</PageSplitter>
+            <PageSplitter title="Anmelden" margin-top="0" margin-bottom="16px">Logge dich in dein Account ein, um die volle Kapazität von Soulforger zu nutzen.</PageSplitter>
             <InputField :errors="emailE" label="E-Mail" placeholder="" type="email" v-model="email"></InputField>
-            <InputField :errors="displayNameE" label="Anzeigename" placeholder="" v-model="displayName"></InputField>
             <InputField :errors="passwordE" label="Passwort" placeholder="" type="password" v-model="password"></InputField>
-            <InputField :errors="passwordConfE" label="Passwort Bestätigen" placeholder="" type="password" v-model="passwordConfirm"></InputField>
             <div style="height: 8px;"></div>
-            <CheckBox :errors="emailE" @checked="eula = !eula" tag="eula">Ich bin damit einverstanden, dass meine E-Mail zum Zwecke der Kommunikation und Passwortwiederherstellung gespeichert wird.</CheckBox>
-            <div style="height: 8px;"></div>
-            <Button :loading="loading" @pressed="createAccount()">Account Erstellen</Button>
+            <Button :loading="loading" @pressed="createAccount()">Anmelden</Button>
         </div>
     </div>
 </template>
