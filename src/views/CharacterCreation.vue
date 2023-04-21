@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
-import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 
 import type { DSACharacter } from '../interfaces/characterschema';
 import attField from '../components/characterCreation/attField.vue';
@@ -12,24 +12,14 @@ import talentTableDefinition from '../components/characterCreation/talentTableDe
 
 let schemeLoaded : Ref<boolean> = ref(false);
 let characterSchema : Ref<DSACharacter> = ref({} as DSACharacter);
-const apiBase = inject<string>('apiBase');
+const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
 onMounted(()=>{
-
-    let headers : Object = {
-        headers:{
-            Authorization:'2e12e96f-d40c-4c39-854d-f8290b79b412%235831368456732672',
-            accept:'application/json'
-        }
-    }
-
-    axios
-        .get(`${apiBase}/characters/creation/get_schema`,headers)
+    api.get(`/characters/creation/get_schema`)
         .then((response) => {
             characterSchema.value = response.data as DSACharacter;
             schemeLoaded.value = true;
-        })
-        .catch((error) => {
+        }).catch((error) => {
             console.log(error);
         })
 })

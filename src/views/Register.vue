@@ -5,7 +5,8 @@ import InputField from '../components/inputField.vue';
 import PageSplitter from '@/components/pageSplitter.vue';
 import CheckBox from '@/components/checkBox.vue';
 import Button from '@/components/button.vue';
-import axios, { AxiosError } from 'axios';
+import type axios from 'axios';
+import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
 import type { RegistrationError } from '@/interfaces/authentication';
 import type { ApiError } from '@/interfaces/general';
@@ -24,7 +25,7 @@ let displayNameE: Ref<Array<string>> = ref([]);
 
 let loading: Ref<boolean> = ref(false);
 
-const api = inject('apiBase');
+    const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
 function createAccount(){
     loading.value = true;
@@ -43,11 +44,7 @@ function createAccount(){
     passwordConfE.value = [];
     displayNameE.value = [];
 
-    axios.post(`${api}/auth/register`, data, {
-        headers:{
-            Accept:'application/json'
-        }
-    }).then((data) => {
+    api.post(`/auth/register`, data).then((data) => {
         loading.value = false;
     }).catch((error: AxiosError) => {
         (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
