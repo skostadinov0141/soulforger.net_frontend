@@ -58,6 +58,7 @@ small{
 
 input{
     border: 1px solid var(--accent0);
+    border-radius: 8px;
     color: var(--text3);
     transition: 150ms;
 }

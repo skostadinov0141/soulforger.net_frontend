@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import CharacterCreation from '../views/CharacterCreation.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
+import LandingPage from '../views/LandingPage.vue';
 import axios, { type AxiosInstance } from 'axios'
 
 const router = createRouter({
@@ -10,6 +11,11 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      component: LandingPage
+    },
+    {
+      path: '/login',
+      name: 'login',
       component: Login
     },
     {
