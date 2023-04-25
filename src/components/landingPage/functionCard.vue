@@ -1,11 +1,10 @@
 <script setup lang="ts">
-
-import Button from '../button.vue'
+import Button from '../button.vue';
 
 interface Props{
     row_span? : number,
     column_span? : number,
-    imgURL : string,
+    icon : string,
     lowCtaEnabled? : boolean;
     ctaEnabled? : boolean;
 }
@@ -24,9 +23,7 @@ const emits = defineEmits(['lowCtaPressed','ctaPressed',])
 
 <template>
     <div class="function-card-container">
-        <div class="function-picture-container">
-            <img :src="imgURL" alt="function picture">
-        </div>
+        <font-awesome-icon :icon="icon" size="5x" style="color: var(--accent1); filter: drop-shadow(4px 4px 2px rgba(0,0,0,0.5));" />
         <div class="function-title-container">
             <div class="splitter"></div>
             <h3><slot name="function-title"></slot></h3>
@@ -83,22 +80,6 @@ h3{
     color: var(--text3);
 }
 
-.function-picture-container{
-    align-self: center;
-    justify-self: center;
-    display: flex;
-    align-items: center;
-    width: 100px;
-    height: 100px;
-}
-
-img{
-    object-fit: contain;
-    height: 98px;
-    width: 98px;
-    filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.5));
-}
-
 .function-card-container{
     grid-row: span v-bind(row_span);
     grid-column: span v-bind(column_span);
@@ -109,6 +90,21 @@ img{
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .function-card-container{
+        min-height: 60vh;
+        grid-row: span v-bind(row_span);
+        grid-column: span v-bind(column_span);
+        background-color: var(--bg1);
+        outline: solid 1px var(--bg3);
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
 }
 
 </style>

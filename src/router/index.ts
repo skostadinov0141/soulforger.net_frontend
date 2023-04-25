@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
     })
     api.get('/auth/verify-session').then((data) => {
       if (data.data.result === false) {
-        next({ name: 'home'})
+        next({ name: 'login'})
       } else {
         next() // go to wherever I'm going
       }

@@ -6,7 +6,7 @@
 <template>
     <footer>
         <div class="info-container">
-            <div>
+            <div style="margin-bottom: auto;">
                 <h3>App Info:</h3>
                 <p>
                     <strong>API Version: </strong>0.0.1a<br>
@@ -41,11 +41,11 @@ footer{
     background-color: var(--bg1);
     border-top: solid 1px var(--bg5);
     filter: drop-shadow(-4px -4px 3px rgba(0,0,0,0.7));
-    padding-left: 80px;
-    padding-right: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
     padding-top: 16px;
     padding-bottom: 16px;
-    gap: 80px;
+    gap: 40px;
 }
 
 .info-container{

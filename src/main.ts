@@ -1,13 +1,27 @@
 import { createApp } from 'vue'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faUserSecret, faBook, faHandFist, faEarthEurope, faListCheck, faDiceD20, faHandHoldingHand, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
 import router from './router'
 
 import './assets/main.css'
 import axios, { type AxiosInstance } from 'axios'
 
-const app = createApp(App)
+library.add(faUserSecret);
+library.add(faBook);
+library.add(faHandFist);
+library.add(faEarthEurope);
+library.add(faListCheck);
+library.add(faDiceD20);
+library.add(faHandHoldingHand);
+library.add(faArrowRight);
 
-app.use(router)
+const app = createApp(App);
+
+app.use(router);
+
+app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.provide<AxiosInstance>('apiBase', axios.create({
     baseURL: 'http://127.0.0.1:8000',

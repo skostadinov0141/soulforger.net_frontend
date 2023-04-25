@@ -95,6 +95,7 @@ function createAccount(){
 }
 
 .form-container{
+    padding: 24px;
     width: 416px;
     display: flex;
     flex-direction: column;

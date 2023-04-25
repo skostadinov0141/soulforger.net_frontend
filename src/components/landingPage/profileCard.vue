@@ -4,12 +4,14 @@ import Button from '../button.vue'
 
 interface Props{
     row_span? : number,
-    column_span? : number
+    column_span? : number,
+    profile_name? : string
 }
 
 const props = withDefaults(defineProps<Props>(),{
     row_span: 1,
     column_span: 2,
+    profile_name: 'Profil'
 })
 
 </script>
@@ -19,10 +21,10 @@ const props = withDefaults(defineProps<Props>(),{
     <div class="profile-card-container">
         <div style="display: flex; justify-self: stretch; gap: 16px;">
             <div class="profile-picture-container">
-                <img src="../../assets/images/landing_7.png" alt="">
+                <font-awesome-icon icon="fa-solid fa-user-secret" size="6x" style="margin-top: 16px; color: var(--accent0); filter: drop-shadow(4px 4px 3px rgba(0,0,0,0.5));"/>
             </div>
             <div class="profile-title-container">
-                <h3>Profil</h3>
+                <h3>{{ profile_name }}</h3>
                 <div class="splitter"></div>
             </div>
         </div>
@@ -80,6 +82,7 @@ h3{
 .profile-picture-container{
     display: flex;
     align-items: center;
+    justify-content: center;
     border-radius: 100000px;
     border: solid 2px var(--bg3);
     width: 110px;

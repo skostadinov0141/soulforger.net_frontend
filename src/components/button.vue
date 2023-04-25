@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(),{
         :title="(!enabled)? 'Work in progress' : undefined">
             <slot v-if="!loading"></slot>
             <span v-else class="loader"></span>
-            <img v-if="!loading" src="../assets/images/arrow.svg" alt="arrow">
+            <font-awesome-icon icon="fa-solid fa-arrow-right" size="sm" />
         </button>
     </div>
 </template>
@@ -51,7 +51,8 @@ const props = withDefaults(defineProps<Props>(),{
 button{
     gap: 4px;
     display: flex;
-    align-content: center;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     padding: 8px 16px;
     text-transform: uppercase;
