@@ -8,6 +8,7 @@ import router from './router'
 import './assets/main.css'
 import axios, { type AxiosInstance } from 'axios'
 
+
 library.add(faUserSecret);
 library.add(faBook);
 library.add(faHandFist);
@@ -32,3 +33,5 @@ app.provide<AxiosInstance>('apiBase', axios.create({
 }));
 
 app.mount('#app')
+
+export {app}

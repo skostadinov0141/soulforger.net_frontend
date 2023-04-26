@@ -29,7 +29,6 @@ let loading: Ref<boolean> = ref(false);
 
 function createAccount(){
     loading.value = true;
-    console.log(loading.value);
     let data = {
         email:email.value,
         display_name:displayName.value,

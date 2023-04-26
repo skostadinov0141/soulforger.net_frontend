@@ -4,6 +4,8 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import LandingPage from '../views/LandingPage.vue';
 import axios, { type AxiosInstance } from 'axios'
+import { inject } from 'vue';
+import { useCookies } from 'vue3-cookies';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,30 +37,31 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
-  console.log(from);
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    const api : AxiosInstance = axios.create({
-      baseURL: 'http://127.0.0.1:8000',
-      withCredentials: true,
-      headers:{
-        Accept:'applications/json'
-      }
-    });
-    console.log('here 1');
-    api.get('/auth/verify-session').then((data) => {
-      if (data.data.result === false) {
-        console.log('here 2');
-        next({path : '/login'})
-      } else {
-        console.log('here 3');
-        next() // go to wherever I'm going
-      }
-    });
+  // import cookies to check if the user is authed
+  const { cookies } = useCookies();
+  if (to.matched.some(record => record.meta.requiresAuth)){
+    // if user cookie exists the user is authenticated and can move to the page
+    if(cookies.isKey('user')){
+      next()
+    }else{
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      const api : AxiosInstance = axios.create({
+        baseURL: 'http://127.0.0.1:8000',
+        withCredentials: true,
+        headers:{
+          Accept:'applications/json'
+        }
+      });
+      api.get('/auth/user').then((data) => {
+        cookies.set('user',data.data)
+        next();
+      }).catch(error => {
+        console.log(error)
+        next({path:'/login'});
+      });
+    }
   } else {
-    console.log('here 4');
     next() // does not require auth, make sure to always call next()!
   }
 })

@@ -4,24 +4,28 @@ import FunctionCard from '@/components/landingPage/functionCard.vue';
 import Footer from '../components/footer.vue';
 import { type Ref, ref, onMounted, onUnmounted, inject } from 'vue';
 import type { AxiosInstance } from 'axios';
+import { useCookies } from 'vue3-cookies';
+import type { User } from '@/interfaces/authentication';
 
 let profile_span: Ref<number> = ref<number>(2);
 let profile_name: Ref<string | undefined> = ref<string | undefined>('')
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
+const { cookies } = useCookies();
 
 onMounted(() => {
     window.addEventListener('resize', onResize);
     onResize();
-    api.get('/auth/verify-session').then((data) => {
-      if (data.data.result === false) {
-        profile_name.value = 'Profil';
-    } else {
-        api.get(`/auth/user`).then((response) => {
-            profile_name.value = response.data.display_name;
+    if(cookies.isKey('user')){
+        profile_name.value = ((cookies.get('user') as unknown) as User).display_name;
+    }else{
+        api.get('/auth/user').then((data) => {
+            profile_name.value = (data.data as User).display_name;
+        }).catch(error => {
+            cookies.remove('user')
+            profile_name.value = "Profil";
         });
     }
-    })
 });
 
 onUnmounted(() => {

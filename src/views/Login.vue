@@ -10,7 +10,9 @@ import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
 import type { RegistrationError } from '@/interfaces/authentication';
 import type { ApiError } from '@/interfaces/general';
+import type { User } from '@/interfaces/authentication';
 import { useRouter } from 'vue-router';
+import { useCookies } from 'vue3-cookies';
 
 let email: Ref<string> = ref('');
 let password: Ref<string> = ref('');
@@ -22,11 +24,11 @@ let loading: Ref<boolean> = ref(false);
 
 const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 const router = useRouter();
+const { cookies } = useCookies();
 
 
-function createAccount(){
+function login(){
     loading.value = true;
-    console.log(loading.value);
     let data = {
         email:email.value,
         password:password.value,
@@ -38,7 +40,10 @@ function createAccount(){
 
     api.post(`/auth/login`, {}, { params : data }).then((data) => {
         loading.value = false;
-        router.push({name:'home'})
+        console.log(new Date((data.data as User).expires_at));
+        if(cookies.isKey('user')) cookies.remove('user');
+        cookies.set('user', data.data, new Date((data.data as User).expires_at));
+        router.push({name:'home'});
     }).catch((error: AxiosError) => {
         let error_detail : string = (error.response?.data as ApiError).detail;
         emailE.value.push(error_detail);
@@ -57,7 +62,7 @@ function createAccount(){
             <InputField :errors="emailE" label="E-Mail" placeholder="" type="email" v-model="email"></InputField>
             <InputField :errors="passwordE" label="Passwort" placeholder="" type="password" v-model="password"></InputField>
             <div style="height: 8px;"></div>
-            <Button :loading="loading" @pressed="createAccount()">Anmelden</Button>
+            <Button :loading="loading" @pressed="login()">Anmelden</Button>
         </div>
     </div>
 </template>
