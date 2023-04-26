@@ -29,10 +29,14 @@ const router = useRouter();
             <div style="align-self: center;">
                 <h3>Navigation:</h3>
                 <ul>
-                    <li><a href="#" @click="router.push({name:'home'})">Start</a></li>
-                    <li><a href="#" @click="router.push({name:'login'})">Anmelden</a></li>
-                    <li><a href="#" @click="router.push({name:'register'})">Profil Erstellen</a></li>
-                    <li><a href="#" @click="router.push({name:'create_character'})">Charakter Erstellen</a></li>
+                    <li><router-link to="/">Start</router-link></li>
+                    <li><router-link to="/login">Anmelden</router-link></li>
+                    <li><router-link to="/register">Profil Erstellen</router-link></li>
+                    <li><router-link to="/characters/create">Charakter Erstellen</router-link></li>
+                    <li><router-link to="/">Start</router-link></li>
+                    <li><a href="" @click="router.push({path:'/login'})">Anmelden</a></li>
+                    <li><a href="" @click="router.push({path:'/register'})">Profil Erstellen</a></li>
+                    <li><a href="" @click="router.push({path:'/characters/create'})">Charakter Erstellen</a></li>
                 </ul>
             </div>
         </div>

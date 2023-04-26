@@ -10,6 +10,7 @@ import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
 import type { RegistrationError } from '@/interfaces/authentication';
 import type { ApiError } from '@/interfaces/general';
+import { useRouter } from 'vue-router';
 
 let email: Ref<string> = ref('');
 let password: Ref<string> = ref('');
@@ -20,6 +21,8 @@ let passwordE: Ref<Array<string>> = ref([]);
 let loading: Ref<boolean> = ref(false);
 
 const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
+const router = useRouter();
+
 
 function createAccount(){
     loading.value = true;
@@ -35,6 +38,7 @@ function createAccount(){
 
     api.post(`/auth/login`, {}, { params : data }).then((data) => {
         loading.value = false;
+        router.push({name:'home'})
     }).catch((error: AxiosError) => {
         let error_detail : string = (error.response?.data as ApiError).detail;
         emailE.value.push(error_detail);

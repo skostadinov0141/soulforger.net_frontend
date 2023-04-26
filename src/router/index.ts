@@ -11,17 +11,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: LandingPage
+      component: LandingPage,
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
     },
     {
       path: '/characters/create',
@@ -35,6 +35,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
@@ -44,15 +46,19 @@ router.beforeEach((to, from, next) => {
       headers:{
         Accept:'applications/json'
       }
-    })
+    });
+    console.log('here 1');
     api.get('/auth/verify-session').then((data) => {
       if (data.data.result === false) {
-        next({ name: 'login'})
+        console.log('here 2');
+        next({path : '/login'})
       } else {
+        console.log('here 3');
         next() // go to wherever I'm going
       }
-    })
+    });
   } else {
+    console.log('here 4');
     next() // does not require auth, make sure to always call next()!
   }
 })
