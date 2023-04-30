@@ -13,7 +13,6 @@ jobs:
         with: 
           host: soulforger.net
           username: simeon
-          password: ${{ secrets.SUDO_PW }}
           key: ${{ secrets.SSH_KEY }}
           port: 25540
           script: |
