@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import type { Account } from '../interfaces/authentication';
-
 interface Props{
     label:string
     modelValue?:string | number

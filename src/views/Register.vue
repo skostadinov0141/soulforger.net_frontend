@@ -8,8 +8,9 @@ import Button from '@/components/button.vue';
 import type axios from 'axios';
 import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
-import type { RegistrationError } from '@/interfaces/authentication';
+import type { Account, RegistrationError } from '@/interfaces/authentification';
 import type { ApiError } from '@/interfaces/general';
+import { useRoute, useRouter } from 'vue-router';
 
 let email: Ref<string> = ref('');
 let displayName: Ref<string> = ref('');
@@ -25,11 +26,12 @@ let displayNameE: Ref<Array<string>> = ref([]);
 
 let loading: Ref<boolean> = ref(false);
 
-    const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
+const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
+const router = useRouter();
 
 function createAccount(){
     loading.value = true;
-    let data = {
+    let data : Account = <Account>{
         email:email.value,
         display_name:displayName.value,
         password:password.value,
@@ -45,6 +47,7 @@ function createAccount(){
 
     api.post(`/auth/register`, data).then((data) => {
         loading.value = false;
+        router.push({'name':'home'})
     }).catch((error: AxiosError) => {
         (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
             (element.category === 'email')? emailE.value.push(element.detail) : undefined;
@@ -53,7 +56,6 @@ function createAccount(){
             (element.category === 'eula')? eulaE.value.push(element.detail) : undefined;
             (element.category === 'display_name')? displayNameE.value.push(element.detail) : undefined;
         });
-        console.log(eulaE.value);
         loading.value = false;
     });
 }

@@ -5,7 +5,8 @@ import Footer from '../components/footer.vue';
 import { type Ref, ref, onMounted, onUnmounted, inject } from 'vue';
 import type { AxiosInstance } from 'axios';
 import { useCookies } from 'vue3-cookies';
-import type { User } from '@/interfaces/authentication';
+import type { User } from '@/interfaces/authentification';
+import router from '@/router';
 
 let profile_span: Ref<number> = ref<number>(2);
 let profile_name: Ref<string | undefined> = ref<string | undefined>('')
@@ -16,16 +17,11 @@ const { cookies } = useCookies();
 onMounted(() => {
     window.addEventListener('resize', onResize);
     onResize();
-    if(cookies.isKey('user')){
-        profile_name.value = ((cookies.get('user') as unknown) as User).display_name;
-    }else{
-        api.get('/auth/user').then((data) => {
-            profile_name.value = (data.data as User).display_name;
-        }).catch(error => {
-            cookies.remove('user')
-            profile_name.value = "Profil";
-        });
-    }
+    api.get('/profiles/user').then((data) => {
+        profile_name.value = (data.data as User).display_name;
+    }).catch(error => {
+        profile_name.value = "Profil";
+    });
 });
 
 onUnmounted(() => {
@@ -62,7 +58,10 @@ function onResize() {
             <div class="splitter"></div>
         </div>
         <div class="card-container">
-            <ProfileCard :profile_name="profile_name" :column_span="profile_span"></ProfileCard>
+            <ProfileCard @cta-pressed="router.push({path:'/login'})"
+            @low-cta-pressed="router.push({path:'/register'})" 
+            :profile_name="profile_name" 
+            :column_span="profile_span"></ProfileCard>
             <FunctionCard :column_span="1" icon="fa-solid fa-book">
                 <template v-slot:function-title>Soulforger Wiki</template>
                 <template v-slot:function-low-button>Entwicklung</template>

@@ -8,9 +8,9 @@ import Button from '@/components/button.vue';
 import type axios from 'axios';
 import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
-import type { RegistrationError } from '@/interfaces/authentication';
+import type { Login, RegistrationError } from '@/interfaces/authentification';
 import type { ApiError } from '@/interfaces/general';
-import type { User } from '@/interfaces/authentication';
+import type { User } from '@/interfaces/authentification';
 import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
 
@@ -29,7 +29,7 @@ const { cookies } = useCookies();
 
 function login(){
     loading.value = true;
-    let data = {
+    let data: Login = <Login>{
         email:email.value,
         password:password.value,
         keep_logged_in:false
@@ -38,11 +38,9 @@ function login(){
     emailE.value = [];
     passwordE.value = [];
 
-    api.post(`/auth/login`, {}, { params : data }).then((data) => {
+    api.post(`/auth/login`, data).then((response) => {
         loading.value = false;
-        console.log(new Date((data.data as User).expires_at));
-        if(cookies.isKey('user')) cookies.remove('user');
-        cookies.set('user', data.data, new Date((data.data as User).expires_at));
+        console.log(new Date((response.data as User).expires_at));
         router.push({name:'home'});
     }).catch((error: AxiosError) => {
         let error_detail : string = (error.response?.data as ApiError).detail;

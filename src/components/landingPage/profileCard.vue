@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<Props>(),{
     profile_name: 'Profil'
 })
 
+const emits = defineEmits(['lowCtaPressed','ctaPressed',])
+
 </script>
 
 
@@ -31,8 +33,8 @@ const props = withDefaults(defineProps<Props>(),{
         <div class="info-container">
             <p>Es sieht so aus, als hättest du dich noch nicht angemeldet. Um Soulforger zu benutzen, musst du angemeldet sein. Warum loggst du dich also nicht ein, bevor du loslegst? Falls du noch kein Profil erstellt hast, keine Sorge, es dauert nur eine Minute!</p>
             <div class="button-container">
-                <Button :low-c-t-a="true">Profil erstellen</Button>
-                <Button>Anmelden</Button>
+                <Button @pressed="emits('lowCtaPressed')" :low-c-t-a="true">Profil erstellen</Button>
+                <Button @pressed="emits('ctaPressed')">Anmelden</Button>
             </div>
         </div>
     </div>
