@@ -8,7 +8,7 @@ import Button from '@/components/button.vue';
 import type axios from 'axios';
 import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
-import type { Account, RegistrationError } from '@/interfaces/authentification';
+import type { Account, Login, RegistrationError } from '@/interfaces/authentification';
 import type { ApiError } from '@/interfaces/general';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -47,7 +47,16 @@ function createAccount(){
 
     api.post(`/auth/register`, data).then((data) => {
         loading.value = false;
-        router.push({'name':'home'})
+            api.post('/auth/login',<Login>{
+                email: email.value,
+                password: password.value,
+                keep_logged_in: true
+            }).then(() => {
+                router.push({'name':'home'});
+            }).catch(err => {
+                console.log(err);
+                router.push({'name':'login'});
+            })
     }).catch((error: AxiosError) => {
         (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
             (element.category === 'email')? emailE.value.push(element.detail) : undefined;

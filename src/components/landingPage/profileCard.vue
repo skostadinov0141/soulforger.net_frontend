@@ -1,32 +1,75 @@
 <script setup lang="ts">
 
+import type { Profile } from '@/interfaces/profiles';
 import Button from '../button.vue'
+import InputField from '../inputField.vue';
+import ProfilePicturePicker from '../landingPage/profilePicturePicker.vue';
+import { faBiohazard } from '@fortawesome/free-solid-svg-icons';
 
 interface Props{
     row_span? : number,
     column_span? : number,
-    profile_name? : string
+    loading? : boolean,
+    profile? : Profile,
+    editing? : boolean
 }
 
 const props = withDefaults(defineProps<Props>(),{
+    loading: false,
     row_span: 1,
     column_span: 2,
-    profile_name: 'Profil'
+    profile: undefined,
+    editing: false
 })
 
-const emits = defineEmits(['lowCtaPressed','ctaPressed',])
+const emits = defineEmits(['lowCtaPressed',
+    'ctaPressed',
+    'lowCtaPressedLoggedIn',
+    'ctaPressedLoggedIn',
+    'ctaPressedLoggedInEditing',
+    'lowCtaPressedLoggedInEditing',
+])
 
 </script>
 
 
 <template>
-    <div class="profile-card-container">
+    <div v-if="loading === true" class="profile-card-container">
+        <span style="align-self: center; margin-top: auto; margin-bottom: auto;" class="loader"></span>
+    </div>
+    <div v-else-if="profile" class="profile-card-container">
+        <div style="display: flex; justify-self: stretch; gap: 16px;">
+            <div v-if="editing === false" class="profile-picture-container">
+                <font-awesome-icon v-if="profile.profile_picture === ''" icon="fa-solid fa-user-secret" size="6x" style="margin-top: 16px; color: var(--accent0); filter: drop-shadow(4px 4px 3px rgba(0,0,0,0.5));"/>
+                <img v-else :src="profile.profile_picture" alt="Profile Picture" class="profile-picture">
+            </div>
+            <ProfilePicturePicker @image-uploaded="(image) => profile!.profile_picture = image" v-else ></ProfilePicturePicker>
+            <div class="profile-title-container-logged-in">
+                <h3 v-if="editing == false">{{ profile.display_name }}</h3>
+                <InputField v-else label="Anzeigename" type="text" v-model="profile.display_name"></InputField>
+                <div class="splitter-logged-in"></div>
+                <small>Beigetreten am: {{ new Date(Date.parse(profile.joined_on)).toLocaleDateString() }}</small>
+            </div>
+        </div>
+        <div class="info-container">
+            <h4 v-if="editing == false">Über mich:</h4>
+            <p v-if="editing == false">{{ profile.bio }}</p>
+            <InputField v-else label="Über mich" type="text" :multiline="true" v-model="profile.bio"></InputField>
+            <div class="button-container">
+                <Button v-if="!editing" @pressed="emits('lowCtaPressedLoggedIn')" :low-c-t-a="true">Profil bearbeiten</Button>
+                <Button v-if="editing" @pressed="emits('lowCtaPressedLoggedInEditing')" :low-c-t-a="true">Abbrechen</Button>
+                <Button v-if="!editing" @pressed="emits('ctaPressedLoggedIn')">Anmelden</Button>
+                <Button v-if="editing" @pressed="emits('ctaPressedLoggedInEditing')">Speichern</Button>
+            </div>
+        </div>
+    </div>
+    <div v-else class="profile-card-container">
         <div style="display: flex; justify-self: stretch; gap: 16px;">
             <div class="profile-picture-container">
                 <font-awesome-icon icon="fa-solid fa-user-secret" size="6x" style="margin-top: 16px; color: var(--accent0); filter: drop-shadow(4px 4px 3px rgba(0,0,0,0.5));"/>
             </div>
             <div class="profile-title-container">
-                <h3>{{ profile_name }}</h3>
+                <h3>Profil</h3>
                 <div class="splitter"></div>
             </div>
         </div>
@@ -42,6 +85,34 @@ const emits = defineEmits(['lowCtaPressed','ctaPressed',])
 
 
 <style scoped>
+
+.profile-picture{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    margin-top: 0px;
+}
+
+/* LOADER */
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
 
 .button-container{
     gap: 8px;
@@ -67,6 +138,12 @@ const emits = defineEmits(['lowCtaPressed','ctaPressed',])
     background-color: var(--bg4);
 }
 
+.splitter-logged-in{
+    height: 1px;
+    align-self: stretch;
+    background-color: var(--bg4);
+}
+
 .profile-title-container{
     flex: 1;
     justify-self: stretch;
@@ -75,10 +152,33 @@ const emits = defineEmits(['lowCtaPressed','ctaPressed',])
     align-items: center;
 }
 
+.profile-title-container-logged-in{
+    flex: 1;
+    justify-self: stretch;
+    align-self: center;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: center;
+}
+
+.profile-title-container-logged-in small{
+    color: var(--text0);
+    font-weight: 300;
+    font-size: 12px;
+}
+
 h3{
     font-size: 24px;
     font-weight: 200;
     color: var(--text3);
+}
+
+h4{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
 }
 
 .profile-picture-container{
@@ -112,5 +212,6 @@ img{
     flex-direction: column;
     gap: 16px;
 }
+
 
 </style>

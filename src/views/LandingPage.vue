@@ -7,9 +7,13 @@ import type { AxiosInstance } from 'axios';
 import { useCookies } from 'vue3-cookies';
 import type { User } from '@/interfaces/authentification';
 import router from '@/router';
+import type { Profile } from '@/interfaces/profiles';
 
 let profile_span: Ref<number> = ref<number>(2);
-let profile_name: Ref<string | undefined> = ref<string | undefined>('')
+let profile: Ref<Profile | undefined> = ref<Profile | undefined>();
+let profile_loading: Ref<boolean> = ref<boolean>(false);
+let profile_editing: Ref<boolean> = ref<boolean>(false);
+
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 const { cookies } = useCookies();
@@ -17,11 +21,7 @@ const { cookies } = useCookies();
 onMounted(() => {
     window.addEventListener('resize', onResize);
     onResize();
-    api.get('/profiles/user').then((data) => {
-        profile_name.value = (data.data as User).display_name;
-    }).catch(error => {
-        profile_name.value = "Profil";
-    });
+    loadProfile();
 });
 
 onUnmounted(() => {
@@ -34,6 +34,27 @@ function onResize() {
     } else {
         profile_span.value = 1
     }
+}
+
+function loadProfile(){
+    profile_loading.value = true;
+    api.get('/profiles/user').then((data) => {
+        profile.value = data.data as Profile;
+        profile_loading.value = false;
+        profile_editing.value = false;
+    }).catch(error => {
+        profile_editing.value = false;
+        profile_loading.value = false;
+        profile.value = undefined;
+    });
+}
+
+function saveProfile(){
+    api.patch('/profiles/user',profile.value).then(data => {
+        loadProfile();
+    }).catch(err => {
+        console.log(err);
+    })
 }
 
 </script>
@@ -58,10 +79,16 @@ function onResize() {
             <div class="splitter"></div>
         </div>
         <div class="card-container">
-            <ProfileCard @cta-pressed="router.push({path:'/login'})"
+            <ProfileCard 
+            :editing="profile_editing"
+            @cta-pressed-logged-in-editing="saveProfile()"
+            @low-cta-pressed-logged-in-editing="loadProfile()"
+            @low-cta-pressed-logged-in="profile_editing = true"
+            @cta-pressed="router.push({path:'/login'})"
             @low-cta-pressed="router.push({path:'/register'})" 
-            :profile_name="profile_name" 
-            :column_span="profile_span"></ProfileCard>
+            :profile="profile" 
+            :column_span="profile_span"
+            :loading="profile_loading"></ProfileCard>
             <FunctionCard :column_span="1" icon="fa-solid fa-book">
                 <template v-slot:function-title>Soulforger Wiki</template>
                 <template v-slot:function-low-button>Entwicklung</template>

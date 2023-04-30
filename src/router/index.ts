@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
       baseURL: 'http://localhost:8000',
       withCredentials: true,
       headers:{
-        Accept:'applications/json'
+        Accept:'applications/json',
       }
     });
     api.get('/auth/validate-session').then((data) => {

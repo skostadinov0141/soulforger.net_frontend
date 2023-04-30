@@ -1,7 +1,15 @@
 import { createApp } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUserSecret, faBook, faHandFist, faEarthEurope, faListCheck, faDiceD20, faHandHoldingHand, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, 
+    faBook, faHandFist, 
+    faEarthEurope, 
+    faListCheck, 
+    faDiceD20, 
+    faHandHoldingHand, 
+    faArrowRight,
+    faPenToSquare
+} from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
 import router from './router'
 
@@ -17,6 +25,7 @@ library.add(faListCheck);
 library.add(faDiceD20);
 library.add(faHandHoldingHand);
 library.add(faArrowRight);
+library.add(faPenToSquare);
 
 const app = createApp(App);
 

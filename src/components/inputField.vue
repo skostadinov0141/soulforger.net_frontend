@@ -8,6 +8,7 @@ interface Props{
     flex?:number
     placeholder?:string
     errors?: string[]
+    multiline?: boolean
 }
 
 const emits = defineEmits(['update:modelValue']);
@@ -15,7 +16,8 @@ const props = withDefaults(defineProps<Props>(),{
     type:'text',
     flex:1,
     placeholder:'Hier schreiben...',
-    errors: () => []
+    errors: () => [],
+    multiline: false
 });
 
 function getId(){
@@ -28,13 +30,20 @@ function getId(){
 <template>
     <div class="container">
         <label :for="getId()">{{ label }}</label>
-        <input 
+        <input v-if="multiline === false" 
         :class="(errors?.length === 0)? '' : 'error'"
         :placeholder="placeholder"
         :type="type" 
         :id="getId()"
         :value="modelValue" 
         @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)">
+        <textarea 
+        v-else
+        :value="modelValue"
+        @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)"
+        :id="getId" 
+        cols="30" 
+        rows="10"></textarea>
         <small v-if="hint !== undefined">{{ hint }}</small>
     </div>
     <ul>
@@ -59,6 +68,24 @@ input{
     border-radius: 8px;
     color: var(--text3);
     transition: 150ms;
+}
+
+textarea{
+    padding: 8px;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 300;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid var(--accent0);
+    border-radius: 8px;
+    color: var(--text3);
+    transition: 150ms;
+    outline: none;
+    resize: none;
+}
+
+textarea:focus{
+    border: 1px solid var(--accent3);
 }
 
 .error{
