@@ -25,7 +25,7 @@ function getIdText(){
         type="number" 
         :value="modelValue" 
         :id="getIdText()"
-        @input="$emit('update:modelValue', $event.target!.value)">
+        @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)">
     </div>
 </div>
 </template>

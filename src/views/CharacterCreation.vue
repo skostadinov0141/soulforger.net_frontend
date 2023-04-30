@@ -79,11 +79,11 @@ onMounted(()=>{
                     :name="e.name"
                     :fw="e.fw"
                     :att1-name="e.att_1"
-                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att1-value="(characterSchema.primary_attributes as any)[e.att_1]"
                     :att2-name="e.att_2"
-                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att2-value="(characterSchema.primary_attributes as any)[e.att_2]"
                     :att3-name="e.att_3"
-                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    :att3-value="(characterSchema.primary_attributes as any)[e.att_3]"
                     v-model="e.fw"
                     ></talentEditorElement>
                 </div>
@@ -95,11 +95,11 @@ onMounted(()=>{
                     :name="e.name"
                     :fw="e.fw"
                     :att1-name="e.att_1"
-                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att1-value="(characterSchema.primary_attributes as any)[e.att_1]"
                     :att2-name="e.att_2"
-                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att2-value="(characterSchema.primary_attributes as any)[e.att_2]"
                     :att3-name="e.att_3"
-                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    :att3-value="(characterSchema.primary_attributes as any)[e.att_3]"
                     v-model="e.fw"
                     ></talentEditorElement>
                 </div>
@@ -111,11 +111,11 @@ onMounted(()=>{
                     :name="e.name"
                     :fw="e.fw"
                     :att1-name="e.att_1"
-                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att1-value="(characterSchema.primary_attributes as any)[e.att_1]"
                     :att2-name="e.att_2"
-                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att2-value="(characterSchema.primary_attributes as any)[e.att_2]"
                     :att3-name="e.att_3"
-                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    :att3-value="(characterSchema.primary_attributes as any)[e.att_3]"
                     v-model="e.fw"
                     ></talentEditorElement>
                 </div>
@@ -129,11 +129,11 @@ onMounted(()=>{
                     :name="e.name"
                     :fw="e.fw"
                     :att1-name="e.att_1"
-                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att1-value="(characterSchema.primary_attributes as any)[e.att_1]"
                     :att2-name="e.att_2"
-                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att2-value="(characterSchema.primary_attributes as any)[e.att_2]"
                     :att3-name="e.att_3"
-                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    :att3-value="(characterSchema.primary_attributes as any)[e.att_3]"
                     v-model="e.fw"
                     ></talentEditorElement>
                 </div>
@@ -145,11 +145,11 @@ onMounted(()=>{
                     :name="e.name"
                     :fw="e.fw"
                     :att1-name="e.att_1"
-                    :att1-value="characterSchema.primary_attributes[e.att_1]"
+                    :att1-value="(characterSchema.primary_attributes as any)[e.att_1]"
                     :att2-name="e.att_2"
-                    :att2-value="characterSchema.primary_attributes[e.att_2]"
+                    :att2-value="(characterSchema.primary_attributes as any)[e.att_2]"
                     :att3-name="e.att_3"
-                    :att3-value="characterSchema.primary_attributes[e.att_3]"
+                    :att3-value="(characterSchema.primary_attributes as any)[e.att_3]"
                     v-model="e.fw"
                     ></talentEditorElement>
                 </div>

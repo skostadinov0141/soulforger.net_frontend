@@ -27,7 +27,7 @@ const props = defineProps<Props>();
             {{ att1Name }}/{{ att2Name }}/{{ att3Name }}  |  {{ att1Value }}/{{ att2Value }}/{{ att3Value }}
         </div>
         <div class="fw-container">
-            <input @input="$emit('update:modelValue', $event.target!.value)" type="number" :value="modelValue">
+            <input @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)" type="number" :value="modelValue">
         </div>
     </div>
 </template>
