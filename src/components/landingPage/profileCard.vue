@@ -11,7 +11,8 @@ interface Props{
     column_span? : number,
     loading? : boolean,
     profile? : Profile,
-    editing? : boolean
+    editing? : boolean,
+    errors: string[] | undefined
 }
 
 const props = withDefaults(defineProps<Props>(),{
@@ -46,7 +47,7 @@ const emits = defineEmits(['lowCtaPressed',
             <ProfilePicturePicker @image-uploaded="(image) => profile!.profile_picture = image" v-else ></ProfilePicturePicker>
             <div class="profile-title-container-logged-in">
                 <h3 v-if="editing == false">{{ profile.display_name }}</h3>
-                <InputField v-else label="Anzeigename" type="text" v-model="profile.display_name"></InputField>
+                <InputField :autofill="false" v-else label="Anzeigename" type="text" v-model="profile.display_name"></InputField>
                 <div class="splitter-logged-in"></div>
                 <small>Beigetreten am: {{ new Date(Date.parse(profile.joined_on)).toLocaleDateString() }}</small>
             </div>
@@ -54,11 +55,11 @@ const emits = defineEmits(['lowCtaPressed',
         <div class="info-container">
             <h4 v-if="editing == false">Über mich:</h4>
             <p v-if="editing == false">{{ profile.bio }}</p>
-            <InputField v-else label="Über mich" type="text" :multiline="true" v-model="profile.bio"></InputField>
+            <InputField :autofill="false" :errors="errors" v-else label="Über mich" type="text" :multiline="true" v-model="profile.bio"></InputField>
             <div class="button-container">
                 <Button v-if="!editing" @pressed="emits('lowCtaPressedLoggedIn')" :low-c-t-a="true">Profil bearbeiten</Button>
                 <Button v-if="editing" @pressed="emits('lowCtaPressedLoggedInEditing')" :low-c-t-a="true">Abbrechen</Button>
-                <Button :enabled="false" v-if="!editing" @pressed="emits('ctaPressedLoggedIn')">Abmelden</Button>
+                <Button v-if="!editing" @pressed="emits('ctaPressedLoggedIn')">Abmelden</Button>
                 <Button v-if="editing" @pressed="emits('ctaPressedLoggedInEditing')">Speichern</Button>
             </div>
         </div>
@@ -115,6 +116,7 @@ const emits = defineEmits(['lowCtaPressed',
 } 
 
 .button-container{
+    padding-top: 16px;
     gap: 8px;
     display: flex;
     margin-top: auto;

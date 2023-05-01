@@ -3,16 +3,19 @@ import ProfileCard from '@/components/landingPage/profileCard.vue';
 import FunctionCard from '@/components/landingPage/functionCard.vue';
 import Footer from '../components/footer.vue';
 import { type Ref, ref, onMounted, onUnmounted, inject } from 'vue';
-import type { AxiosInstance } from 'axios';
+import type { AxiosError, AxiosInstance } from 'axios';
 import { useCookies } from 'vue3-cookies';
 import type { User } from '@/interfaces/authentification';
 import router from '@/router';
 import type { Profile } from '@/interfaces/profiles';
+import type { ApiError } from '@/interfaces/general';
 
 let profile_span: Ref<number> = ref<number>(2);
 let profile: Ref<Profile | undefined> = ref<Profile | undefined>();
 let profile_loading: Ref<boolean> = ref<boolean>(false);
 let profile_editing: Ref<boolean> = ref<boolean>(false);
+
+let profile_errors: Ref<Array<string>> = ref<Array<string>>([]);
 
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
@@ -37,12 +40,13 @@ function onResize() {
 }
 
 function loadProfile(){
+    profile.value = undefined;
     profile_loading.value = true;
     api.get('/profiles/user').then((data) => {
         profile.value = data.data as Profile;
         profile_loading.value = false;
         profile_editing.value = false;
-    }).catch(error => {
+    }).catch((error: ApiError) => {
         profile_editing.value = false;
         profile_loading.value = false;
         profile.value = undefined;
@@ -50,11 +54,28 @@ function loadProfile(){
 }
 
 function saveProfile(){
+    profile_errors.value = [];
     api.patch('/profiles/user',profile.value).then(data => {
+        loadProfile();
+    }).catch((err : AxiosError) => {
+        (err.response?.data as any).detail.forEach((element: any) => {
+            profile_errors.value?.push(element.detail);
+        });
+        console.log(profile_errors.value);
+    })
+}
+
+function logout(){
+    api.delete('/auth/log-out').then(data => {
         loadProfile();
     }).catch(err => {
         console.log(err);
     })
+}
+
+function edit(){
+    profile_editing.value = true;
+    profile_errors.value = [];
 }
 
 </script>
@@ -80,46 +101,48 @@ function saveProfile(){
         </div>
         <div class="card-container">
             <ProfileCard 
+            :errors="profile_errors"
             :editing="profile_editing"
             @cta-pressed-logged-in-editing="saveProfile()"
             @low-cta-pressed-logged-in-editing="loadProfile()"
-            @low-cta-pressed-logged-in="profile_editing = true"
+            @cta-pressed-logged-in="logout()"
+            @low-cta-pressed-logged-in="edit()"
             @cta-pressed="router.push({path:'/login'})"
             @low-cta-pressed="router.push({path:'/register'})" 
             :profile="profile" 
             :column_span="profile_span"
             :loading="profile_loading"></ProfileCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-book">
+            <FunctionCard :column_span="1" icon="fa-solid fa-book" :low-cta-enabled="false">
                 <template v-slot:function-title>Soulforger Wiki</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Zu Wiki</template>
                 <template v-slot:function-description>Hast du schon mal versucht, etwas im "DSA-Regelwiki" zu suchen und bist zu dem Schluss gekommen, dass es gar nicht so einfach ist, wie du es dir vorgestellt hast? Soulforger hat sich zum Ziel gesetzt, dieses Problem zu lösen, indem es die Inhalte des Wikis indexiert und kategorisiert, was eine viel schnellere und vorhersehbare Suche im Wiki ermöglicht. Sei nicht schüchtern, probiere es aus!</template>
             </FunctionCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-hand-fist">
+            <FunctionCard :column_span="1" icon="fa-solid fa-hand-fist" :low-cta-enabled="false">
                 <template v-slot:function-title>Heldenerschaffung</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Held erschaffen</template>
                 <template v-slot:function-description>Entferne das Papier aus "Pen and Paper". Erstelle und verwalte alle deine Charaktere direkt hier auf Soulforger. Soulforger's Philosophie, wenn es um die Erstellung von DSA-Charakteren geht, ist, dass es so schmerzlos und flexibel sein sollte, wie es möglich ist. Kein Durchsuchen von Bergen von Charakterbögen mehr, um den einen Charakter von vor Jahren zu finden, der in der nächsten Kampagne relevant werden könnte.</template>
             </FunctionCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-earth-europe">
+            <FunctionCard :column_span="1" icon="fa-solid fa-earth-europe" :low-cta-enabled="false">
                 <template v-slot:function-title>Worldbuilding</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Beitragen</template>
                 <template v-slot:function-description>Erstelle und teile Waffen, NSCs, Zaubersprüche, Liturgien und sogar eigene Geschichten mit anderen Spielern und Spielleitern, die sich bemühen, eine reichere Spielwelt zu schaffen. Entscheide, ob du deine Kreationen mit anderen teilen oder als Geschäftsgeheimnis für dich behalten willst. Jede öffentliche Kreation kann in jede öffentliche oder private Kampagne importiert werden. Lass deiner Kreativität freien Lauf.</template>
             </FunctionCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-list-check">
+            <FunctionCard :column_span="1" icon="fa-solid fa-list-check" :low-cta-enabled="false">
                 <template v-slot:function-title>Kampagnenverwaltung</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Kampagnen</template>
                 <template v-slot:function-description>Schnapp Dir Deine Spieler, bereite Deine NSCs vor und stürze Dich in die Welt von DSA, so reibungslos wie möglich. Hier kannst du Kampagnen erstellen und planen, Ressourcen mit deinen Spielern teilen und die fiesesten Dämonen vorbereiten, denen deine Spieler begegnen könnten.</template>
             </FunctionCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-dice-d20">
+            <FunctionCard :column_span="1" icon="fa-solid fa-dice-d20" :low-cta-enabled="false">
                 <template v-slot:function-title>Spielen</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Jetzt spielen</template>
                 <template v-slot:function-description>Nimm an öffentlichen oder privaten Kampagnen teil und stelle deine neu erstellten oder altbewährten Charaktere auf die ultimative Probe. Hier kannst du nicht nur Kampagnen beitreten und spielen, sondern auch zum Kampagnentagebuch beitragen und mit deiner gesamten Gruppe kommunizieren, um zum Beispiel Sitzungen zu planen. Um einer Kampagne beizutreten, musst du zuerst einen Charakter erstellen, daher ist es empfehlenswert, zuerst die Seite "Heldenerschaffung" zu besuchen.</template>
             </FunctionCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-hand-holding-hand">
+            <FunctionCard :column_span="1" icon="fa-solid fa-hand-holding-hand" :low-cta-enabled="false">
                 <template v-slot:function-title>Zu Projekt Beitragen</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Beitragen</template>

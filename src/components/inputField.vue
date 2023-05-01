@@ -9,6 +9,7 @@ interface Props{
     placeholder?:string
     errors?: string[]
     multiline?: boolean
+    autofill?: boolean
 }
 
 const emits = defineEmits(['update:modelValue']);
@@ -17,7 +18,8 @@ const props = withDefaults(defineProps<Props>(),{
     flex:1,
     placeholder:'Hier schreiben...',
     errors: () => [],
-    multiline: false
+    multiline: false,
+    autofill:true
 });
 
 function getId(){
@@ -31,7 +33,8 @@ function getId(){
     <div class="container">
         <label :for="getId()">{{ label }}</label>
         <input v-if="multiline === false" 
-        :class="(errors?.length === 0)? '' : 'error'"
+        :autocomplete="(autofill)? 'on' : 'off'"
+        :class="(errors.length===0)? '' : 'error'"
         :placeholder="placeholder"
         :type="type" 
         :id="getId()"
@@ -39,11 +42,13 @@ function getId(){
         @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)">
         <textarea 
         v-else
+        :autocomplete="(autofill)? 'on' : 'off'"
+        :class="(errors.length===0)? '' : 'error'"
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)"
         :id="getId" 
-        cols="30" 
-        rows="10"></textarea>
+        cols="auto" 
+        rows="15"></textarea>
         <small v-if="hint !== undefined">{{ hint }}</small>
     </div>
     <ul>
