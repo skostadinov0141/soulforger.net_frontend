@@ -10,7 +10,7 @@ const router = useRouter();
 
 <template>
     <footer>
-        <div class="info-container">
+        <!-- <div class="info-container">
             <div style="align-self: center;">
                 <h3>Impressum:</h3>
                 <p>
@@ -24,8 +24,8 @@ const router = useRouter();
                     <strong>E-Mail:</strong> <a href="mailto:soulforger.net@gmail.com">soulforger.net@gmail.com</a>
                 </p>
             </div>
-        </div>
-        <div class="info-container">
+        </div> -->
+        <!-- <div class="info-container">
             <div style="align-self: center;">
                 <h3>Navigation:</h3>
                 <ul>
@@ -35,7 +35,7 @@ const router = useRouter();
                     <li><router-link :to="{path:'/characters/create'}">Charakter Erstellen</router-link></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <div class="info-container">
             <div style="align-self: center;">
                 <h3>Impressum:</h3>

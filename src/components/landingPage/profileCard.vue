@@ -58,7 +58,7 @@ const emits = defineEmits(['lowCtaPressed',
             <div class="button-container">
                 <Button v-if="!editing" @pressed="emits('lowCtaPressedLoggedIn')" :low-c-t-a="true">Profil bearbeiten</Button>
                 <Button v-if="editing" @pressed="emits('lowCtaPressedLoggedInEditing')" :low-c-t-a="true">Abbrechen</Button>
-                <Button v-if="!editing" @pressed="emits('ctaPressedLoggedIn')">Anmelden</Button>
+                <Button :enabled="false" v-if="!editing" @pressed="emits('ctaPressedLoggedIn')">Abmelden</Button>
                 <Button v-if="editing" @pressed="emits('ctaPressedLoggedInEditing')">Speichern</Button>
             </div>
         </div>
