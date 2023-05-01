@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
 import { faUserSecret, 
     faBook, faHandFist, 
     faEarthEurope, 
@@ -9,7 +10,7 @@ import { faUserSecret,
     faHandHoldingHand, 
     faArrowRight,
     faPenToSquare
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
 
@@ -34,7 +35,7 @@ app.use(router);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.provide<AxiosInstance>('apiBase', axios.create({
-    baseURL: 'https://api.soulforger.net',
+    baseURL: 'http://localhost:8000',
     withCredentials: true,
     headers:{
         Accept:'applications/json'

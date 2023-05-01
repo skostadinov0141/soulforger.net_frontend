@@ -3,6 +3,7 @@ import CharacterCreation from '../views/CharacterCreation.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import LandingPage from '../views/LandingPage.vue';
+import Wiki from '../views/Wiki.vue';
 import axios, { type AxiosInstance } from 'axios'
 import { inject } from 'vue';
 import { useCookies } from 'vue3-cookies';
@@ -34,6 +35,14 @@ const router = createRouter({
         requiresAuth: true
       }
     },
+    {
+      path: '/wiki',
+      name: 'wiki',
+      component: Wiki,
+      meta:{
+        requiresAuth: true
+      }
+    },
   ]
 })
 
@@ -45,7 +54,7 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     const api : AxiosInstance = axios.create({
-      baseURL: 'https://api.soulforger.net',
+      baseURL: 'http://localhost:8000',
       withCredentials: true,
       headers:{
         Accept:'applications/json',
