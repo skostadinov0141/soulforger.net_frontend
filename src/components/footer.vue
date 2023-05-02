@@ -55,8 +55,8 @@ const router = useRouter();
             <div style="align-self: center;">
                 <h3>App Info:</h3>
                 <p>
-                    <strong>API Version: </strong>0.0.1b<br>
-                    <strong>Frontend Version: </strong>0.0.1b<br>
+                    <strong>API Version: </strong>0.0.2a<br>
+                    <strong>Frontend Version: </strong>0.0.2a<br>
                     <strong>User ID: </strong>-<br>
                 </p>
             </div>
