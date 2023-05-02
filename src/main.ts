@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
 import { faUserSecret, 
     faBook, faHandFist, 
     faEarthEurope, 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import InputField from '@/components/inputField.vue';
 import PageSplitter from '@/components/pageSplitter.vue';
-import SearchableInputField from '@/components/wiki/searchableInputField.vue';
+import SearchableInputField from '@/components/searchableInputField.vue';
+import EntryElement from '@/components/wiki/entryElement.vue';
 import type { WikiEntry } from '@/interfaces/wiki';
 import type { AxiosInstance } from 'axios';
 import { inject, onMounted, ref, type Ref } from 'vue';
@@ -56,15 +57,9 @@ function get_entries(tag: string[]){
                         Suchen:
                     </SearchableInputField>
                 </div>
-                <!-- <a href="https://ulisses-regelwiki.de/Best_Bornlaender.html" target="_blank" rel="noopener noreferrer">WordPress Homepage</a> -->
             </div>
             <div class="results-container">
-                <a 
-                v-for="entry in entries" 
-                :href="entry.link" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="splitter-a">{{ entry.title }}</a>
+                <EntryElement v-for="entry in entries" :entry="entry"></EntryElement>
             </div>
         </div>
     </div>
