@@ -9,6 +9,7 @@ import pageSplitter from '../components/pageSplitter.vue';
 import inputField from '../components/inputField.vue';
 import talentEditorElement from '../components/characterCreation/talentEditorElement.vue';
 import talentTableDefinition from '../components/characterCreation/talentTableDefinition.vue';
+import FloatingHomeButton from '@/components/floatingHomeButton.vue';
 
 let schemeLoaded : Ref<boolean> = ref(false);
 let characterSchema : Ref<DSACharacter> = ref({} as DSACharacter);
@@ -28,6 +29,7 @@ onMounted(()=>{
 
 
 <template>
+    <FloatingHomeButton></FloatingHomeButton>
     <h1 v-if="!schemeLoaded">LOADING!!!!!!</h1>
     <div v-else class="main-content-container">
         <pageSplitter title="Grundeigenschaften" margin-top="0px">

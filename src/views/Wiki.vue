@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import InputField from '@/components/inputField.vue';
+import FloatingHomeButton from '@/components/floatingHomeButton.vue';
 import PageSplitter from '@/components/pageSplitter.vue';
 import SearchableInputField from '@/components/searchableInputField.vue';
 import EntryElement from '@/components/wiki/entryElement.vue';
 import type { WikiEntry } from '@/interfaces/wiki';
 import type { AxiosInstance } from 'axios';
-import { inject, onMounted, ref, type Ref } from 'vue';
+import { computed, inject, onMounted, ref, type Ref } from 'vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
 let options: Ref<string[]> = ref<string[]>([]);
 let more_info: Ref<boolean> = ref<boolean>(false);
 let entries: Ref<WikiEntry[]> = ref<WikiEntry[]>([]);
+let current_category: Ref<string> = ref<string>('');
+
+let results_container = ref();
 
 onMounted(() => {
     api.get('/wiki/tags').then((data: any) => {
@@ -23,6 +27,7 @@ function get_entries(tag: string[]){
     api.post('/wiki/search',{tags:tag}).then((data)=>{
         let recieved_entries: WikiEntry[] = data.data;
         entries.value = recieved_entries;
+        (results_container.value as HTMLElement).scrollTop = 0;
     })
 }
 
@@ -30,6 +35,7 @@ function get_entries(tag: string[]){
 
 
 <template>
+    <FloatingHomeButton></FloatingHomeButton>
     <div class="wiki-main-container">
         <div class="wiki-container">
             <div class="search-container">
@@ -53,12 +59,19 @@ function get_entries(tag: string[]){
                         </p>
                         <a href="#" @click="more_info = !more_info" class="splitter-a">{{ more_info? 'Info ausblenden' : 'Info anzeigen' }}</a>
                     </PageSplitter>
-                    <SearchableInputField @value-selected="(value) => get_entries([value])" :options="options">
-                        Suchen:
-                    </SearchableInputField>
+                    <div style="display: flex; gap: 8px;">
+                        <SearchableInputField 
+                            :flex="7"
+                            @value-selected="(value) => get_entries([value])" 
+                            :options="options"
+                            placeholder="mind. einen Buchstaben eingeben">
+                            Suche
+                        </SearchableInputField>
+                    </div>
                 </div>
             </div>
-            <div class="results-container">
+            <div class="results-container" ref="results_container">
+                <p v-if="entries.length === 0">Sobald du einen Suchbegriff eingegeben hast, werden deine Ergebnisse hier angezeigt.</p>
                 <EntryElement v-for="entry in entries" :entry="entry"></EntryElement>
             </div>
         </div>
@@ -73,8 +86,15 @@ function get_entries(tag: string[]){
 }
 
 .results-container{
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border: solid 1px var(--accent0);
+    border-radius: 8px;
 }
 
 .splitter-p{
@@ -123,11 +143,6 @@ strong{
     display: flex;
     flex-direction: column;
     justify-content: stretch;
-}
-
-.results-container{
-    flex: 1;
-    overflow-y: auto;
 }
 
 </style>

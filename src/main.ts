@@ -8,7 +8,9 @@ import { faUserSecret,
     faDiceD20, 
     faHandHoldingHand, 
     faArrowRight,
-    faPenToSquare
+    faPenToSquare,
+    faLink,
+    faHouse
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
@@ -26,6 +28,8 @@ library.add(faDiceD20);
 library.add(faHandHoldingHand);
 library.add(faArrowRight);
 library.add(faPenToSquare);
+library.add(faLink);
+library.add(faHouse);
 
 const app = createApp(App);
 

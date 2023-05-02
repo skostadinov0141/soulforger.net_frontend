@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { faL } from '@fortawesome/free-solid-svg-icons';
 import { type Ref, ref, computed, type ComputedRef, watch, onMounted, watchEffect, onUnmounted } from 'vue';
 
 
@@ -20,20 +21,12 @@ onMounted(()=>{
         }
         if(e.key === 'Enter'){
             let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
-            let if_element: HTMLElement = search_field.value! as HTMLElement;
-            if(element !== undefined || element !== null){element.click();}
-            if(if_element !== undefined || element !== null){if_element.blur();}
-            completed = true;
-            emit('valueSelected', current_input.value);
+            element.click();
         }
         if(e.key === 'Tab'){
             e.preventDefault();
             let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
-            let if_element: HTMLElement = search_field.value! as HTMLElement;
-            if(element !== undefined || element !== null){element.click();}
-            if(if_element !== undefined || element !== null){if_element.blur();}
-            completed = true;
-            emit('valueSelected', current_input.value);
+            element.click();
         }
     })
 });
@@ -42,35 +35,32 @@ onUnmounted(()=>{
     window.removeEventListener('keydown',()=>{});
 })
 
-
-
 interface Props{
+    flex?: number
     options?: string[]
+    searchAt?: number
+    placeholder?: string
 }
 
 const emit = defineEmits(['valueSelected']);
 
 const props = withDefaults(defineProps<Props>(),{
-    options: () => []
+    options: () => [],
+    searchAt: 1,
+    placeholder: 'Hier schreiben...',
+    flex: 1
 })
 
 let current_input: Ref<string> = ref<string>('');
-let focused: Ref<boolean> = ref<boolean>(false);
 let current_element_index: Ref<number> = ref<number>(-1);
 let optionsRef = ref<HTMLElement[]>([]);
 let search_field = ref<HTMLElement>();
-let completed: boolean = false;
+let completed: Ref<boolean> = ref<boolean>(true);
 
-watch(focused,()=>{
-    if(focused.value === true && completed === true){
-        current_input.value = '';
-        completed = false;
-    }
-})
 
 let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     current_element_index.value = -1;
-    if(current_input.value.length < 1){
+    if(current_input.value.length < props.searchAt){
         return [];
     }
     let result = props.options.filter((element: string) => {
@@ -79,12 +69,26 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     if(result.length === 1){
         current_input.value = result[0];
         search_field.value?.blur();
-        completed = true;
         emit('valueSelected',result[0])
+        completed.value = true;
         return [];
     }
     return result;
 });
+
+function selectElement(value: string){
+    let if_element: HTMLElement = search_field.value! as HTMLElement;
+    if(if_element !== undefined || if_element !== null){if_element.blur();}
+    current_input.value = value;
+    emit('valueSelected', current_input.value);
+    completed.value = true;
+}
+
+watch(completed,()=>{
+    if(completed.value === false){
+        current_input.value = '';
+    }
+})
 
 watch(current_element_index,()=>{
     if(filtered_options.value.length === 0){
@@ -100,7 +104,6 @@ watch(current_element_index,()=>{
         })
     }
 });
-
 </script>
 
 
@@ -108,23 +111,57 @@ watch(current_element_index,()=>{
     <div class="search-bar-container">
         <label for="searchbar-input-field"><slot></slot></label>
         <input
+        :placeholder="placeholder"
+        @focus="completed = false"
         id="searchbar-input-field"
         ref="search_field"
-        type="text"
-        @focus="focused = true"
-        @blur="focused = false"
-        :class="focused === false? '':'found-results'" 
+        type="text" 
         autocomplete="off"
         v-model="current_input"/>
-        <ul v-if="filtered_options.length !== 0 && focused === true">
-            <li @click="current_input = option" v-for="option in filtered_options" ref="optionsRef">{{ option }}</li>
+        <ul v-if="filtered_options.length !== 0 && completed === false">
+            <li v-for="option in filtered_options">
+                <button ref="optionsRef" @click="selectElement(option)">
+                    {{ option }}
+                </button>
+            </li>
         </ul>
-        <div class="placeholder" v-else-if="filtered_options.length === 0 && focused === true">Bitte weiter schreiben...</div>
     </div>
 </template>
 
 
 <style scoped>
+
+small{
+    margin-top: 4px;
+    margin-left: 8px;
+    color: var(--text0);
+    font-size: 10px;
+    font-weight: 500;
+}
+
+button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: var(--bg2);
+    text-align: start;
+    padding-left: 8px;
+    padding-right: 0px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: var(--text0);
+    transition: 150ms;
+    font-size: 14px;
+}
+
+button:hover{
+    background-color: var(--bg4);
+    cursor: pointer;
+}
+
+li{
+    width: 100%;
+}
 
 label{
     padding-left: 8px;
@@ -134,26 +171,13 @@ label{
     font-weight: 300;
 }
 
-li:hover{
-    background-color: var(--bg3);
-}
-
-.placeholder{
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    padding: 8px;
-    width: 100%;
-    background-color: var(--bg2);
-    z-index: 10;
-    position: absolute;
-    top: 100%;
-}
-
 ul{
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    padding: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     list-style: none;
+    padding-left: 0px;
     width: 100%;
     background-color: var(--bg2);
     overflow-y: auto;
@@ -164,6 +188,7 @@ ul{
 }
 
 .search-bar-container{
+    flex: v-bind(flex);
     position:relative;
     display: flex;
     flex-direction: column;
@@ -178,13 +203,11 @@ input{
     transition: 150ms;
 }
 
-.found-results{
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
 
 input:focus{
     border: 1px solid var(--accent3);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 </style>

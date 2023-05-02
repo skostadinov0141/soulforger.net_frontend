@@ -9,6 +9,7 @@ import type { User } from '@/interfaces/authentification';
 import router from '@/router';
 import type { Profile } from '@/interfaces/profiles';
 import type { ApiError } from '@/interfaces/general';
+import FloatingHomeButton from '@/components/floatingHomeButton.vue';
 
 let profile_span: Ref<number> = ref<number>(2);
 let profile: Ref<Profile | undefined> = ref<Profile | undefined>();
@@ -112,7 +113,9 @@ function edit(){
             :profile="profile" 
             :column_span="profile_span"
             :loading="profile_loading"></ProfileCard>
-            <FunctionCard :column_span="1" icon="fa-solid fa-book" :low-cta-enabled="false">
+            <FunctionCard :column_span="1" icon="fa-solid fa-book" :low-cta-enabled="false"
+            @cta-pressed="router.push({path:'/wiki'})"
+            :cta-enabled="true">
                 <template v-slot:function-title>Soulforger Wiki</template>
                 <template v-slot:function-low-button>Entwicklung</template>
                 <template v-slot:function-button>Zu Wiki</template>

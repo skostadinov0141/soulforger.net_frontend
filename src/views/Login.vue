@@ -13,6 +13,7 @@ import type { ApiError } from '@/interfaces/general';
 import type { User } from '@/interfaces/authentification';
 import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
+import FloatingHomeButton from '@/components/floatingHomeButton.vue';
 
 let email: Ref<string> = ref('');
 let password: Ref<string> = ref('');
@@ -54,6 +55,7 @@ function login(){
 
 
 <template>
+    <FloatingHomeButton></FloatingHomeButton>
     <div class="main-container">
         <div class="form-container">
             <PageSplitter title="Anmelden" margin-top="0" margin-bottom="16px">Logge dich in dein Account ein, um die volle Kapazität von Soulforger zu nutzen.</PageSplitter>

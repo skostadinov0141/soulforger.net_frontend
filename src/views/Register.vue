@@ -11,6 +11,7 @@ import { computed } from '@vue/reactivity';
 import type { Account, Login, RegistrationError } from '@/interfaces/authentification';
 import type { ApiError } from '@/interfaces/general';
 import { useRoute, useRouter } from 'vue-router';
+import FloatingHomeButton from '@/components/floatingHomeButton.vue';
 
 let email: Ref<string> = ref('');
 let displayName: Ref<string> = ref('');
@@ -73,6 +74,7 @@ function createAccount(){
 
 
 <template>
+    <FloatingHomeButton></FloatingHomeButton>
     <div class="main-container">
         <div class="form-container">
             <PageSplitter title="Account Erstellen" margin-top="0" margin-bottom="24px">Das Anlegen eines Accounts ist kostenlos, dauert nur eine Minute und macht Schluss mit den Schwierigkeiten beim Verwalten und Spielen von DSA.</PageSplitter>
