@@ -40,14 +40,17 @@ interface Props{
     options?: string[]
     searchAt?: number
     placeholder?: string
+    completeOnDistinct?: boolean
+    modelValue?:string
 }
 
-const emit = defineEmits(['valueSelected']);
+const emit = defineEmits(['valueSelected','update:modelValue']);
 const props = withDefaults(defineProps<Props>(),{
     options: () => [],
     searchAt: 1,
     placeholder: 'Hier schreiben...',
-    flex: 1
+    flex: 1,
+    completeOnDistinct: false,
 })
 
 let current_input: Ref<string> = ref<string>('');
@@ -64,7 +67,7 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     let result = props.options.filter((element: string) => {
         return element.substring(0,current_input.value.length).toLowerCase() === current_input.value.toLowerCase()
     });
-    if(result.length === 1){
+    if(result.length === 1 && props.completeOnDistinct){
         selectElement(result[0]);
     }
     return result;
@@ -95,8 +98,7 @@ watch(if_focused,()=>{
             current_input.value = '';
         }
     }
-})
-
+});
 </script>
 
 
@@ -104,6 +106,7 @@ watch(if_focused,()=>{
     <div class="search-bar-container">
         <label for="searchbar-input-field"><slot></slot></label>
         <input
+        @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         @focus="if_focused = true"
         @blur="if_focused = false"
         :placeholder="placeholder"
