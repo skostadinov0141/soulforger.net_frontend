@@ -43,7 +43,6 @@ interface Props{
 }
 
 const emit = defineEmits(['valueSelected']);
-
 const props = withDefaults(defineProps<Props>(),{
     options: () => [],
     searchAt: 1,
@@ -55,8 +54,7 @@ let current_input: Ref<string> = ref<string>('');
 let current_element_index: Ref<number> = ref<number>(-1);
 let optionsRef = ref<HTMLElement[]>([]);
 let search_field = ref<HTMLElement>();
-let completed: Ref<boolean> = ref<boolean>(true);
-
+let if_focused: Ref<boolean> = ref<boolean>(false);
 
 let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     current_element_index.value = -1;
@@ -64,51 +62,41 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
         return [];
     }
     let result = props.options.filter((element: string) => {
-        return element.substring(0,current_input.value.length).toLocaleLowerCase() === current_input.value.toLowerCase()
+        return element.substring(0,current_input.value.length).toLowerCase() === current_input.value.toLowerCase()
     });
     if(result.length === 1){
         selectElement(result[0]);
-        // current_input.value = result[0];
-        // search_field.value?.blur();
-        // emit('valueSelected',result[0])
-        // completed.value = true;
-        // return [];
     }
     return result;
 });
 
-function selectElement(value: string){
-    completed.value = true;
-    let if_element: HTMLElement = search_field.value! as HTMLElement;
-    if(if_element !== undefined || if_element !== null){if_element.blur();}
-    current_input.value = value;
-    emit('valueSelected', current_input.value);
+function selectElement(val: string){
+    let element = optionsRef.value.find((element: HTMLElement) => {if(element.id === val){ return element; }});
+    current_input.value = val;
+    emit('valueSelected',val)
+    search_field.value?.blur();
 }
 
-// function decideIfCompleted(){
-//     if(completed)
-// }
+watch(current_element_index,()=>{
+    optionsRef.value.forEach((element: HTMLElement) => {
+        element.style.backgroundColor = 'var(--bg2)';
+    });
+    let element = (optionsRef.value[current_element_index.value] as HTMLElement);
+    element.style.backgroundColor = 'var(--bg4)';
+    element.scrollIntoView({
+        block:'center'
+    });
 
-watch(completed,()=>{
-    if(completed.value === false){
-        current_input.value = '';
+});
+
+watch(if_focused,()=>{
+    if(if_focused.value === true){
+        if(filtered_options.value.includes(current_input.value)){
+            current_input.value = '';
+        }
     }
 })
 
-watch(current_element_index,()=>{
-    if(filtered_options.value.length === 0){
-        return;
-    }
-    optionsRef.value.forEach((element: HTMLElement) => {if(element !== undefined){ element.style.backgroundColor = 'rgba(0,0,0,0)'; }})
-    let element: HTMLElement = optionsRef.value[current_element_index.value]!;
-    if(element !== undefined){
-        element.style.backgroundColor = 'var(--bg4)';
-        element.scrollIntoView(<ScrollIntoViewOptions>{
-            behavior:'smooth',
-            block:'center',
-        })
-    }
-});
 </script>
 
 
@@ -116,17 +104,17 @@ watch(current_element_index,()=>{
     <div class="search-bar-container">
         <label for="searchbar-input-field"><slot></slot></label>
         <input
+        @focus="if_focused = true"
+        @blur="if_focused = false"
         :placeholder="placeholder"
-        @focus="completed = false"
-        @blur="if(completed === false){current_input = ''; completed = true;}"
         id="searchbar-input-field"
         ref="search_field"
         type="text" 
         autocomplete="off"
         v-model="current_input"/>
-        <ul v-if="filtered_options.length !== 0 && completed === false">
+        <ul v-show="if_focused && filtered_options.length !== 0 && filtered_options.length !== 1">
             <li v-for="option in filtered_options">
-                <button ref="optionsRef" @click="selectElement(option)">
+                <button :id="option" ref="optionsRef" @mousedown="selectElement(option)" @click="selectElement(option)">
                     {{ option }}
                 </button>
             </li>
