@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     const api : AxiosInstance = axios.create({
-      baseURL: 'https://api.soulforger.net',
+      baseURL: 'http://localhost:8000',
       withCredentials: true,
       headers:{
         Accept:'applications/json',
