@@ -11,16 +11,16 @@ import { computed, inject, onMounted, ref, type Ref } from 'vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
-let options: Ref<string[]> = ref<string[]>([]);
-let more_info: Ref<boolean> = ref<boolean>(false);
+let title_options: Ref<string[]> = ref<string[]>([]);
 let entries: Ref<WikiEntry[]> = ref<WikiEntry[]>([]);
+let categories: string[] = ['Spezies','Kulturen','Professionen','Sonderfertigkeiten','Vor- und Nachteile','Magie','Götterwirken','Rüstkammer','Bestiarium','Herbarium','Gifte und Krankheiten'];
 let current_category: Ref<string> = ref<string>('');
 
 let results_container = ref();
 
 onMounted(() => {
     api.get('/wiki/tags').then((data: any) => {
-        options.value = data.data;
+        title_options.value = data.data;
     })
 })
 
@@ -43,12 +43,12 @@ function get_entries(tag: string[]){
                 <h3>soulforger wiki</h3>
                 <div></div>
             </div>
-            <SearchableInputField :flex="0" placeholder="Titel durchsuchen..."></SearchableInputField>
+            <SearchableInputField :options="title_options" :flex="0" placeholder="Titel durchsuchen..."></SearchableInputField>
             <div class="subtitle-container">
                 <h3 style="">suche eingrenzen</h3>
                 <div></div>
             </div>
-            <SearchableInputField :flex="0" placeholder="Kategorie durchsuchen..."></SearchableInputField>
+            <SearchableInputField :search-at="0" :options="categories" :flex="0" placeholder="Kategorie durchsuchen..."></SearchableInputField>
             <SearchableInputField :flex="0" placeholder="Unterkategorie hinzufügen..."></SearchableInputField>
             <div class="tags-container">
 

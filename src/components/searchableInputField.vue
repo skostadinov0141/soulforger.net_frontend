@@ -67,22 +67,27 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
         return element.substring(0,current_input.value.length).toLocaleLowerCase() === current_input.value.toLowerCase()
     });
     if(result.length === 1){
-        current_input.value = result[0];
-        search_field.value?.blur();
-        emit('valueSelected',result[0])
-        completed.value = true;
-        return [];
+        selectElement(result[0]);
+        // current_input.value = result[0];
+        // search_field.value?.blur();
+        // emit('valueSelected',result[0])
+        // completed.value = true;
+        // return [];
     }
     return result;
 });
 
 function selectElement(value: string){
+    completed.value = true;
     let if_element: HTMLElement = search_field.value! as HTMLElement;
     if(if_element !== undefined || if_element !== null){if_element.blur();}
     current_input.value = value;
     emit('valueSelected', current_input.value);
-    completed.value = true;
 }
+
+// function decideIfCompleted(){
+//     if(completed)
+// }
 
 watch(completed,()=>{
     if(completed.value === false){
@@ -113,6 +118,7 @@ watch(current_element_index,()=>{
         <input
         :placeholder="placeholder"
         @focus="completed = false"
+        @blur="if(completed === false){current_input = ''; completed = true;}"
         id="searchbar-input-field"
         ref="search_field"
         type="text" 
@@ -195,7 +201,6 @@ ul{
 }
 
 input{
-    z-index: 100;
     width: 100%;
     border: 1px solid var(--accent0);
     border-radius: 8px;
