@@ -7,20 +7,25 @@ import EntryElement from '@/components/wiki/entryElement.vue';
 import Button from '@/components/button.vue';
 import type { WikiEntry } from '@/interfaces/wiki';
 import type { AxiosInstance } from 'axios';
-import { computed, inject, onMounted, ref, type Ref } from 'vue';
+import { computed, inject, onMounted, ref, type ComputedRef, type Ref, watch } from 'vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
-let title_options: Ref<string[]> = ref<string[]>([]);
 let entries: Ref<WikiEntry[]> = ref<WikiEntry[]>([]);
+
+let titles: Ref<string[]> = ref<string[]>([]);
 let categories: string[] = ['Spezies','Kulturen','Professionen','Sonderfertigkeiten','Vor- und Nachteile','Magie','Götterwirken','Rüstkammer','Bestiarium','Herbarium','Gifte und Krankheiten'];
+let sub_categories: Ref<string[]> = ref<string[]>([]);
+
+let current_title: Ref<string> = ref<string>('');
 let current_category: Ref<string> = ref<string>('');
+let current_sub_category: Ref<string> = ref<string>('');
 
 let results_container = ref();
 
 onMounted(() => {
-    api.get('/wiki/tags').then((data: any) => {
-        title_options.value = data.data;
+    api.get('/wiki/titles').then((data: any) => {
+        titles.value = data.data;
     })
 })
 
@@ -31,6 +36,25 @@ function get_entries(tag: string[]){
         (results_container.value as HTMLElement).scrollTop = 0;
     })
 }
+
+function get_sub_categories(){
+
+}
+
+watch(current_category,()=>{
+    if(current_category.value === ''){
+        return [];
+    }
+    let result: string[] = [];
+    api.get('/wiki/sub-categories',{params:{category:current_category.value}}).then((data)=>{
+        result = data.data as string[];
+        sub_categories.value = result;
+        console.log(current_category.value);
+        console.log(sub_categories.value);
+    }).catch((error)=>{
+        console.log(error);
+    });
+})
 
 </script>
 
@@ -43,13 +67,33 @@ function get_entries(tag: string[]){
                 <h3>soulforger wiki</h3>
                 <div></div>
             </div>
-            <SearchableInputField :options="title_options" :flex="0" placeholder="Titel durchsuchen..."></SearchableInputField>
+            <SearchableInputField 
+            :options="titles" 
+            :flex="0" 
+            placeholder="Titel durchsuchen..."
+            v-model="current_title"
+            @completed="val=>current_title = val"
+            @focused-on-finished="current_title = ''"></SearchableInputField>
             <div class="subtitle-container">
                 <h3 style="">suche eingrenzen</h3>
                 <div></div>
             </div>
-            <SearchableInputField :search-at="0" :options="categories" :flex="0" placeholder="Kategorie durchsuchen..."></SearchableInputField>
-            <SearchableInputField :flex="0" placeholder="Unterkategorie hinzufügen..."></SearchableInputField>
+            <SearchableInputField 
+            :search-at="0" 
+            :flex="0" 
+            placeholder="Kategorie durchsuchen..."
+            :options="categories"
+            v-model="current_category"
+            @completed="val=>current_category = val"
+            @focused-on-finished="current_category = ''"></SearchableInputField>
+            <SearchableInputField 
+            :search-at="0"
+            :flex="0" 
+            placeholder="Unterkategorie hinzufügen..."
+            :options="sub_categories"
+            v-model="current_sub_category"
+            @completed="val=>current_sub_category=val"
+            @focused-on-finished="current_sub_category = ''"></SearchableInputField>
             <div class="tags-container">
 
             </div>

@@ -44,7 +44,14 @@ interface Props{
     modelValue?:string
 }
 
-const emit = defineEmits(['valueSelected','update:modelValue']);
+const emit = defineEmits([
+    'valueSelected',
+    'update:modelValue',
+    'focusedOnFinished',
+    'focusedOnUnfinished',
+    'completed',
+]);
+
 const props = withDefaults(defineProps<Props>(),{
     options: () => [],
     searchAt: 1,
@@ -53,7 +60,6 @@ const props = withDefaults(defineProps<Props>(),{
     completeOnDistinct: false,
 })
 
-let current_input: Ref<string> = ref<string>('');
 let current_element_index: Ref<number> = ref<number>(-1);
 let optionsRef = ref<HTMLElement[]>([]);
 let search_field = ref<HTMLElement>();
@@ -61,11 +67,11 @@ let if_focused: Ref<boolean> = ref<boolean>(false);
 
 let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     current_element_index.value = -1;
-    if(current_input.value.length < props.searchAt){
+    if(props.modelValue!.length < props.searchAt){
         return [];
     }
     let result = props.options.filter((element: string) => {
-        return element.substring(0,current_input.value.length).toLowerCase() === current_input.value.toLowerCase()
+        return element.substring(0,props.modelValue!.length).toLowerCase() === props.modelValue!.toLowerCase()
     });
     if(result.length === 1 && props.completeOnDistinct){
         selectElement(result[0]);
@@ -74,9 +80,9 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
 });
 
 function selectElement(val: string){
-    let element = optionsRef.value.find((element: HTMLElement) => {if(element.id === val){ return element; }});
-    current_input.value = val;
-    emit('valueSelected',val)
+    // let element = optionsRef.value.find((element: HTMLElement) => {if(element.id === val){ return element; }});
+    // current_input.value = val;
+    emit('completed',val)
     search_field.value?.blur();
 }
 
@@ -94,8 +100,8 @@ watch(current_element_index,()=>{
 
 watch(if_focused,()=>{
     if(if_focused.value === true){
-        if(filtered_options.value.includes(current_input.value)){
-            current_input.value = '';
+        if(filtered_options.value.includes(props.modelValue!)){
+            emit('focusedOnFinished');
         }
     }
 });
@@ -114,8 +120,8 @@ watch(if_focused,()=>{
         ref="search_field"
         type="text" 
         autocomplete="off"
-        v-model="current_input"/>
-        <ul v-show="if_focused && filtered_options.length !== 0 && filtered_options.length !== 1">
+        :value="modelValue"/>
+        <ul v-show="if_focused && filtered_options.length !== 0">
             <li v-for="option in filtered_options">
                 <button :id="option" ref="optionsRef" @mousedown="selectElement(option)" @click="selectElement(option)">
                     {{ option }}
