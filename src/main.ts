@@ -10,7 +10,8 @@ import { faUserSecret,
     faArrowRight,
     faPenToSquare,
     faLink,
-    faHouse
+    faHouse,
+    faDeleteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
@@ -30,6 +31,7 @@ library.add(faArrowRight);
 library.add(faPenToSquare);
 library.add(faLink);
 library.add(faHouse);
+library.add(faDeleteLeft);
 
 const app = createApp(App);
 
@@ -38,7 +40,7 @@ app.use(router);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.provide<AxiosInstance>('apiBase', axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'https://api.soulforger.net',
     withCredentials: true,
     headers:{
         Accept:'applications/json'

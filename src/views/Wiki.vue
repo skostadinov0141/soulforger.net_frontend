@@ -8,6 +8,7 @@ import Button from '@/components/button.vue';
 import type { WikiEntry } from '@/interfaces/wiki';
 import type { AxiosInstance } from 'axios';
 import { computed, inject, onMounted, ref, type ComputedRef, type Ref, watch } from 'vue';
+import TagElement from '@/components/wiki/tagElement.vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
@@ -21,6 +22,8 @@ let current_title: Ref<string> = ref<string>('');
 let current_category: Ref<string> = ref<string>('');
 let current_sub_category: Ref<string> = ref<string>('');
 
+let tags: Ref<string[]> = ref<string[]>([]);
+
 let results_container = ref();
 
 onMounted(() => {
@@ -29,16 +32,12 @@ onMounted(() => {
     })
 })
 
-function get_entries(tag: string[]){
-    api.post('/wiki/search',{tags:tag}).then((data)=>{
+function get_entries(tags: string[]){
+    api.post('/wiki/search',{tags:tags}).then((data)=>{
         let recieved_entries: WikiEntry[] = data.data;
         entries.value = recieved_entries;
         (results_container.value as HTMLElement).scrollTop = 0;
     })
-}
-
-function get_sub_categories(){
-
 }
 
 watch(current_category,()=>{
@@ -72,10 +71,10 @@ watch(current_category,()=>{
             :flex="0" 
             placeholder="Titel durchsuchen..."
             v-model="current_title"
-            @completed="val=>current_title = val"
+            @completed="val=>{current_title = val; get_entries([val])}"
             @focused-on-finished="current_title = ''"></SearchableInputField>
             <div class="subtitle-container">
-                <h3 style="">suche eingrenzen</h3>
+                <h3 style="">Kategorische suche</h3>
                 <div></div>
             </div>
             <SearchableInputField 
@@ -92,13 +91,13 @@ watch(current_category,()=>{
             placeholder="Unterkategorie hinzufügen..."
             :options="sub_categories"
             v-model="current_sub_category"
-            @completed="val=>current_sub_category=val"
+            @completed="val=>{current_sub_category=val; tags.push(val)}"
             @focused-on-finished="current_sub_category = ''"></SearchableInputField>
             <div class="tags-container">
-
+                <TagElement v-for="tag in tags" @pressed="tags.splice(tags.indexOf(tag),1)" :icon="'fa-solid fa-delete-left'">{{ tag }}</TagElement>
             </div>
-            <Button :low-c-t-a="true">Filter zurücksetzen</Button>
-            <Button>Filter anwenden</Button>
+            <Button @pressed="entries = []; tags = []; current_category= ''; current_sub_category=''" :low-c-t-a="true">Filter zurücksetzen</Button>
+            <Button @pressed="get_entries(tags)">Filter anwenden</Button>
             <p>
                 <strong>WARNUNG: </strong>Die aktuelle Version des Wikis ist eine leistungsstarke Suchmaschine, die auf das ursprüngliche Wiki 
                 aufgesetzt wurde. Die vollständige Implementierung des Wikis ist für ein zukünftiges Update geplant und hängt stark von der 
@@ -106,7 +105,9 @@ watch(current_category,()=>{
                 <em>Alle Inhalte sind Eigentum der "Ulisses Medien & Spiel Distribution GmbH".</em>
             </p>
         </div>
-        <div class="results-container"></div>
+        <div class="results-container">
+            <EntryElement v-for="entry in entries" :entry="entry"></EntryElement>
+        </div>
     </div>
 </template>
 
@@ -133,9 +134,12 @@ strong{
 }
 
 .tags-container{
+    gap: 8px;
+    padding: 8px;
+    align-items: start;
     display: flex;
     flex-direction: column;
-    min-height: 24vh;
+    height: 24vh;
     overflow-y: auto;
     width: 100%;
     border: solid 1px var(--accent0);
@@ -173,10 +177,20 @@ strong{
 }
 
 .results-container{
+    gap: 8px;
+    border: solid 1px var(--bg5);
+    border-radius: 8px;
     flex: 4;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    min-height: 100%;
+    background-color: var(--bg1);
+    padding: 16px;
 }
 
 .wiki-main-container{
+    gap: 16px;
     padding-left: 8vw;
     padding-right: 8vw;
     padding-top: 4vh;
@@ -184,5 +198,19 @@ strong{
     display: flex;
     height: 100vh;
     width: 100vw;
+}
+
+@media only screen and (max-width: 1200px) {
+    .wiki-main-container{
+        gap: 16px;
+        padding-left: 8vw;
+        padding-right: 8vw;
+        padding-top: 4vh;
+        padding-bottom: 4vh;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+    }
 }
 </style>
