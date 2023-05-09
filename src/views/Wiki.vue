@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import InputField from '@/components/inputField.vue';
-import FloatingHomeButton from '@/components/floatingHomeButton.vue';
-import PageSplitter from '@/components/pageSplitter.vue';
-import SearchableInputField from '@/components/searchableInputField.vue';
+import InputField from '@/components/global/inputField.vue';
+import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
+import PageSplitter from '@/components/global/pageSplitter.vue';
+import SearchableInputField from '@/components/global/searchableInputField.vue';
 import EntryElement from '@/components/wiki/entryElement.vue';
-import Button from '@/components/button.vue';
+import Button from '@/components/global/button.vue';
 import type { WikiEntry } from '@/interfaces/wiki';
 import type { AxiosInstance } from 'axios';
 import { computed, inject, onMounted, ref, type ComputedRef, type Ref, watch } from 'vue';

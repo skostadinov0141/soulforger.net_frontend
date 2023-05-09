@@ -40,7 +40,7 @@ app.use(router);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.provide<AxiosInstance>('apiBase', axios.create({
-    baseURL: 'https://api.soulforger.net',
+    baseURL: 'http://localhost:8000',
     withCredentials: true,
     headers:{
         Accept:'applications/json'

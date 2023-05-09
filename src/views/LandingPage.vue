@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ProfileCard from '@/components/landingPage/profileCard.vue';
 import FunctionCard from '@/components/landingPage/functionCard.vue';
-import Footer from '../components/footer.vue';
+import Footer from '../components/global/footer.vue';
 import { type Ref, ref, onMounted, onUnmounted, inject } from 'vue';
 import type { AxiosError, AxiosInstance } from 'axios';
 import { useCookies } from 'vue3-cookies';
@@ -9,7 +9,7 @@ import type { User } from '@/interfaces/authentification';
 import router from '@/router';
 import type { Profile } from '@/interfaces/profiles';
 import type { ApiError } from '@/interfaces/general';
-import FloatingHomeButton from '@/components/floatingHomeButton.vue';
+import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
 
 let profile_span: Ref<number> = ref<number>(2);
 let profile: Ref<Profile | undefined> = ref<Profile | undefined>();

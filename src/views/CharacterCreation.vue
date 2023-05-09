@@ -5,11 +5,11 @@ import type { AxiosInstance } from 'axios';
 
 import type { DSACharacter } from '../interfaces/characterschema';
 import attField from '../components/characterCreation/attField.vue';
-import pageSplitter from '../components/pageSplitter.vue';
-import inputField from '../components/inputField.vue';
+import pageSplitter from '../components/global/pageSplitter.vue';
+import inputField from '../components/global/inputField.vue';
 import talentEditorElement from '../components/characterCreation/talentEditorElement.vue';
 import talentTableDefinition from '../components/characterCreation/talentTableDefinition.vue';
-import FloatingHomeButton from '@/components/floatingHomeButton.vue';
+import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
 
 let schemeLoaded : Ref<boolean> = ref(false);
 let characterSchema : Ref<DSACharacter> = ref({} as DSACharacter);
