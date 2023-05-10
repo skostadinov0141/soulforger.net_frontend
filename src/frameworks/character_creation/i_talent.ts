@@ -1,17 +1,15 @@
 export interface ITalent{
-    name: string,
+    id: string,
     category: string,
     fw: number,
-    att_1:string,
-    att_2:string,
-    att_3:string,
+    atts:string[],
     level_factor: string,
 }
 
 export class CTalent{
-    talents:ITalent[] = [
+    talents:any[] = [
         {
-        name: 'Fliegen',
+        id: 'Fliegen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -20,7 +18,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Gaukeleien',
+        id: 'Gaukeleien',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -29,7 +27,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Klettern',
+        id: 'Klettern',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -38,7 +36,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Körperbeherrschung',
+        id: 'Körperbeherrschung',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'GE',
@@ -47,7 +45,7 @@ export class CTalent{
         level_factor: 'D'
         },
         {
-        name: 'Kraftakt',
+        id: 'Kraftakt',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'KO',
@@ -56,7 +54,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Reiten',
+        id: 'Reiten',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'CH',
@@ -65,7 +63,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Schwimmen',
+        id: 'Schwimmen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'GE',
@@ -74,7 +72,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Selbstbeherrschung',
+        id: 'Selbstbeherrschung',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -83,7 +81,7 @@ export class CTalent{
         level_factor: 'D'
         },
         {
-        name: 'Singen',
+        id: 'Singen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'KL',
@@ -92,7 +90,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Sinnesschärfe',
+        id: 'Sinnesschärfe',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'KL',
@@ -101,7 +99,7 @@ export class CTalent{
         level_factor: 'D'
         },
         {
-        name: 'Tanzen',
+        id: 'Tanzen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'KL',
@@ -110,7 +108,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Taschendiebstahl',
+        id: 'Taschendiebstahl',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -119,7 +117,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Verbergen',
+        id: 'Verbergen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'MU',
@@ -128,7 +126,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Zechen',
+        id: 'Zechen',
         category: 'Körpertalente',
         fw: 0,
         att_1: 'KL',
@@ -137,7 +135,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Bekehren & Überzeugen',
+        id: 'Bekehren & Überzeugen',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'MU',
@@ -146,7 +144,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Betören',
+        id: 'Betören',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'MU',
@@ -155,7 +153,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Einschüchtern',
+        id: 'Einschüchtern',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'MU',
@@ -164,7 +162,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Etikette',
+        id: 'Etikette',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'KL',
@@ -173,7 +171,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Gassenwissen',
+        id: 'Gassenwissen',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'KL',
@@ -182,7 +180,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Menschenkenntnis',
+        id: 'Menschenkenntnis',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'KL',
@@ -191,7 +189,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Überreden',
+        id: 'Überreden',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'MU',
@@ -200,7 +198,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Verkleiden',
+        id: 'Verkleiden',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'IN',
@@ -209,7 +207,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Willenskraft',
+        id: 'Willenskraft',
         category: 'Gesellschaftstalente',
         fw: 0,
         att_1: 'MU',
@@ -218,7 +216,7 @@ export class CTalent{
         level_factor: 'D'
         },
         {
-        name: 'Fährtensuchen',
+        id: 'Fährtensuchen',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'MU',
@@ -227,7 +225,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Fesseln',
+        id: 'Fesseln',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'KL',
@@ -236,7 +234,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Fischen & Angeln',
+        id: 'Fischen & Angeln',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'FF',
@@ -245,7 +243,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Orientierung',
+        id: 'Orientierung',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'KL',
@@ -254,7 +252,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Pflanzenkunde',
+        id: 'Pflanzenkunde',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'KL',
@@ -263,7 +261,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Tierkunde',
+        id: 'Tierkunde',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'MU',
@@ -272,7 +270,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Wildnisleben',
+        id: 'Wildnisleben',
         category: 'Naturtalente',
         fw: 0,
         att_1: 'MU',
@@ -281,7 +279,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Brett- & Glücksspiel ',
+        id: 'Brett- & Glücksspiel ',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -290,7 +288,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Geographie',
+        id: 'Geographie',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -299,7 +297,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Geschichtswissen',
+        id: 'Geschichtswissen',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -308,7 +306,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Götter & Kulte',
+        id: 'Götter & Kulte',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -317,7 +315,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Kriegskunst',
+        id: 'Kriegskunst',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'MU',
@@ -326,7 +324,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Magiekunde',
+        id: 'Magiekunde',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -335,7 +333,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Mechanik',
+        id: 'Mechanik',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -344,7 +342,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Rechnen',
+        id: 'Rechnen',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -353,7 +351,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Rechtskunde',
+        id: 'Rechtskunde',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -362,7 +360,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Sagen & Legenden',
+        id: 'Sagen & Legenden',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -371,7 +369,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Sphärenkunde',
+        id: 'Sphärenkunde',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -380,7 +378,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Sternkunde',
+        id: 'Sternkunde',
         category: 'Wissenstalente',
         fw: 0,
         att_1: 'KL',
@@ -389,7 +387,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Alchimie',
+        id: 'Alchimie',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'MU',
@@ -398,7 +396,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Boote & Schiffe',
+        id: 'Boote & Schiffe',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'FF',
@@ -407,7 +405,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Fahrzeuge',
+        id: 'Fahrzeuge',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'CH',
@@ -416,7 +414,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Handel',
+        id: 'Handel',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'KL',
@@ -425,7 +423,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Heilkunde Gift',
+        id: 'Heilkunde Gift',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'MU',
@@ -434,7 +432,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Heilkunde Krankheiten',
+        id: 'Heilkunde Krankheiten',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'MU',
@@ -443,7 +441,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Heilkunde Seele',
+        id: 'Heilkunde Seele',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'IN',
@@ -452,7 +450,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Heilkunde Wunden',
+        id: 'Heilkunde Wunden',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'KL',
@@ -461,7 +459,7 @@ export class CTalent{
         level_factor: 'D'
         },
         {
-        name: 'Holzbearbeitung',
+        id: 'Holzbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'FF',
@@ -470,7 +468,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Lebensmittelbearbeitung',
+        id: 'Lebensmittelbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'IN',
@@ -479,7 +477,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Lederbearbeitung',
+        id: 'Lederbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'FF',
@@ -488,7 +486,7 @@ export class CTalent{
         level_factor: 'B'
         },
         {
-        name: 'Malen & Zeichnen',
+        id: 'Malen & Zeichnen',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'IN',
@@ -497,7 +495,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Metallbearbeitung',
+        id: 'Metallbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'FF',
@@ -506,7 +504,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Musizieren',
+        id: 'Musizieren',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'CH',
@@ -515,7 +513,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Schlösserknacken',
+        id: 'Schlösserknacken',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'IN',
@@ -524,7 +522,7 @@ export class CTalent{
         level_factor: 'C'
         },
         {
-        name: 'Steinbearbeitung',
+        id: 'Steinbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'FF',
@@ -533,7 +531,7 @@ export class CTalent{
         level_factor: 'A'
         },
         {
-        name: 'Stoffbearbeitung',
+        id: 'Stoffbearbeitung',
         category: 'Handwerkstalente',
         fw: 0,
         att_1: 'KL',
@@ -542,4 +540,19 @@ export class CTalent{
         level_factor: 'A'
         }
     ]
+
+    public getTalents(): ITalent[]{
+        let result: ITalent[] = [];
+        this.talents.forEach(element=>{
+            result.push({
+                id:element.id,
+                category:element.category,
+                fw:element.fw,
+                atts:[element.att_1,element.att_2,element.att_3,],
+                level_factor:element.level_factor
+            });
+        });
+        return result;
+    }
+
 }

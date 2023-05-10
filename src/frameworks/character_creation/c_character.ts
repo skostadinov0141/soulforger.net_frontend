@@ -3,6 +3,7 @@ import type { Stat } from "./i_stats";
 import { SubStat } from "./c_sub_stats";
 import { Requirement } from "./c_requirement";
 import { type ITalent, CTalent } from "./i_talent";
+import type { Skill } from "./i_skill";
 
 
 export class Character{
@@ -28,6 +29,7 @@ export class Character{
     stats: Stat[] = [];
     sub_stats: SubStat[] = [];
     talents: ITalent[] = [];
+    skills: Skill[] = [];
     //#endregion
 
     //#region ctor
@@ -55,15 +57,23 @@ export class Character{
             new SubStat('WS','Wundschwelle',['KO'],this),
         );
         this.sub_stats.forEach(element=>element.calculate());
-        this.talents.push(
-            new CTalent().talents
-        )
+        new CTalent().getTalents().forEach(element=>{
+            this.talents.push(element);
+        });
     }
     //#endregion
 
     //#region functions
+    public getSkillIndex(id:string): number{
+        return this.skills.indexOf(this.skills.find(element => element.id === id)!);
+    }
+
     public getStatIndex(id:string): number{
         return this.stats.indexOf(this.stats.find(element => element.id === id)!);
+    }
+
+    public getTalentIndex(id:string): number{
+        return this.talents.indexOf(this.talents.find(element => element.id === id)!);
     }
     
     public increaseStat(id:string){
@@ -81,13 +91,14 @@ export class Character{
     }
 
     public testValidate(){
-        new Requirement(this,'stat',{
-            operator:'|',
+        new Requirement(this,'talent',{
+            operator:'&',
             count:2,
             validations:[
-                {id:'MU',min_lvl:9},
-                {id:'KO',min_lvl:9},
-                {id:'KK',min_lvl:8}]
+                {id:'Fliegen',min_fw:1},
+                {id:'Gaukeleien',min_fw:1},
+                {id:'Klettern',min_fw:1},
+            ]
         }).validate();
     }
     //#endregion

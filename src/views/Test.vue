@@ -12,6 +12,8 @@
         <p v-for="sub_stat in char.sub_stats">{{ `${sub_stat.full_name} -> ${sub_stat.value}` }}</p>
         <br><br><br>
         <p v-for="stat in char.stats">{{ `${stat.full_name} -> ${stat.lvl}` }}</p>
+        <br><br><br>
+        <p v-for="talent in char.talents">{{ `${talent.id} -> ${talent.fw}` }}</p>
     </div>
 </template>
 
