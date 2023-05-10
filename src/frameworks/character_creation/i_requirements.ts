@@ -14,5 +14,8 @@ export interface StatValidation{
 export interface TalentValidation{
     validations:{
         id:string
+        min_fw:number
     }[]
+    operator:string
+    count:number
 }

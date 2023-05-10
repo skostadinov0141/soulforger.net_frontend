@@ -2,6 +2,7 @@ import type { SkillLevel } from "./i_skill_level";
 import type { Stat } from "./i_stats";
 import { SubStat } from "./c_sub_stats";
 import { Requirement } from "./c_requirement";
+import { type ITalent, CTalent } from "./i_talent";
 
 
 export class Character{
@@ -26,6 +27,7 @@ export class Character{
     ap_bank:number;
     stats: Stat[] = [];
     sub_stats: SubStat[] = [];
+    talents: ITalent[] = [];
     //#endregion
 
     //#region ctor
@@ -53,6 +55,9 @@ export class Character{
             new SubStat('WS','Wundschwelle',['KO'],this),
         );
         this.sub_stats.forEach(element=>element.calculate());
+        this.talents.push(
+            new CTalent().talents
+        )
     }
     //#endregion
 
