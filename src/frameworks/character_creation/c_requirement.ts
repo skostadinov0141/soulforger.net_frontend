@@ -1,15 +1,6 @@
 import type { Character } from "./c_character";
+import type { ValidationResponse, StatValidation } from "./i_requirements";
 import type { Stat } from "./i_stats";
-
-interface ValidationResponse{
-    result:boolean
-    problems:string[]
-}
-
-interface StatValidation{
-    validations:{id:string,min_lvl:number}[]
-    operator:string
-}
 
 export class Requirement{
     
@@ -64,7 +55,7 @@ export class Requirement{
 
     private validateStat():ValidationResponse|void{
         let compiled_validation: StatValidation = this.content as StatValidation;
-        let validation_response: ValidationResponse = {result:true,problems:[]};
+        let validation_response: ValidationResponse = {result:true,problems:[],modifiers:undefined};
         if(compiled_validation.operator === '&'){
             compiled_validation.validations.forEach(element=>{
                 let stat_element: Stat = this.character.stats[this.character.getStatIndex(element.id)];
@@ -75,6 +66,21 @@ export class Requirement{
                     );
                 }
             });
+            console.log(validation_response);
+        }else{
+            let count: number = compiled_validation.count;
+            compiled_validation.validations.forEach(element=>{
+                let stat_element: Stat = this.character.stats[this.character.getStatIndex(element.id)];
+                if(stat_element.lvl >= element.min_lvl){
+                    count -= 1;
+                }else{
+                    validation_response.problems.push(`${stat_element.full_name} ist nicht auf Stufe ${element.min_lvl}`);
+                }
+            });
+            if(count > 0){
+                validation_response.result = false;
+                validation_response.problems.push(`Es müssen mind. noch ${count} der obengenannte Eigenschaften auf die jeweilige Stufe gebracht werden.`);
+            }
             console.log(validation_response);
         }
     }

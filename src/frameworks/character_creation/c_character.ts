@@ -76,7 +76,14 @@ export class Character{
     }
 
     public testValidate(){
-        new Requirement(this,'stat',{operator:'&',validations:[{id:'MU',min_lvl:10},{id:'KO',min_lvl:8},{id:'KK',min_lvl:10}]}).validate();
+        new Requirement(this,'stat',{
+            operator:'|',
+            count:2,
+            validations:[
+                {id:'MU',min_lvl:9},
+                {id:'KO',min_lvl:9},
+                {id:'KK',min_lvl:8}]
+        }).validate();
     }
     //#endregion
 }
