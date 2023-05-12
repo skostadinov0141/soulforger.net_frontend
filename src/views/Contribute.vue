@@ -83,7 +83,8 @@ const entry = reactive<IDbEntry>({
     title:'',
     tags:'',
     link:'',
-    semantics:[{title:'',content:''}]
+    semantics:[{title:'',content:''}],
+    framework_data: undefined
 });
 
 function getEntries(tags:string[]){
@@ -124,6 +125,7 @@ function resetEntry(){
     entry.tags = '';
     entry.link = '';
     entry.semantics = [{title:'',content:''}];
+    entry.framework_data = undefined;
 }
 
 </script>
