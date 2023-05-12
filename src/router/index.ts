@@ -3,6 +3,7 @@ import CharacterCreation from '../views/CharacterCreation.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import LandingPage from '../views/LandingPage.vue';
+import Contribute from '../views/Contribute.vue';
 import Wiki from '../views/Wiki.vue';
 import Test from '../views/Test.vue';
 import axios, { type AxiosInstance } from 'axios'
@@ -16,7 +17,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Test,
+      component: LandingPage,
     },
     {
       path: '/login',
@@ -40,6 +41,14 @@ const router = createRouter({
       path: '/wiki',
       name: 'wiki',
       component: Wiki,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/contribute',
+      name: 'Contribute',
+      component: Contribute,
       meta:{
         requiresAuth: true
       }

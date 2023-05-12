@@ -5,25 +5,25 @@ import { type Ref, ref, computed, type ComputedRef, watch, onMounted, watchEffec
 
 onMounted(()=>{
     window.addEventListener('keydown', (e: KeyboardEvent) => {
-        if(e.key === 'ArrowDown'){
+        if(e.key === 'ArrowDown' && if_focused.value === true){
             e.preventDefault();
             if(current_element_index.value === filtered_options.value.length - 1){
                 return;
             }
             current_element_index.value++;
         }
-        if(e.key === 'ArrowUp'){
+        if(e.key === 'ArrowUp' && if_focused.value === true){
             e.preventDefault();
             if(current_element_index.value === 0){
                 return;
             }
             current_element_index.value--;
         }
-        if(e.key === 'Enter'){
+        if(e.key === 'Enter' && if_focused.value === true){
             let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
             element.click();
         }
-        if(e.key === 'Tab'){
+        if(e.key === 'Tab' && if_focused.value === true){
             e.preventDefault();
             let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
             element.click();
