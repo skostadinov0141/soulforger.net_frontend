@@ -23,6 +23,8 @@ export class Character{
     sex:string = '';
     eye_color:string = '';
     social_status:string = '';
+    magical_tradition_core_stat:string = '';
+    holy_tradition_core_stat:string = '';
 
     
     ap_bank:number;

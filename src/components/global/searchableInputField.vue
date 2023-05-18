@@ -169,7 +169,7 @@ li{
 label{
     padding-left: 8px;
     color: var(--text3);
-    font-size: 12px;
+    font-size: 14px;
     padding-bottom: 2px;
     font-weight: 300;
 }

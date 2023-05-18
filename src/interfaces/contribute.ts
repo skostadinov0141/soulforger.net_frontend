@@ -30,9 +30,9 @@ export interface Species extends DefaultFrameworkData{
     usual_cultures:string[]
     highly_recommended_advantages:string[]
     highly_recommended_disadvantages:string[]
-    ususal_advantages:string[]
+    usual_advantages:string[]
     usual_disadvantages:string[]
-    unususal_advantages:string[]
+    unusual_advantages:string[]
     unusual_disadvantages:string[]
 }
 
@@ -41,20 +41,20 @@ export interface Culture extends DefaultFrameworkData{
     written_language:string[]
     social_status:string
     usual_professions:string[]
-    ususal_advantages:string[]
+    usual_advantages:string[]
     usual_disadvantages:string[]
-    unususal_advantages:string[]
+    unusual_advantages:string[]
     unusual_disadvantages:string[]
+    usual_talents:string[]
     unusual_talents:string[]
-    ununusual_talents:string[]
 }
 
 export interface Profession extends DefaultFrameworkData{
     ap_cost:number
     language_ap_bank:number
-    ususal_advantages:string[]
+    usual_advantages:string[]
     usual_disadvantages:string[]
-    unususal_advantages:string[]
+    unusual_advantages:string[]
     unusual_disadvantages:string[]
 }
 

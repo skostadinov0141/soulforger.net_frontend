@@ -48,11 +48,21 @@
             <div style="align-self: flex-end; margin-top: 4px;">
                 <Button @pressed="addSection()">Abschnitt hinzufügen</Button>
             </div>
-            <PageSplitter title="Vorraussetzungen" margin-top="24px" margin-bottom="0px">
-                Dieser Teil beschreibt alle Dinge, die ein Charakter besitzen muss, bevor er/sie/es diesen Eintrag erwerben kann. Was du hier 
-                eingeben kannst, ist sehr viel restriktiver, da es in einer Art und Weise kompiliert werden muss, mit der der 
-                Charaktererschaffungsmechanismus arbeiten kann.
+            <PageSplitter title="Framework Info" margin-top="24px" margin-bottom="0px">
+                Dieser Teil beschreibt alle Dinge, die für soulforger's framework benötigt werden, um einen Eintrag zu beschreiben. 
+                Diese Dinge können beinhalten, sind aber nicht beschränkt auf: AP-Kosten, Reichweiten, Wirkungsdauer, Zielkategorien, ASP-Kosten etc.
             </PageSplitter>
+            <SearchableInputField 
+            :search-at="0" 
+            :flex="0" 
+            placeholder="Eintragstyp..."
+            :options="[
+                'Spezies','Kultur','Profession','Sonderfertigkeit','Vorteil','Nachteil','Ritual','Zauber','Magische Handlung','Zauberlied',
+                'Liturgie','Zeremonie'
+            ]"
+            v-model="framework_type"
+            @completed="val=>{framework_type = val;}"></SearchableInputField>
+            <SpeciesFramework v-if="framework_type==='Spezies'" :entry="entry"></SpeciesFramework>
             <PageSplitter title="Modifikationen" margin-top="24px" margin-bottom="0px">
                 Hier kannst du alle Änderungen beschreiben, die beim Erwerb der in diesem Eintrag beschriebenen Sache wirksam werden sollen.
             </PageSplitter>
@@ -67,10 +77,19 @@ import InputField from '@/components/global/inputField.vue';
 import PageSplitter from '@/components/global/pageSplitter.vue';
 import DbEntry from '@/components/contribute/dbEntry.vue';
 import SemanticSectionE from '@/components/contribute/semanticSection.vue';
+import SpeciesFramework from '@/components/contribute/speciesFramework.vue';
 import { type Ref, ref, inject, watch, reactive, ReactiveEffect } from 'vue';
 import type { AxiosInstance } from 'axios';
 import type { WikiEntry } from '@/interfaces/wiki';
-import type { IDbEntry, SemanticSection } from '@/interfaces/contribute';
+import type { IDbEntry, 
+    SemanticSection, 
+    Species, 
+    Culture, 
+    Profession, 
+    AdvantageDisadvantageSkill,
+    SupernaturalAbility,
+    MagicalSong
+} from '@/interfaces/contribute';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
@@ -78,6 +97,7 @@ const search_category: Ref<string> = ref<string>('');
 const selected_entries: Ref<WikiEntry[]> = ref<WikiEntry[]>([]);
 const staged_entries: Ref<string[]> = ref<string[]>([]);
 const comitted_entries: Ref<string[]> = ref<string[]>([]);
+const framework_type: Ref<string> = ref<string>('');
 
 const entry = reactive<IDbEntry>({
     title:'',
@@ -127,6 +147,196 @@ function resetEntry(){
     entry.semantics = [{title:'',content:''}];
     entry.framework_data = undefined;
 }
+
+watch(framework_type,()=>{
+    switch (framework_type.value) {
+        case 'Spezies':
+            entry.framework_data = <Species>{
+                category:'species',
+                requirements:[],
+                modifiers:[],
+                ap_cost:0,
+                lep_base:0,
+                sk_base:0,
+                zk_base:0,
+                gs_base:0,
+                usual_cultures:[],
+                highly_recommended_advantages:[],
+                highly_recommended_disadvantages:[],
+                usual_advantages:[],
+                usual_disadvantages:[],
+                unusual_advantages:[],
+                unusual_disadvantages:[]
+            }
+            break;
+
+        case 'Kultur':
+            entry.framework_data = <Culture>{
+                category:'culture',
+                requirements:[],
+                modifiers:[],
+                language:[],
+                written_language:[],
+                social_status:'',
+                usual_professions:[],
+                usual_advantages:[],
+                usual_disadvantages:[],
+                unusual_advantages:[],
+                unusual_disadvantages:[],
+                usual_talents:[],
+                unusual_talents:[]
+            }
+            break;
+    
+        case 'Profession':
+            entry.framework_data = <Profession>{
+                category:'profession',
+                requirements:[],
+                modifiers:[],
+                ap_cost:0,
+                language_ap_bank:0,
+                usual_advantages:[],
+                usual_disadvantages:[],
+                unusual_advantages:[],
+                unusual_disadvantages:[]
+            }
+            break;
+
+        case 'Sonderfertigkeit':
+            entry.framework_data = <AdvantageDisadvantageSkill>{
+                category:'skill',
+                requirements:[],
+                modifiers:[],
+                ap_mod:0
+            }
+            break;
+
+        case 'Vorteil':
+            entry.framework_data = <AdvantageDisadvantageSkill>{
+                category:'advantage',
+                requirements:[],
+                modifiers:[],
+                ap_mod:0
+            }
+            break;
+
+        case 'Nachteil':
+            entry.framework_data = <AdvantageDisadvantageSkill>{
+                category:'disadvantage',
+                requirements:[],
+                modifiers:[],
+                ap_mod:0
+            }
+            break;
+
+        case 'Ritual':
+            entry.framework_data = <SupernaturalAbility>{
+                category:'ritual',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[]
+            }
+            break;
+
+        case 'Zauber':
+            entry.framework_data = <SupernaturalAbility>{
+                category:'spell',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[]
+            }
+            break;
+
+        case 'Magische Handlung':
+            entry.framework_data = <SupernaturalAbility>{
+                category:'magical_action',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[]
+            }
+            break;
+
+        case 'Zauberlied':
+            entry.framework_data = <MagicalSong>{
+                category:'magic_song',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[],
+                base_talent:[]
+            }
+            break;
+
+        case 'Liturgie':
+            entry.framework_data = <SupernaturalAbility>{
+                category:'liturgy',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[],
+            }
+            break;
+
+        case 'Zeremonie':
+            entry.framework_data = <SupernaturalAbility>{
+                category:'ceremony',
+                requirements:[],
+                modifiers:[],
+                check:['MU','MU','MU'],
+                ignore_check:false,
+                difficulty_modifier:undefined,
+                asp_cost:undefined,
+                kap_cost:undefined,
+                ticking_cost:false,
+                cost_multiplication:false,
+                leveling_factor:'',
+                extensions:[],
+            }
+            break;
+
+        default:
+            entry.framework_data = undefined;
+            break;
+    }
+})
 
 </script>
 
