@@ -11,7 +11,7 @@
             placeholder="Kategorie durchsuchen..."
             :options="['Spezies','Kulturen','Professionen','Sonderfertigkeiten','Vorteil','Nachteile','Magie','Götterwirken']"
             v-model="search_category"
-            @completed="val=>{search_category = val;getEntries([val])}"></SearchableInputField>
+            @completed="(val:string)=>{search_category = val;getEntries([val])}"></SearchableInputField>
             <div class="entries-container">
                 <DbEntry v-for="entry in selected_entries" @selected="setDefaults(entry)" :name="entry.title" :status="getEntryStatus(entry.title)"></DbEntry>
             </div>
@@ -43,8 +43,8 @@
             hint="Dieses Feld kann nicht bearbeitet werden, da die Daten schon vorhanden sind."></InputField>
             <SemanticSectionE 
             v-for="section in entry.semantics"
-            @update-title="val=>section.title=val" 
-            @update-content="val=>section.content=val"></SemanticSectionE>
+            @update-title="(val:string)=>section.title=val" 
+            @update-content="(val:string)=>section.content=val"></SemanticSectionE>
             <div style="align-self: flex-end; margin-top: 4px;">
                 <Button @pressed="addSection()">Abschnitt hinzufügen</Button>
             </div>
@@ -61,7 +61,7 @@
                 'Liturgie','Zeremonie'
             ]"
             v-model="framework_type"
-            @completed="val=>{framework_type = val;}"></SearchableInputField>
+            @completed="(val:string)=>{framework_type = val;}"></SearchableInputField>
             <SpeciesFramework v-if="framework_type==='Spezies'" :entry="entry"></SpeciesFramework>
             <PageSplitter title="Modifikationen" margin-top="24px" margin-bottom="0px">
                 Hier kannst du alle Änderungen beschreiben, die beim Erwerb der in diesem Eintrag beschriebenen Sache wirksam werden sollen.
