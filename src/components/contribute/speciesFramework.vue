@@ -7,15 +7,65 @@
             <InputField type="number" label="ZK-Grundwert" v-model="(entry.framework_data as Species).zk_base"></InputField>
             <InputField type="number" label="GS-Grundwert" v-model="(entry.framework_data as Species).gs_base"></InputField>
         </div>
-        <ListSelector :options="['test','test1']"></ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).usual_cultures.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).usual_cultures.splice((entry.framework_data as Species).usual_cultures.indexOf(val),1)">
+            Übliche Kulturen
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).highly_recommended_advantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).highly_recommended_advantages.splice((entry.framework_data as Species).highly_recommended_advantages.indexOf(val),1)">
+            Dringend empfohlene Vorteile
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).highly_recommended_disadvantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).highly_recommended_disadvantages.splice((entry.framework_data as Species).highly_recommended_disadvantages.indexOf(val),1)">
+            Dringend empfohlene Nachteile
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).usual_advantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).usual_advantages.splice((entry.framework_data as Species).usual_advantages.indexOf(val),1)">
+            Typische Vorteile
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).usual_disadvantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).usual_disadvantages.splice((entry.framework_data as Species).usual_disadvantages.indexOf(val),1)">
+            Typische Nachteile
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).unusual_advantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).unusual_advantages.splice((entry.framework_data as Species).unusual_advantages.indexOf(val),1)">
+            Untypische Vorteile
+        </ListSelector>
+        <ListSelector 
+        :options="autofillOptions"
+        @value-added="val=>(entry.framework_data as Species).unusual_disadvantages.push(val)"
+        @value-removed="val=>(entry.framework_data as Species).unusual_disadvantages.splice((entry.framework_data as Species).unusual_disadvantages.indexOf(val),1)">
+            Untypische Nachteile
+        </ListSelector>
     </div>
 </template>
 
 <script setup lang="ts">
 import type { IDbEntry, Species } from '@/interfaces/contribute';
-import { onMounted, watch } from 'vue';
+import { inject, onMounted, watch, type Ref, ref } from 'vue';
 import InputField from '../global/inputField.vue';
 import ListSelector from '../global/listSelector.vue';
+import type { AxiosInstance } from 'axios';
+
+const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
+
+const autofillOptions: Ref<string[]> = ref<string[]>([]); 
+
+onMounted(()=>{
+    api.get('/wiki/titles').then(response=>autofillOptions.value=response.data);
+})
 
 interface Props{
     entry:IDbEntry

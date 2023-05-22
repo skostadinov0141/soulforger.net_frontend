@@ -146,6 +146,7 @@ function resetEntry(){
     entry.link = '';
     entry.semantics = [{title:'',content:''}];
     entry.framework_data = undefined;
+    framework_type.value = '';
 }
 
 watch(framework_type,()=>{

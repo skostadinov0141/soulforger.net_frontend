@@ -1,14 +1,16 @@
 <template>
     <div class="list-selector-container">
-        <SearchableInputField 
+        <SearchableInputField
         :options="options"
         v-model="searchTerm"
-        :search-at="0"
-        @completed="val=>{values.push(val); emit('valueAdded',val);searchTerm=''}">Suchen</SearchableInputField>
+        :search-at="1"
+        placeholder="Suchen..."
+        @completed="val=>{values.push(val); emit('valueAdded',val);searchTerm=''}"><slot></slot></SearchableInputField>
         <div class="list-elements-container">
             <TagElement 
             v-for="value in values" 
-            icon="fa-solid fa-delete-left">{{ value }}</TagElement>
+            icon="fa-solid fa-delete-left"
+            @pressed="emit('valueRemoved',value)">{{ value }}</TagElement>
         </div>
     </div>
 </template>
