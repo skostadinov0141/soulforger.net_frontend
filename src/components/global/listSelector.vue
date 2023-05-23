@@ -2,10 +2,9 @@
     <div class="list-selector-container">
         <SearchableInputField
         :options="options"
-        v-model="searchTerm"
         :search-at="1"
         placeholder="Suchen..."
-        @completed="val=>{values.push(val); emit('valueAdded',val);searchTerm=''}"><slot></slot></SearchableInputField>
+        @completed="val=>{values.push(val); emit('valueAdded',val);}"><slot></slot></SearchableInputField>
         <div class="list-elements-container">
             <TagElement 
             v-for="value in values" 
@@ -17,7 +16,7 @@
 
 <script setup lang="ts">
 import { type Ref, ref } from 'vue';
-import SearchableInputField from './searchableInputField.vue';
+import SearchableInputField from './searchableInputField_new.vue';
 import TagElement from '../wiki/tagElement.vue';
 
 interface Props{
@@ -27,7 +26,6 @@ interface Props{
 const props = defineProps<Props>();
 const emit = defineEmits(['valueAdded','valueRemoved']);
 
-const searchTerm: Ref<string> = ref<string>('');
 const values: Ref<string[]> = ref<string[]>([]);
 
 </script>
