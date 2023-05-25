@@ -3,39 +3,8 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 import { type Ref, ref, computed, type ComputedRef, watch, onMounted, watchEffect, onUnmounted } from 'vue';
 
 
-onMounted(()=>{
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
-        if(e.key === 'ArrowDown' && if_focused.value === true){
-            e.preventDefault();
-            if(current_element_index.value === filtered_options.value.length - 1){
-                return;
-            }
-            current_element_index.value++;
-        }
-        if(e.key === 'ArrowUp' && if_focused.value === true){
-            e.preventDefault();
-            if(current_element_index.value === 0){
-                return;
-            }
-            current_element_index.value--;
-        }
-        if(e.key === 'Enter' && if_focused.value === true){
-            let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
-            element.click();
-        }
-        if(e.key === 'Tab' && if_focused.value === true){
-            e.preventDefault();
-            let element: HTMLElement = optionsRef.value[current_element_index.value]! as HTMLElement;
-            element.click();
-        }
-    })
-});
-
-onUnmounted(()=>{
-    window.removeEventListener('keydown',()=>{});
-})
-
 interface Props{
+    deleteOnComplete?: boolean
     flex?: number
     options?: string[]
     searchAt?: number
@@ -45,10 +14,6 @@ interface Props{
 }
 
 const emit = defineEmits([
-    'valueSelected',
-    'update:modelValue',
-    'focusedOnFinished',
-    'focusedOnUnfinished',
     'completed',
 ]);
 
@@ -58,74 +23,98 @@ const props = withDefaults(defineProps<Props>(),{
     placeholder: 'Hier schreiben...',
     flex: 1,
     completeOnDistinct: false,
+    deleteOnComplete: false
 })
 
 let current_element_index: Ref<number> = ref<number>(-1);
-let optionsRef = ref<HTMLElement[]>([]);
-let search_field = ref<HTMLElement>();
-let if_focused: Ref<boolean> = ref<boolean>(false);
+let search_term: Ref<string> = ref<string>('');
+let show_suggestions: Ref<boolean> = ref<boolean>(false);
+let options_ref = ref([]);
 
 let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
     current_element_index.value = -1;
-    if(props.modelValue!.length < props.searchAt){
+    if(search_term.value.length < props.searchAt){
         return [];
     }
     let result = props.options.filter((element: string) => {
-        return element.substring(0,props.modelValue!.length).toLowerCase() === props.modelValue!.toLowerCase()
+        return element.substring(0,search_term.value.length).toLowerCase() === search_term.value.toLowerCase()
     });
     if(result.length === 1 && props.completeOnDistinct){
-        selectElement(result[0]);
+        // TODO: autofill
     }
     return result;
 });
 
-function selectElement(val: string){
-    // let element = optionsRef.value.find((element: HTMLElement) => {if(element.id === val){ return element; }});
-    // current_input.value = val;
-    emit('completed',val)
-    search_field.value?.blur();
+function submit(){
+    emit('completed',filtered_options.value[current_element_index.value])
+    if(props.deleteOnComplete === false){
+        search_term.value = filtered_options.value[current_element_index.value];
+    }else{
+        search_term.value = '';
+    }
 }
 
-watch(current_element_index,()=>{
-    optionsRef.value.forEach((element: HTMLElement) => {
-        element.style.backgroundColor = 'var(--bg2)';
-    });
-    let element = (optionsRef.value[current_element_index.value] as HTMLElement);
-    element.style.backgroundColor = 'var(--bg4)';
-    element.scrollIntoView({
-        block:'center'
-    });
-
-});
-
-watch(if_focused,()=>{
-    if(if_focused.value === true){
-        if(filtered_options.value.includes(props.modelValue!)){
-            emit('focusedOnFinished');
-        }
+function submitByValue(value: string){
+    emit('completed',value)
+    if(props.deleteOnComplete === false){
+        search_term.value = value;
+    }else{
+        search_term.value = '';
     }
-});
+}
+
+function scrollUp(){
+    if(current_element_index.value > 0){
+        current_element_index.value--;
+        (options_ref.value[current_element_index.value] as HTMLElement).scrollIntoView(
+            {
+                behavior:'smooth',
+                block:'nearest',
+                inline:'nearest'
+            }
+        );
+    }
+}
+
+function scrollDown(){
+    if(current_element_index.value < filtered_options.value.length -1){
+        current_element_index.value++;
+        (options_ref.value[current_element_index.value] as HTMLElement).scrollIntoView(
+            {
+                behavior:'smooth',
+                block:'nearest',
+                inline:'nearest'
+            }
+        );
+    }
+}
 </script>
 
 
 <template>
     <div class="search-bar-container">
-        <label for="searchbar-input-field"><slot></slot></label>
+        <label><slot></slot></label>
         <input
-        @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-        @focus="if_focused = true"
-        @blur="if_focused = false"
-        :placeholder="placeholder"
-        id="searchbar-input-field"
-        ref="search_field"
-        type="text" 
-        autocomplete="off"
-        :value="modelValue"/>
-        <ul v-show="if_focused && filtered_options.length !== 0">
-            <li v-for="option in filtered_options">
-                <button :id="option" ref="optionsRef" @mousedown="selectElement(option)" @click="selectElement(option)">
-                    {{ option }}
-                </button>
+            :class="{'search-results-found':filtered_options.length >= 2 && show_suggestions === true}"
+            @keydown.enter="submit()"
+            @keydown.up.prevent="scrollUp()"
+            @keydown.down.prevent="scrollDown()"
+            @input="search_term = ($event.target as HTMLInputElement).value"
+            @focus="search_term = ''; show_suggestions = true;"
+            @blur="show_suggestions = false"
+            :placeholder="placeholder"
+            type="text" 
+            autocomplete="off"
+            :value="search_term"
+        />
+        <ul v-show="show_suggestions && filtered_options.length >= 2">
+            <li 
+                v-for="option in filtered_options"
+                @mousedown="submitByValue(option)"
+                ref="options_ref"
+                :class="{highlighted: current_element_index === filtered_options.indexOf(option)}"
+            >
+                {{ option }}
             </li>
         </ul>
     </div>
@@ -142,28 +131,29 @@ small{
     font-weight: 500;
 }
 
-button{
-    width: 100%;
-    height: 100%;
-    border: none;
-    background-color: var(--bg2);
-    text-align: start;
+li{
+    /* border-top: 1px solid var(--bg4); */
     padding-left: 8px;
-    padding-right: 0px;
     padding-top: 4px;
     padding-bottom: 4px;
     color: var(--text0);
     transition: 150ms;
     font-size: 14px;
-}
-
-button:hover{
-    background-color: var(--bg4);
-    cursor: pointer;
-}
-
-li{
+    background-color: var(--bg2);
     width: 100%;
+}
+
+.highlighted{
+    padding-left: 12px;
+    border-left: 4px solid var(--accent0);
+    background-color: var(--bg3);
+}
+
+li:hover{
+    padding-left: 12px;
+    border-left: 4px solid var(--accent0);
+    background-color: var(--bg3);
+    cursor: pointer;
 }
 
 label{
@@ -175,6 +165,9 @@ label{
 }
 
 ul{
+    border-left: 1px solid var(--bg5);
+    border-right: 1px solid var(--bg5);
+    border-bottom: 1px solid var(--bg5);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     padding-top: 8px;
@@ -205,11 +198,13 @@ input{
     transition: 150ms;
 }
 
+.search-results-found{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
 
 input:focus{
     border: 1px solid var(--accent3);
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
 }
 
 </style>

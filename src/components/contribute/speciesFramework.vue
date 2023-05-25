@@ -1,5 +1,6 @@
 <template>
     <div class="framework-data-container">
+        <Subtitle>Grundwerte</Subtitle>
         <div class="number-data">
             <InputField type="number" label="AP-Kosten" v-model="(entry.framework_data as Species).ap_cost"></InputField>
             <InputField type="number" label="LeP-Grundwert" v-model="(entry.framework_data as Species).lep_base"></InputField>
@@ -49,6 +50,7 @@
         @value-removed="val=>(entry.framework_data as Species).unusual_disadvantages.splice((entry.framework_data as Species).unusual_disadvantages.indexOf(val),1)">
             Untypische Nachteile
         </ListSelector>
+        <Subtitle>Modifikatoren</Subtitle>
     </div>
 </template>
 
@@ -58,6 +60,7 @@ import { inject, onMounted, watch, type Ref, ref } from 'vue';
 import InputField from '../global/inputField.vue';
 import ListSelector from '../global/listSelector.vue';
 import type { AxiosInstance } from 'axios';
+import Subtitle from '../global/subtitle.vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
@@ -83,9 +86,11 @@ watch(props.entry,()=>{
 .number-data{
     display: flex;
     gap: 8px;
+    margin-bottom: 8px;
 }
 
 .framework-data-container{
+
     gap: 8px;
     margin-top: 16px;
     display: flex;

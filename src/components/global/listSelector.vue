@@ -1,6 +1,7 @@
 <template>
     <div class="list-selector-container">
         <SearchableInputField
+        :delete-on-complete="true"
         :options="options"
         :search-at="1"
         placeholder="Suchen..."
@@ -9,14 +10,14 @@
             <TagElement 
             v-for="value in values" 
             icon="fa-solid fa-delete-left"
-            @pressed="emit('valueRemoved',value)">{{ value }}</TagElement>
+            @pressed="emit('valueRemoved',value); values.splice(values.indexOf(value,1));">{{ value }}</TagElement>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { type Ref, ref } from 'vue';
-import SearchableInputField from './searchableInputField_new.vue';
+import SearchableInputField from './searchableInputField.vue';
 import TagElement from '../wiki/tagElement.vue';
 
 interface Props{

@@ -67,32 +67,29 @@ watch(current_category,()=>{
                 <div></div>
             </div>
             <SearchableInputField 
-            :options="titles" 
-            :flex="0" 
-            placeholder="Titel durchsuchen..."
-            v-model="current_title"
-            @completed="(val:string)=>{current_title = val; get_entries([val])}"
-            @focused-on-finished="current_title = ''"></SearchableInputField>
+                :options="titles" 
+                :flex="0" 
+                placeholder="Titel durchsuchen..."
+                @completed="val=>{current_title = val; get_entries([val])}"
+            ></SearchableInputField>
             <div class="subtitle-container">
                 <h3 style="">Kategorische suche</h3>
                 <div></div>
             </div>
             <SearchableInputField 
-            :search-at="0" 
-            :flex="0" 
-            placeholder="Kategorie durchsuchen..."
-            :options="categories"
-            v-model="current_category"
-            @completed="(val:string)=>current_category = val"
-            @focused-on-finished="current_category = ''"></SearchableInputField>
+                :search-at="0" 
+                :flex="0" 
+                placeholder="Kategorie durchsuchen..."
+                :options="categories"
+                @completed="val=>current_category = val"
+            ></SearchableInputField>
             <SearchableInputField 
-            :search-at="0"
-            :flex="0" 
-            placeholder="Unterkategorie hinzufügen..."
-            :options="sub_categories"
-            v-model="current_sub_category"
-            @completed="(val:string)=>{current_sub_category=val; tags.push(val)}"
-            @focused-on-finished="current_sub_category = ''"></SearchableInputField>
+                :search-at="0"
+                :flex="0" 
+                placeholder="Unterkategorie hinzufügen..."
+                :options="sub_categories"
+                @completed="val=>{current_sub_category=val; tags.push(val)}"
+            ></SearchableInputField>
             <div class="tags-container">
                 <TagElement v-for="tag in tags" @pressed="tags.splice(tags.indexOf(tag),1)" :icon="'fa-solid fa-delete-left'">{{ tag }}</TagElement>
             </div>

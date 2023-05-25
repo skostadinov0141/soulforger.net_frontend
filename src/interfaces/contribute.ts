@@ -78,3 +78,22 @@ export interface SupernaturalAbility extends DefaultFrameworkData{
 export interface MagicalSong extends SupernaturalAbility{
     base_talent:string[]
 }
+
+
+
+
+
+
+export interface BaseModifier{
+    type:string
+    id:string
+    mod:number
+}
+
+export interface BaseStatModifier extends BaseModifier{
+    limit:boolean
+}
+
+export interface AdditionModifier{
+    id:string
+}

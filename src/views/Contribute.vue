@@ -1,17 +1,14 @@
 <template>
     <div class="contribute-container">
         <div class="db-entries-container">
-            <div class="subtitle-container">
-                <h3>datenbankeinträge</h3>
-                <div></div>
-            </div>
+            <Subtitle>datenbankeinträge</Subtitle>
             <SearchableInputField 
-            :search-at="0" 
-            :flex="0" 
-            placeholder="Kategorie durchsuchen..."
-            :options="['Spezies','Kulturen','Professionen','Sonderfertigkeiten','Vorteil','Nachteile','Magie','Götterwirken']"
-            v-model="search_category"
-            @completed="(val:string)=>{search_category = val;getEntries([val])}"></SearchableInputField>
+                :search-at="0" 
+                :flex="0" 
+                placeholder="Kategorie durchsuchen..."
+                :options="['Spezies','Kulturen','Professionen','Sonderfertigkeiten','Vorteil','Nachteile','Magie','Götterwirken']"
+                @completed="(val:string)=>{search_category = val;getEntries([val])}"
+            ></SearchableInputField>
             <div class="entries-container">
                 <DbEntry v-for="entry in selected_entries" @selected="setDefaults(entry)" :name="entry.title" :status="getEntryStatus(entry.title)"></DbEntry>
             </div>
@@ -42,9 +39,10 @@
             :flex="0"
             hint="Dieses Feld kann nicht bearbeitet werden, da die Daten schon vorhanden sind."></InputField>
             <SemanticSectionE 
-            v-for="section in entry.semantics"
-            @update-title="(val:string)=>section.title=val" 
-            @update-content="(val:string)=>section.content=val"></SemanticSectionE>
+                v-for="section in entry.semantics"
+                @update-title="(val:string)=>section.title=val" 
+                @update-content="(val:string)=>section.content=val"
+            ></SemanticSectionE>
             <div style="align-self: flex-end; margin-top: 4px;">
                 <Button @pressed="addSection()">Abschnitt hinzufügen</Button>
             </div>
@@ -53,19 +51,16 @@
                 Diese Dinge können beinhalten, sind aber nicht beschränkt auf: AP-Kosten, Reichweiten, Wirkungsdauer, Zielkategorien, ASP-Kosten etc.
             </PageSplitter>
             <SearchableInputField 
-            :search-at="0" 
-            :flex="0" 
-            placeholder="Eintragstyp..."
-            :options="[
-                'Spezies','Kultur','Profession','Sonderfertigkeit','Vorteil','Nachteil','Ritual','Zauber','Magische Handlung','Zauberlied',
-                'Liturgie','Zeremonie'
-            ]"
-            v-model="framework_type"
-            @completed="(val:string)=>{framework_type = val;}"></SearchableInputField>
+                :search-at="0" 
+                :flex="0" 
+                placeholder="Eintragstyp..."
+                :options="[
+                    'Spezies','Kultur','Profession','Sonderfertigkeit','Vorteil','Nachteil','Ritual','Zauber','Magische Handlung','Zauberlied',
+                    'Liturgie','Zeremonie'
+                ]"
+                @completed="(val:string)=>{framework_type = val;}"
+            ></SearchableInputField>
             <SpeciesFramework v-if="framework_type==='Spezies'" :entry="entry"></SpeciesFramework>
-            <PageSplitter title="Modifikationen" margin-top="24px" margin-bottom="0px">
-                Hier kannst du alle Änderungen beschreiben, die beim Erwerb der in diesem Eintrag beschriebenen Sache wirksam werden sollen.
-            </PageSplitter>
         </div>
     </div>
 </template>
@@ -90,6 +85,7 @@ import type { IDbEntry,
     SupernaturalAbility,
     MagicalSong
 } from '@/interfaces/contribute';
+import Subtitle from '@/components/global/subtitle.vue';
 
 const api: AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
 
@@ -380,23 +376,4 @@ watch(framework_type,()=>{
     min-width: 100vw;
     height: 100vh;
 }
-
-.subtitle-container > div{
-    height: 1px;
-    background-color: var(--bg3);
-    flex: 1;
-}
-.subtitle-container > h3{
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: var(--text4);
-}
-
-.subtitle-container{
-    gap: 8px;
-    display: flex;
-    align-items: center;
-}
-
 </style>
