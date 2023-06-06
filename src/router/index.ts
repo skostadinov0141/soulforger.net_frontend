@@ -10,7 +10,7 @@ import axios, { type AxiosInstance } from 'axios'
 import { inject } from 'vue';
 import { useCookies } from 'vue3-cookies';
 import type { User } from '@/interfaces/authentification';
-import data from "config.json";
+import data from '../../config.json';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

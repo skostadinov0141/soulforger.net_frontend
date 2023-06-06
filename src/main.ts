@@ -15,7 +15,7 @@ import { faUserSecret,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
-import data from 'config.json';
+import data from '../config.json';
 
 import './assets/main.css'
 import axios, { type AxiosInstance } from 'axios'
