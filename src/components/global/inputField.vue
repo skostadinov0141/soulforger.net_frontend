@@ -10,6 +10,8 @@ interface Props{
     errors?: string[]
     multiline?: boolean
     autofill?: boolean
+    disabled?:boolean
+    rows?:number
 }
 
 const emits = defineEmits(['update:modelValue']);
@@ -19,7 +21,9 @@ const props = withDefaults(defineProps<Props>(),{
     placeholder:'Hier schreiben...',
     errors: () => [],
     multiline: false,
-    autofill:true
+    autofill:true,
+    disabled: false,
+    rows:15
 });
 
 function getId(){
@@ -33,6 +37,7 @@ function getId(){
     <div class="container">
         <label :for="getId()">{{ label }}</label>
         <input v-if="multiline === false" 
+        :disabled="disabled"
         :autocomplete="(autofill)? 'on' : 'off'"
         :class="(errors.length===0)? '' : 'error'"
         :placeholder="placeholder"
@@ -42,16 +47,18 @@ function getId(){
         @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)">
         <textarea 
         v-else
+        :placeholder="placeholder"
+        :disabled="disabled"
         :autocomplete="(autofill)? 'on' : 'off'"
         :class="(errors.length===0)? '' : 'error'"
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target! as HTMLInputElement).value)"
         :id="getId" 
         cols="auto" 
-        rows="15"></textarea>
+        :rows="rows"></textarea>
         <small v-if="hint !== undefined">{{ hint }}</small>
     </div>
-    <ul>
+    <ul v-if="errors.length !== 0">
        <li v-for="i in errors">
         {{ i }}
        </li> 
@@ -62,6 +69,7 @@ function getId(){
 <style scoped>
 
 small{
+    margin-left: 8px;
     margin-top: 4px;
     font-size: 12px;
     font-weight: 400;
@@ -75,10 +83,17 @@ input{
     transition: 150ms;
 }
 
+input:disabled{
+    border: 1px solid var(--bg5);
+    border-radius: 8px;
+    color: var(--text0);
+    transition: 150ms;
+}
+
 textarea{
     padding: 8px;
     font-family: Roboto;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 300;
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid var(--accent0);
@@ -113,6 +128,7 @@ input:focus{
 }
 
 label{
+    padding-left: 8px;
     color: var(--text3);
     font-weight: 300;
     font-size: 14px;

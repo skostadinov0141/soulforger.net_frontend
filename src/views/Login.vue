@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 import { inject, ref, type Ref } from 'vue';
-import InputField from '../components/inputField.vue';
-import PageSplitter from '@/components/pageSplitter.vue';
-import CheckBox from '@/components/checkBox.vue';
-import Button from '@/components/button.vue';
+import InputField from '../components/global/inputField.vue';
+import PageSplitter from '@/components/global/pageSplitter.vue';
+import CheckBox from '@/components/global/checkBox.vue';
+import Button from '@/components/global/button.vue';
 import type axios from 'axios';
 import type { AxiosError, AxiosInstance } from 'axios';
 import { computed } from '@vue/reactivity';
@@ -13,7 +13,7 @@ import type { ApiError } from '@/interfaces/general';
 import type { User } from '@/interfaces/authentification';
 import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
-import FloatingHomeButton from '@/components/floatingHomeButton.vue';
+import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
 
 let email: Ref<string> = ref('');
 let password: Ref<string> = ref('');

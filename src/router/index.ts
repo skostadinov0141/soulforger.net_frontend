@@ -3,11 +3,14 @@ import CharacterCreation from '../views/CharacterCreation.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import LandingPage from '../views/LandingPage.vue';
+import Contribute from '../views/Contribute.vue';
 import Wiki from '../views/Wiki.vue';
+import Test from '../views/Test.vue';
 import axios, { type AxiosInstance } from 'axios'
 import { inject } from 'vue';
 import { useCookies } from 'vue3-cookies';
 import type { User } from '@/interfaces/authentification';
+import data from '../../config.json';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +19,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: LandingPage,
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test,
     },
     {
       path: '/login',
@@ -43,6 +51,14 @@ const router = createRouter({
         requiresAuth: true
       }
     },
+    {
+      path: '/contribute',
+      name: 'Contribute',
+      component: Contribute,
+      meta:{
+        requiresAuth: true
+      }
+    },
   ]
 })
 
@@ -54,7 +70,7 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     const api : AxiosInstance = axios.create({
-      baseURL: 'https://api.soulforger.net',
+      baseURL: data.api_base_url,
       withCredentials: true,
       headers:{
         Accept:'applications/json',

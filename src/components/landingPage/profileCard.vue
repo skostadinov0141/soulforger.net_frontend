@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import type { Profile } from '@/interfaces/profiles';
-import Button from '../button.vue'
-import InputField from '../inputField.vue';
+import Button from '../global/button.vue'
+import InputField from '../global/inputField.vue';
 import ProfilePicturePicker from '../landingPage/profilePicturePicker.vue';
 import { faBiohazard } from '@fortawesome/free-solid-svg-icons';
 
