@@ -15,6 +15,7 @@ import { faUserSecret,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
+import data from 'config.json';
 
 import './assets/main.css'
 import axios, { type AxiosInstance } from 'axios'
@@ -40,7 +41,7 @@ app.use(router);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.provide<AxiosInstance>('apiBase', axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: data.api_base_url,
     withCredentials: true,
     headers:{
         Accept:'applications/json'

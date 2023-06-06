@@ -10,6 +10,7 @@ import axios, { type AxiosInstance } from 'axios'
 import { inject } from 'vue';
 import { useCookies } from 'vue3-cookies';
 import type { User } from '@/interfaces/authentification';
+import data from "config.json";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,7 +70,7 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     const api : AxiosInstance = axios.create({
-      baseURL: 'http://localhost:8000',
+      baseURL: data.api_base_url,
       withCredentials: true,
       headers:{
         Accept:'applications/json',
