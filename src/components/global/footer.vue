@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
+import data from '../../../config.json';
 
 
 const router = useRouter();
@@ -55,9 +56,9 @@ const router = useRouter();
             <div style="align-self: center;">
                 <h3>App Info:</h3>
                 <p>
-                    <strong>API Version: </strong>0.0.3a<br>
-                    <strong>Frontend Version: </strong>0.0.3b<br>
-                    <strong>User ID: </strong>-<br>
+                    <strong>API Version: </strong>{{ data.api_ver }}<br>
+                    <strong>App Version: </strong>{{ data.app_ver }}<br>
+                    <!-- <strong>User ID: </strong>-<br> -->
                 </p>
             </div>
         </div>

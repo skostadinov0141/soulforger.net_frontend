@@ -40,6 +40,8 @@ let filtered_options: ComputedRef<string[]> = computed<string[]>(() => {
         return element.substring(0,search_term.value.length).toLowerCase() === search_term.value.toLowerCase()
     });
     if(result.length === 1 && props.completeOnDistinct){
+        submitByValue(result[0]);
+        return [];
         // TODO: autofill
     }
     return result;

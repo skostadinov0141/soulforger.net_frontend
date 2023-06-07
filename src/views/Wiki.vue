@@ -67,10 +67,11 @@ watch(current_category,()=>{
                 <div></div>
             </div>
             <SearchableInputField 
+                complete-on-distinct="true"
                 :options="titles" 
                 :flex="0" 
                 placeholder="Titel durchsuchen..."
-                @completed="val=>{current_title = val; get_entries([val])}"
+                @completed="(val:string)=>{current_title = val; get_entries([val])}"
             ></SearchableInputField>
             <div class="subtitle-container">
                 <h3 style="">Kategorische suche</h3>
@@ -81,14 +82,14 @@ watch(current_category,()=>{
                 :flex="0" 
                 placeholder="Kategorie durchsuchen..."
                 :options="categories"
-                @completed="val=>current_category = val"
+                @completed="(val:string)=>current_category = val"
             ></SearchableInputField>
             <SearchableInputField 
                 :search-at="0"
                 :flex="0" 
                 placeholder="Unterkategorie hinzufügen..."
                 :options="sub_categories"
-                @completed="val=>{current_sub_category=val; tags.push(val)}"
+                @completed="(val:string)=>{current_sub_category=val; tags.push(val)}"
             ></SearchableInputField>
             <div class="tags-container">
                 <TagElement v-for="tag in tags" @pressed="tags.splice(tags.indexOf(tag),1)" :icon="'fa-solid fa-delete-left'">{{ tag }}</TagElement>

@@ -20,5 +20,6 @@ jobs:
             git pull origin master
             npm i
             npm run build
+            rm -r /var/www/soulforger.net/*
             cp -r dist/* /var/www/soulforger.net/
             
