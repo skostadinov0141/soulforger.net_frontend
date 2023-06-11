@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { inject, ref, type Ref } from 'vue';
-import InputField from '../components/global/inputField.vue';
+import InputField from '../components/global/inputField_new.vue';
 import PageSplitter from '@/components/global/pageSplitter.vue';
 import CheckBox from '@/components/global/checkBox.vue';
 import Button from '@/components/global/button.vue';
@@ -78,10 +78,35 @@ function createAccount(){
     <div class="main-container">
         <div class="form-container">
             <PageSplitter title="Account Erstellen" margin-top="0" margin-bottom="24px">Das Anlegen eines Accounts ist kostenlos, dauert nur eine Minute und macht Schluss mit den Schwierigkeiten beim Verwalten und Spielen von DSA.</PageSplitter>
-            <InputField :errors="emailE" label="E-Mail" placeholder="" type="email" v-model="email"></InputField>
-            <InputField :errors="displayNameE" label="Anzeigename" placeholder="" v-model="displayName"></InputField>
-            <InputField :errors="passwordE" label="Passwort" placeholder="" type="password" v-model="password"></InputField>
-            <InputField :errors="passwordConfE" label="Passwort Bestätigen" placeholder="" type="password" v-model="passwordConfirm"></InputField>
+            <InputField 
+                :validations="['email_format']" 
+                :errors="emailE" label="E-Mail" 
+                placeholder="" 
+                type="email" 
+                v-model="email"
+            ></InputField>
+            <InputField 
+                :validations="['min_length:6','max_length:32','not_contains_whitespace']"
+                :errors="displayNameE" 
+                label="Anzeigename" 
+                placeholder="" 
+                v-model="displayName"
+            ></InputField>
+            <InputField 
+                :validations="['min_length:8','max_length:32','not_contains_whitespace','contains_uppercase','contains_lowercase','contains_number','contains_special']"
+                :errors="passwordE" 
+                label="Passwort" 
+                placeholder="" 
+                type="password" 
+                v-model="password"
+            ></InputField>
+            <InputField 
+                :errors="passwordConfE" 
+                label="Passwort Bestätigen" 
+                placeholder="" 
+                type="password" 
+                v-model="passwordConfirm"
+            ></InputField>
             <div style="height: 8px;"></div>
             <CheckBox :errors="emailE" @checked="eula = !eula" tag="eula">Ich bin damit einverstanden, dass meine E-Mail zum Zwecke der Kommunikation und Passwortwiederherstellung gespeichert wird.</CheckBox>
             <div style="height: 8px;"></div>
@@ -108,7 +133,7 @@ function createAccount(){
 
 .form-container{
     padding: 24px;
-    width: 416px;
+    width: 480px;
     display: flex;
     flex-direction: column;
     align-content: center;
