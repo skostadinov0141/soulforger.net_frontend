@@ -13,7 +13,7 @@ interface Props{
     placeholder?:string
     errors?: string[]
     multiline?: boolean
-    autofill?: boolean
+    autocomplete?: boolean
     disabled?:boolean
     rows?:number
 }
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(),{
     placeholder:'Hier schreiben...',
     errors: () => [],
     multiline: false,
-    autofill:true,
+    autocomplete:false,
     disabled: false,
     rows:15
 });
@@ -51,11 +51,12 @@ function validate(value : string){
 <template>
     <div :class="{
         'container':true,
-        'error':errors.length > 0,
         'container__typing':focused,
+        'container__error':(errors.length > 0),
     }">
         <label :for="getId">{{ label }}</label>
         <input 
+        :autocomplete="autocomplete? 'on' : 'off'"
         @focus="focused = true"
         @blur="focused = false"
         :id="getId()" 
@@ -76,38 +77,42 @@ function validate(value : string){
 <style scoped lang="scss">
 
     .error{
-        border: 1px solid var(--error0);
+        border: 1px solid lighten($color: $error, $amount: 10);
     }
 
     .error-text{
-        color: var(--error0);
+        color: lighten($color: $error, $amount: 10);
     }
 
     .error-block{
-        border-top: 1px solid var(--bg4);
+        border-top: 1px solid lighten($color: $bg, $amount: 20);
         padding: 8px;
         margin-top: 8px;
-        background-color: transparentize($color: #242D56, $amount: 0.7);
+        background-color: transparentize($color: transparentize(lighten($bg,30),0.2), $amount: 0.7);
         &>ul{
             padding-left: 8px;
             font-size: 12px;
             font-weight: 300;
-            color: var(--text0);
+            color: $text;
             list-style-position: inside;
         }
     }
 
     .container{
+        overflow: hidden;
         transition: 150ms;
         font-family: 'Roboto';
         flex: v-bind(flex);
         display: flex;
         flex-direction: column;
         padding: 0px;
-        border: 1px solid var(--bg4);
+        border: 1px solid lighten($color: $bg, $amount: 20);
         border-radius: 8px;
         &__typing{
-            border: 1px solid var(--outline1);
+            border: 1px solid lighten($color: $bg, $amount: 30);
+        }
+        &__error{
+            border: 1px solid lighten($color: $error, $amount: 5);
         }
         &>label{
             margin: 4px 8px;

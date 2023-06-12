@@ -27,11 +27,12 @@ export class Validate{
         {name:'contains_special',enabled:false,content:'Enthält ein Sonderzeichen'},
         {name:'not_contains_special',enabled:false,content:'Enthält kein Sonderzeichen'},
         {name:'not_contains_whitespace',enabled:false,content:'Enthält keine Leerzeichen'},
+        // {name:'compare_to',enabled:false,content:''},
         {name:'min_length',enabled:false,content:'',count:0},
         {name:'max_length',enabled:false,content:'',count:0},
     ];
 
-    constructor(_validations: string[], min_count?: number, max_count?: number){
+    constructor(_validations: string[]){
         _validations.forEach(validation => {
             if(validation.includes(':')){
                 let validation_parsed = validation.split(':');
@@ -50,7 +51,7 @@ export class Validate{
     public getValidationsContent(): string[]{
         let content: string[] = [];
         this.validations.forEach(validation => {
-            if(validation.enabled){
+            if(validation.enabled === true){
                 content.push(validation.content);
             }
         });
@@ -60,6 +61,7 @@ export class Validate{
     public validate(value: string): string[]{
         let failed: string[] = [];
         this.validations.forEach(validation => {
+            if(validation.enabled === false) return;
             switch(validation.name){
                 case 'email_format':
                     if(!this.validateEmailFormat(value)){
