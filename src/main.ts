@@ -12,6 +12,8 @@ import { faUserSecret,
     faLink,
     faHouse,
     faDeleteLeft,
+    faEye,
+    faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue'
 import router from './router'
@@ -33,6 +35,8 @@ library.add(faPenToSquare);
 library.add(faLink);
 library.add(faHouse);
 library.add(faDeleteLeft);
+library.add(faEye);
+library.add(faEyeSlash);
 
 const app = createApp(App);
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { inject, ref, type Ref } from 'vue';
+import { inject, ref, type ComputedRef, type Ref, watch } from 'vue';
 import InputField from '../components/global/inputField_new.vue';
 import PageSplitter from '@/components/global/pageSplitter.vue';
 import CheckBox from '@/components/global/checkBox.vue';
@@ -12,18 +12,13 @@ import type { Account, Login, RegistrationError } from '@/interfaces/authentific
 import type { ApiError } from '@/interfaces/general';
 import { useRoute, useRouter } from 'vue-router';
 import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
+import { Validate } from '@/frameworks/validation/validation';
 
 let email: Ref<string> = ref('');
 let displayName: Ref<string> = ref('');
 let password: Ref<string> = ref('');
 let passwordConfirm: Ref<string> = ref('');
 let eula: Ref<boolean> = ref(false);
-
-let emailE: Ref<Array<string>> = ref([]);
-let passwordE: Ref<Array<string>> = ref([]);
-let passwordConfE: Ref<Array<string>> = ref([]);
-let eulaE: Ref<Array<string>> = ref([]);
-let displayNameE: Ref<Array<string>> = ref([]);
 
 let loading: Ref<boolean> = ref(false);
 
@@ -40,12 +35,6 @@ function createAccount(){
         eula:eula.value
     }
 
-    emailE.value = [];
-    passwordE.value = [];
-    eulaE.value = [];
-    passwordConfE.value = [];
-    displayNameE.value = [];
-
     api.post(`/auth/register`, data).then((data) => {
         loading.value = false;
             api.post('/auth/login',<Login>{
@@ -58,18 +47,40 @@ function createAccount(){
                 console.log(err);
                 router.push({'name':'login'});
             })
-    }).catch((error: AxiosError) => {
-        (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
-            (element.category === 'email')? emailE.value.push(element.detail) : undefined;
-            (element.category === 'password')? passwordE.value.push(element.detail) : undefined;
-            (element.category === 'password_confirmation')? passwordConfE.value.push(element.detail) : undefined;
-            (element.category === 'eula')? eulaE.value.push(element.detail) : undefined;
-            (element.category === 'display_name')? displayNameE.value.push(element.detail) : undefined;
-        });
-        loading.value = false;
-    });
+    }).catch((error: AxiosError) => {});
 }
 
+let validator: Validate = new Validate();
+
+const emailValid: ComputedRef<boolean[]> = computed(() => {
+    return [validator.validateEmailFormat(email.value)];
+});
+
+const displayNameValid: ComputedRef<boolean[]> = computed(() => {
+    return [
+        validator.validateNotContainsWhitespace(displayName.value),
+        validator.validateMaxLength(displayName.value,32),
+        validator.validateMinLength(displayName.value,6),
+    ];
+});
+
+const passwordValid: ComputedRef<boolean[]> = computed(() => {
+    return [
+        validator.validateNotContainsWhitespace(password.value),
+        validator.validateContainsLowercase(password.value),
+        validator.validateContainsUppercase(password.value),
+        validator.validateContainsSpecial(password.value),
+        validator.validateContainsNumber(password.value),
+        validator.validateMaxLength(password.value,32),
+        validator.validateMinLength(password.value,8),
+    ];
+});
+
+const passwordConfirmationValid: ComputedRef<boolean[]> = computed(() => {
+    return [
+        password.value == passwordConfirm.value
+    ];
+});
 </script>
 
 
@@ -79,36 +90,50 @@ function createAccount(){
         <div class="form-container">
             <PageSplitter title="Account Erstellen" margin-top="0" margin-bottom="24px">Das Anlegen eines Accounts ist kostenlos, dauert nur eine Minute und macht Schluss mit den Schwierigkeiten beim Verwalten und Spielen von DSA.</PageSplitter>
             <InputField 
-                :validations="['email_format']" 
-                :errors="emailE" label="E-Mail" 
-                placeholder="" 
+                :placeholder="'E-Mail Adresse'"
+                label="E-Mail Adresse"
+                :validations="[{content: 'Ist eine gültige E-Mail Adresse',valid: emailValid[0],}]" 
                 type="email" 
                 v-model="email"
             ></InputField>
             <InputField 
-                :validations="['min_length:6','max_length:32','not_contains_whitespace']"
-                :errors="displayNameE" 
+                :validations="[
+                    {content:'Beinhaltet keine Leerzeichen', valid: displayNameValid[0]},
+                    {content:'Ist nicht länger als 32 Zeichen', valid: displayNameValid[1]},
+                    {content:'Ist nicht kürzer als 6 Zeichen', valid: displayNameValid[2]},
+                ]"
                 label="Anzeigename" 
-                placeholder="" 
+                placeholder="Anzeigename"
                 v-model="displayName"
             ></InputField>
             <InputField 
-                :validations="['min_length:8','max_length:32','not_contains_whitespace','contains_uppercase','contains_lowercase','contains_number','contains_special']"
-                :errors="passwordE" 
+                :validations="[
+                    {content:'Beinhaltet keine Leerzeichen', valid: passwordValid[0]},
+                    {content:'Beinhaltet mindestens einen Kleinbuchstaben', valid: passwordValid[1]},
+                    {content:'Beinhaltet mindestens einen Großbuchstaben', valid: passwordValid[2]},
+                    {content:'Beinhaltet mindestens ein Sonderzeichen', valid: passwordValid[3]},
+                    {content:'Beinhaltet mindestens eine Zahl', valid: passwordValid[4]},
+                    {content:'Ist nicht länger als 32 Zeichen', valid: passwordValid[5]},
+                    {content:'Ist nicht kürzer als 8 Zeichen', valid: passwordValid[6]},
+                ]"
                 label="Passwort" 
-                placeholder="" 
+                placeholder="Passwort" 
                 type="password" 
                 v-model="password"
+                :hidden="true"
             ></InputField>
             <InputField 
-                :errors="passwordConfE" 
+                :validations="[
+                    {content:'Passwörter stimmen überein', valid: passwordConfirmationValid[0]},
+                ]"
                 label="Passwort Bestätigen" 
-                placeholder="" 
+                placeholder="Passwort Bestätigen" 
                 type="password" 
                 v-model="passwordConfirm"
+                :hidden="true"
             ></InputField>
             <div style="height: 8px;"></div>
-            <CheckBox :errors="emailE" @checked="eula = !eula" tag="eula">Ich bin damit einverstanden, dass meine E-Mail zum Zwecke der Kommunikation und Passwortwiederherstellung gespeichert wird.</CheckBox>
+            <CheckBox @checked="eula = !eula" tag="eula">Ich bin damit einverstanden, dass meine E-Mail zum Zwecke der Kommunikation und Passwortwiederherstellung gespeichert wird.</CheckBox>
             <div style="height: 8px;"></div>
             <Button :loading="loading" @pressed="createAccount()">Account Erstellen</Button>
         </div>

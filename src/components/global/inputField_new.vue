@@ -1,49 +1,65 @@
 <script setup lang="ts">
 import { Validate } from '@/frameworks/validation/validation'
-import { ref, type Ref } from 'vue'
+import { text } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { computed, ref, type Ref } from 'vue'
 
+interface Validation{
+    content: string
+    valid: boolean
+}
 
 interface Props{
-    validations?: string[]
+    validations?: Validation[]
     label:string
     modelValue?:string
     hint?:string
-    type?:string
     flex?:number
     placeholder?:string
-    errors?: string[]
-    multiline?: boolean
     autocomplete?: boolean
     disabled?:boolean
-    rows?:number
+    hidden?:boolean
 }
 
 const emits = defineEmits(['update:modelValue']);
 const props = withDefaults(defineProps<Props>(),{
     validations: () => [],
-    type:'text',
     flex:1,
     placeholder:'Hier schreiben...',
     errors: () => [],
-    multiline: false,
     autocomplete:false,
     disabled: false,
-    rows:15
+    hidden: false
 });
 
-let validator: Validate = new Validate(props.validations);
-const validations_list: Ref<string[]> = ref(validator.getValidationsContent());
+const validations_list: Ref<string[]> = ref(props.validations.map((val) => val.content));
 const errors: Ref<string[]> = ref([]);
 const focused: Ref<boolean> = ref(false);
+const show: Ref<boolean> = ref(false);
+
+const icon = computed(() => {
+    if(show.value){
+        return 'fa-solid fa-eye';
+    }else{
+        return 'fa-solid fa-eye-slash';
+    }
+});
 
 function getId(): string{
     return 'input-' + props.label;
 }
 
-function validate(value : string){
-    errors.value = [];
-    errors.value = validator.validate(value);
-}
+const type = computed(() => {
+    if(props.hidden === false){
+        return 'text';
+    }else{
+        if(show.value){
+            return 'text';
+        }else{
+            return 'password';
+        }
+    }
+});
 
 </script>
 
@@ -54,20 +70,25 @@ function validate(value : string){
         'container__typing':focused,
         'container__error':(errors.length > 0),
     }">
-        <label :for="getId">{{ label }}</label>
-        <input 
-        :autocomplete="autocomplete? 'on' : 'off'"
-        @focus="focused = true"
-        @blur="focused = false"
-        :id="getId()" 
-        :type="type"
-        @input="emits('update:modelValue', $event.target.value);validate($event.target.value);"
-        :value="modelValue"
-        :placeholder="placeholder">
+        <label :for="getId()">{{ label }}</label>
+        <div class="input-area">
+            <input 
+                :disabled="disabled"
+                :autocomplete="autocomplete? 'on' : 'off'"
+                @focus="focused = true"
+                @blur="focused = false"
+                :id="getId()" 
+                :type="type"
+                @input="emits('update:modelValue', ($event.target as HTMLInputElement).value);"
+                :value="modelValue"
+                :placeholder="placeholder"
+            >
+            <button v-if="hidden" @click="show = !show"><FontAwesomeIcon :icon="icon" style="color: var(--text0);"></FontAwesomeIcon></button>
+        </div>
         <div class="error-block" v-if="validations.length > 0">
             <ul>
                 <li v-for="validation in validations_list"
-                :class="{'error-text' : errors.find((val)=>val === validation) !== undefined}">{{ validation }}</li>
+                :class="{'error-text' : validations.find((val)=>val.content === validation)?.valid === false}">{{ validation }}</li>
             </ul>
         </div>
     </div>
@@ -87,7 +108,7 @@ function validate(value : string){
     .error-block{
         border-top: 1px solid lighten($color: $bg, $amount: 20);
         padding: 8px;
-        margin-top: 8px;
+        margin-top: 0px;
         background-color: transparentize($color: transparentize(lighten($bg,30),0.2), $amount: 0.7);
         &>ul{
             padding-left: 8px;
@@ -114,19 +135,38 @@ function validate(value : string){
         &__error{
             border: 1px solid lighten($color: $error, $amount: 5);
         }
+        &>.input-area{
+            display: flex;
+            margin-left: 8px;
+            margin-right: 8px;
+            gap: 8px;
+        }
+        &>.input-area>button{
+            border: none;
+            background-color: transparent;
+            transition: 150ms;
+            cursor: pointer;
+        }
         &>label{
-            margin: 4px 8px;
+            margin-left: 8px;
+            margin-top: 4px;
+            margin-bottom: 0px;
             font-size: 12px;
             font-weight: 300;
             color: var(--text0);
-            margin-bottom: 4px;
         }
-        &>input{
-            margin: 4px 8px;
+        &>.input-area>input{
+            flex: 1;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            margin-top: 4px;
             font-size: 14px;
             font-weight: 500;
             color: var(--text3);
             padding: 0;
+            &::placeholder{
+                color: darken($color: $text, $amount: 30);
+            }
         }
     }
 
