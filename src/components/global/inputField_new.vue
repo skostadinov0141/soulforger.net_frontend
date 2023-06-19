@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Validate } from '@/frameworks/validation/validation'
-import { text } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { computed, ref, type Ref } from 'vue'
 
@@ -39,9 +37,9 @@ const show: Ref<boolean> = ref(false);
 
 const icon = computed(() => {
     if(show.value){
-        return 'fa-solid fa-eye';
-    }else{
         return 'fa-solid fa-eye-slash';
+    }else{
+        return 'fa-solid fa-eye';
     }
 });
 
@@ -68,7 +66,7 @@ const type = computed(() => {
     <div :class="{
         'container':true,
         'container__typing':focused,
-        'container__error':(errors.length > 0),
+        'container__error':(validations.find((val)=>val.valid === false) !== undefined),
     }">
         <label :for="getId()">{{ label }}</label>
         <div class="input-area">

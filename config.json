@@ -1,5 +1,5 @@
 {
-    "api_base_url": "https://api.soulforger.net",
+    "api_base_url": "http://localhost:8000",
     "api_ver": "v0.0.4",
     "app_ver": "v0.0.4-beta"
 }
