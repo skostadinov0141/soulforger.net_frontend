@@ -2,13 +2,11 @@
   <v-img 
     src="/login_background.png" 
     cover 
-    height="90vh" 
     gradient="0deg, rgba(6,8,14,1.0) 0%, rgba(6,8,14,0.6) 100%"
     class="align-center"
   >
-    <div class="d-flex flex-row align-center">
-      <v-spacer></v-spacer>
-      <v-card color="transparent" elevation="0" width="50vw">
+    <div class="d-flex flex-row align-center pa-4 pa-sm-16 mt-16 mb-16">
+      <v-card color="transparent" elevation="0">
         <v-card-title class="text-secondary text-secondary ">
           Was ist Soulforger?
         </v-card-title>
@@ -27,12 +25,11 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-spacer></v-spacer>
     </div>
   </v-img>
   <div class="d-flex flex-column align-center" style="height: 80px;">
   </div>
-  <v-card class="ma-8 pa-4" color="surface-lighten-1">
+  <v-card class="ma-4 ma-sm-10 pa-2 pa-sm-4" color="surface-lighten-1">
     <v-card-title class="text-secondary">
       Regelwerke
     </v-card-title>
