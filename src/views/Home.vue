@@ -85,25 +85,25 @@ const items = ref([
   {
     title: 'Das Schwarze Auge 5',
     description: 'Egal, ob du als von Hisinde gesegneter Magier die Bibliotheken der magischen Gilden erkunden, die Schwere deines Hammers in einer von den Feuern Angroschs erhitzten Schmiede spüren oder auf der Suche nach einem Opfer durch die Straßen Gareths streifen willst, um deine von Phex geschenkten, lange trainierten Fähigkeiten zu testen, Aventurien bietet dir all diese Möglichkeiten und noch viel mehr. Erforsche dieses umfangreiche und detaillierte System mit Soulforger an deiner Seite, der dir einen Großteil der Komplexität bei der Erstellung eines Charakters und der Verwaltung einer Kampagne abnimmt.',
-    img: '/dsa_background1.png',
+    img: '/dsa_background1.jpg',
     tags:['Low Fantasy', 'Mittelalter', 'Magie', 'Götter']
   },
   {
     title: 'Nirve',
     description: 'Egal, ob du als von Hisinde gesegneter Magier die Bibliotheken der magischen Gilden erkunden, die Schwere ',
-    img: '/nirve_background1.png',
+    img: '/nirve_background1.jpg',
     tags:['High Fantasy', 'Mittelalter', 'Magie', 'Götter']
   },
   {
     title: 'Shadowrun 6',
     description: 'Egal, ob du als von Hisinde gesegneter Magier die Bibliotheken der magischen Gilden erkunden, die Schwere deines Hammers in einer von den Feuern Angroschs erhitzten Schmiede spüren oder auf der Suche nach einem Opfer durch die Straßen Gareths streifen willst, um deine von Phex geschenkten, lange trainierten Fähigkeiten zu testen, Aventurien bietet dir all diese Möglichkeiten und noch viel mehr. Erforsche dieses umfangreiche und detaillierte System mit Soulforger an deiner Seite, der dir einen Großteil der Komplexität bei der Erstellung eines Charakters und der Verwaltung einer Kampagne abnimmt.',
-    img: '/shadowrun_background1.png',
+    img: '/shadowrun_background1.jpg',
     tags:['High Fantasy', 'Cyberpunk', 'Magie', 'Dystopie']
   },
   {
     title: 'Cyberpunk Red',
     description: 'lorem ipsum dolor sit amet orem ipsum sit amet',
-    img: '/cyberpunk_background1.png',
+    img: '/cyberpunk_background1.jpg',
     tags:['High Fantasy', 'Cyberpunk', 'Dystopie']
   }
 ])
