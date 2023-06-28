@@ -2,7 +2,7 @@
     <!-- MOBILE -->
     <v-app-bar elevation="4" color="surface-lighten-2">
         <v-img 
-            src="../assets/logo.png"
+            src="/logo.png"
             class="mx-1"
             max-height="32"
             max-width="32"
