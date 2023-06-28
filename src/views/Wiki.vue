@@ -67,7 +67,7 @@ watch(current_category,()=>{
                 <div></div>
             </div>
             <SearchableInputField 
-                complete-on-distinct="true"
+                :complete-on-distinct="true"
                 :options="titles" 
                 :flex="0" 
                 placeholder="Titel durchsuchen..."

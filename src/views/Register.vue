@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { inject, ref, type ComputedRef, type Ref, watch } from 'vue';
-import InputField from '../components/global/inputField_new.vue';
+import InputField from '../components/global/inputField.vue';
 import PageSplitter from '@/components/global/pageSplitter.vue';
 import CheckBox from '@/components/global/checkBox.vue';
 import Button from '@/components/global/button.vue';
@@ -35,6 +35,14 @@ function createAccount(){
         eula:eula.value
     }
 
+    if(!eula.value){
+        loading.value = false;
+        return;
+    }
+    if(passwordValid.value.includes(false) || passwordConfirmationValid.value.includes(false) || emailValid.value.includes(false) || displayNameValid.value.includes(false)){
+        loading.value = false;
+        return;
+    }
     api.post(`/auth/register`, data).then((data) => {
         loading.value = false;
             api.post('/auth/login',<Login>{

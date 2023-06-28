@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { inject, ref, type Ref } from 'vue';
-import InputField from '../components/global/inputField_new.vue';
+import InputField from '../components/global/inputField.vue';
 import PageSplitter from '@/components/global/pageSplitter.vue';
 import CheckBox from '@/components/global/checkBox.vue';
 import Button from '@/components/global/button.vue';
