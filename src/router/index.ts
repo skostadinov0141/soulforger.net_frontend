@@ -5,7 +5,7 @@ const routes = [
   {
     default: true,
     path: '/',
-    component: () => import('@/views/Home.vue'),
+    component: () => import('@/views/Dashboard.vue'),
   },
 ]
 
