@@ -1,10 +1,10 @@
-import IBenderStats from "./IBenderStats"
+import IBenderStats from "../nirve_character_v2/BenderStats"
 import IClass from "./IClass"
-import IDisadvantage from "./IDisadvantage"
-import IInventory from "./IInventory"
-import IMageStats from "./IMageStats"
-import IMainStats from "./IMainStats"
-import ISkill from "./ISkill"
+import IDisadvantage from "../nirve_character_v2/IDisadvantage"
+import IInventory from "../nirve_character_v2/IItem"
+import IMageStats from "../nirve_character_v2/IMageStats"
+import IMainStats from "../nirve_character_v2/MainStats"
+import ISkill from "../nirve_character_v2/ISkill"
 
 export interface ICharacter{
     name: string

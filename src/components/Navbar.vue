@@ -12,6 +12,7 @@
                 :title="item.title"
                 :prepend-icon="item.icon"
                 :value="item.to"
+                @click="test()"
             />
         </v-list>
     </v-navigation-drawer>
@@ -60,6 +61,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import test from '../functional_components/nirve/nirve_character_v3/TEST'
 
 const drawer = ref<boolean>(false);
 

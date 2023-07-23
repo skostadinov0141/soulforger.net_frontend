@@ -1,8 +1,8 @@
-import { IBenderSkill } from "./IBenderStats";
-import IDisadvantage from "./IDisadvantage";
-import { IItem } from "./IInventory";
-import { ISpell } from "./IMageStats";
-import ISkill from "./ISkill";
+import { IBenderSkill } from "../nirve_character_v2/BenderStats";
+import IDisadvantage from "../nirve_character_v2/IDisadvantage";
+import { IItem } from "../nirve_character_v2/IItem";
+import { ISpell } from "../nirve_character_v2/IMageStats";
+import ISkill from "../nirve_character_v2/ISkill";
 
 export default interface IRequirement {
     description: string;
