@@ -60,11 +60,7 @@ export default class Character implements ICharacter {
         if(!link){return false;}
         let sourceVal: IModifier = getProperty(this, link.sourceLocation);
         let targetVal = getProperty(this, link.targetLocation);
-        console.log("Source:");
-        console.log(sourceVal);
-        console.log("Target:");
-        console.log(targetVal);
-        console.log("Processing Steps:");
+        if(typeof sourceVal.value !== typeof targetVal){return false;}
         if (typeof sourceVal.value === 'number' && typeof targetVal === 'number') {
             let newValue;
             switch (sourceVal.mode) {

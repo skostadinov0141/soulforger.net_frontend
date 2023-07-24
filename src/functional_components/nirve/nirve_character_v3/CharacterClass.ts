@@ -1,22 +1,22 @@
 import { IModifier } from "./Modifier"
 
 export interface ICharacterClass{
+    id: string
     name: string
     level: number
     modifiers: IModifier[]
-    // choices: number[]
 }
 
-// export interface ICharacterClassBase{
-//     id: string
-//     name: string
-//     requirements: Requirement[]
-//     level: number
-//     baseCost: number
-//     levelCost: number
-//     choices: number[]
-//     options: IModifier[][]
-// }
+export interface ICharacterClassBase{
+    id: string
+    name: string
+    requirements: Requirement[]
+    level: number
+    baseCost: number
+    levelCost: number
+    choices: number[]
+    options: IModifier[][]
+}
 
 // export class CharacterClass implements ICharacterClass{
 

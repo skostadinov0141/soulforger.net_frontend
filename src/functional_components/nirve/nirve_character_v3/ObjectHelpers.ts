@@ -4,10 +4,10 @@ export function getProperty(object: any, path: string[]): any {
     for (const prop of properties) {
         value = value[prop];
         if (value === undefined) {
-        break;
+            break;
+        }
     }
-}
-return value;
+    return value;
 }
 
 export function setProperty(object: any, path: string[], value: any) {
