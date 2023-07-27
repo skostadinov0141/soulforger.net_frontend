@@ -1,16 +1,3 @@
-
-export interface LinkResolution{
-    source: IModifier;
-    target: any;
-}
-
-export interface IModifierLink {
-    sourceId: string;
-    sourceLocation: string[];
-    targetId: string;
-    targetLocation: string[];
-}
-
 export interface IModifier {
     passive: boolean;
     active: boolean;
@@ -18,4 +5,5 @@ export interface IModifier {
     description: string;
     mode: 'add'|'remove'|'+'|'-'|'*'|'/'|'=';
     value: number; // TODO: add spell, skill, etc.
+    target: string;
 }

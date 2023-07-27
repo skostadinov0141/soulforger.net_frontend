@@ -1,5 +1,5 @@
 import { ICharacterClass } from "./CharacterClass";
-import { IModifierLink } from "./Modifier";
+import { IModifier } from "./Modifier";
 
 export interface ICharacter {
     // Personal
@@ -9,7 +9,7 @@ export interface ICharacter {
     
     // Character definition
     level: number;
-    characterClass: ICharacterClass | undefined; // TODO: Add character class function
+    characterClass: ICharacterClass[]; // TODO: Add character class function
     // race: Race = new Race();
     // religion: Religion = new Religion();
     
@@ -23,7 +23,8 @@ export interface ICharacter {
     xp: number;
 
     // Character properties
-    modifiers: IModifierLink[];
+    modifierLinks: string[];
+    modifiers: IModifier[];
     // skills: Skill[] = [];
     // disadvantages: Disadvantage[] = [];
     // spells: any[] | undefined = undefined;

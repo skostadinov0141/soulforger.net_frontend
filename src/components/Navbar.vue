@@ -51,6 +51,7 @@
                 :title="item.title"
                 :append-icon="item.icon"
                 :value="item.to"
+                @click="test()"
             />
         </v-list>
     </v-navigation-drawer>

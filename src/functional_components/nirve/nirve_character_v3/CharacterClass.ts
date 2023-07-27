@@ -10,7 +10,7 @@ export interface ICharacterClass{
 export interface ICharacterClassBase{
     id: string
     name: string
-    requirements: Requirement[]
+    // requirements: Requirement[]
     level: number
     baseCost: number
     levelCost: number
