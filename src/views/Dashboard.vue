@@ -12,7 +12,7 @@
       Charisma -> {{ character.baseStats.charisma.current }} / {{ character.baseStats.charisma.default }} <br>
       Wille -> {{ character.baseStats.will.current }} / {{ character.baseStats.will.default }} <br>
       Verbundenheit -> {{ character.baseStats.connection.current }} / {{ character.baseStats.connection.default }} <br>
-      Motivation -> {{ character.baseStats.motivation.current }} / {{ character.baseStats.motivation.default }} <br>
+      <!-- Motivation -> {{ character.baseStats.motivation.current }} / {{ character.baseStats.motivation.default }} <br> -->
       <!-- Leben x Kraft -> {{ character.baseStats.lsx }} <br>
       Kraft x Akrobatik -> {{ character.baseStats.sax }} <br>
       Akrobatik x Wahrnehmung -> {{ character.baseStats.apx }} <br>
@@ -41,6 +41,7 @@
       <label for="6">Ziel</label>
       <input type="text" id="6" style="background-color: gray;" v-model="target">
       <button @click="applyModifier()">Anwenden</button>
+      <button @click="addClass()">Alter Sack Stufe 1 anwenden</button>
     </div>
     <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
       <h2>Passive Modifikatoren</h2>
@@ -53,7 +54,9 @@
 
 <script lang="ts" setup>
   import Character from '@/functional_components/nirve/nirve_character_v3/Character';
+  import { ICharacterClassBase } from '@/functional_components/nirve/nirve_character_v3/CharacterClass';
   import { IModifier } from '@/functional_components/nirve/nirve_character_v3/Modifier';
+  import { IRequirement } from '@/functional_components/nirve/nirve_character_v3/Requirement';
   import { v4 } from 'uuid';
   import { Ref, reactive } from 'vue';
   import { ref } from 'vue';
@@ -65,6 +68,38 @@
   let mode: Ref<string> = ref('');
   let value: Ref<number> = ref(0);
   let target: Ref<string> = ref('');
+
+  function addClass() {
+    character.addClass(<ICharacterClassBase>{
+      id: v4(),
+      name: "Old Man",
+      level: 1,
+      baseCost: 25,
+      levelCost: 15,
+      choices: [0],
+      options: [
+        [
+          <IModifier>{
+            id: 'test2',
+            description: "Old Man Level 1",
+            mode: "+",
+            value: 50,
+            passive: true,
+            active: false,
+            target: "age"
+          }
+        ]
+      ],
+      requirements: [
+        <IRequirement>{
+          target: "level",
+          mode: ">=",
+          value: 1,
+          description: "test requirement"
+        }
+      ]
+    });
+  }
 
   function applyModifier() {
     let modifier: IModifier = {

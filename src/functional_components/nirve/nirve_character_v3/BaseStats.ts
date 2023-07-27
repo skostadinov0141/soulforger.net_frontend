@@ -11,7 +11,6 @@ export interface IBaseStats {
     charisma: Stat;
     will: Stat;
     connection: Stat;
-    motivation: Stat;
     lsx: number;
     sax: number;
     apx: number;

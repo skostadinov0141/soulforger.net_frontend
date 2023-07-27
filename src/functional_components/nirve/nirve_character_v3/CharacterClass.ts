@@ -1,4 +1,5 @@
 import { IModifier } from "./Modifier"
+import { IRequirement } from "./Requirement"
 
 export interface ICharacterClass{
     id: string
@@ -10,11 +11,11 @@ export interface ICharacterClass{
 export interface ICharacterClassBase{
     id: string
     name: string
-    // requirements: Requirement[]
     level: number
     baseCost: number
     levelCost: number
     choices: number[]
+    requirements: IRequirement[]
     options: IModifier[][]
 }
 
