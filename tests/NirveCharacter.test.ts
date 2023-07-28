@@ -353,3 +353,69 @@ test('Add Class with multiple requirements (not fulfilled)', () => {
     expect(character.xp).toBe(startXP);
     expect(character.age).toBe(startAge);
 });
+
+test('Add Class with multiple modifiers', () => {
+    // create
+    let character = new Character();
+    character.level = 1;
+    character.xp = 100;
+    let modifier1: IModifier = {
+        id: 'test1',
+        description: "test modifier",
+        mode: "+",
+        value: 50,
+        passive: true,
+        active: false,
+        target: "age",
+    };
+    let modifier2: IModifier = {
+        id: 'test2',
+        description: "test modifier",
+        mode: "+",
+        value: 50,
+        passive: true,
+        active: false,
+        target: "level",
+    };
+    let requirement1: IRequirement = {
+        description: "test requirement",
+        mode: ">=",
+        value: 1,
+        target: "level",
+    };
+    let _class: ICharacterClassBase = {
+        id: v4(),
+        name: "test class",
+        level: 1,
+        baseCost: 10, // removed from xp at lvl 1
+        levelCost: 5, // from lvl 2 on
+        choices: [0,0], // not always an OR situation
+        options: [
+            [modifier1, modifier2], // ["string1","string2"]
+            [modifier2, modifier1],
+        ],
+        requirements: [
+            requirement1,
+        ],
+    };
+    let startAge = character.age;
+    let startXP = character.xp;
+    let startLevel = character.level;
+
+    // modify
+    let resultAddition = character.addClass(_class);
+
+    // assert
+    expect(resultAddition).toBe(true);
+    expect(character.characterClass.length).toBe(1);
+    expect(character.characterClass[0].id).toBe(_class.id);
+    expect(character.characterClass[0].name).toBe(_class.name);
+    expect(character.characterClass[0].level).toBe(_class.level);
+    expect(character.characterClass[0].modifiers.length).toBe(2);
+    expect(character.characterClass[0].modifiers[0]).toBe(_class.options[0][0]);
+    expect(character.characterClass[0].modifiers[1]).toBe(_class.options[1][0]);
+    expect(character.modifierLinks.length).toBe(2);
+    expect(character.xp).toBe(startXP - _class.baseCost - _class.levelCost);
+    expect(character.age).toBe(modifier1.value + startAge);
+    expect(character.level).toBe(modifier2.value + startLevel);
+});

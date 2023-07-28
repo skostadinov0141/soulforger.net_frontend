@@ -1,5 +1,6 @@
 import { ICharacterClass } from "./CharacterClass";
 import { IModifier } from "./Modifier";
+import { Roll } from "./Roll";
 
 export interface ICharacter {
     // Personal
@@ -25,6 +26,7 @@ export interface ICharacter {
     // Character properties
     modifierLinks: string[];
     modifiers: IModifier[];
+    rolls: Roll[];
     // skills: Skill[] = [];
     // disadvantages: Disadvantage[] = [];
     // spells: any[] | undefined = undefined;

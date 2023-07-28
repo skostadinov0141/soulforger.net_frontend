@@ -5,6 +5,7 @@ import { ICharacter } from "./ICharacter";
 import { getProperty, setProperty } from "./ObjectHelpers";
 import { BaseStats, IBaseStats } from "./BaseStats";
 import { IRequirement } from "./Requirement";
+import { Roll } from "./Roll";
 
 export type CharacterKeys = keyof ICharacter;
 export type CharacterClassKeys = keyof ICharacterClass;
@@ -33,6 +34,7 @@ export default class Character implements ICharacter {
     // Character properties
     modifierLinks: string[] = [];
     modifiers: IModifier[] = [];
+    rolls: Roll[] = [];
     // skills: Skill[] = [];
     // disadvantages: Disadvantage[] = [];
     // spells: any[] | undefined = undefined;
@@ -60,7 +62,7 @@ export default class Character implements ICharacter {
         if(modifiers && modifiers.length > 0){
             let currentClassCount = this.characterClass.length - 1;
             for(let i = 0; i < modifiers.length; i++){
-                if(i > 1){this.xp -= input.levelCost}
+                if(i > 0){this.xp -= input.levelCost}
                 this.modifierLinks.push(`characterClass.${currentClassCount}.modifiers.${i}`);
                 this.applyModifier(this.modifierLinks.length - 1);
             }

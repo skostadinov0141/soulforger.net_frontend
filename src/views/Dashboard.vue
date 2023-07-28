@@ -21,6 +21,7 @@
       Wille x Verbundenheit -> {{ character.baseStats.wcx }} <br> -->
       <br>
       XP -> {{ character.xp }} <br>
+      Level -> {{ character.level }} <br>
     </p>
     <div style="margin-top: 40px; display: flex; flex-direction: column; gap: 8px;">
       <h2>Modifikator Hinzufügen</h2>
