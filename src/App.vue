@@ -1,11 +1,11 @@
 <template>
-  <v-app>
-    <Navbar>
-      <RouterView/>
-    </Navbar>
-  </v-app>
+	<v-app>
+		<Navbar>
+			<RouterView />
+		</Navbar>
+	</v-app>
 </template>
 
 <script setup lang="ts">
-import Navbar from './components/Navbar.vue';
+import Navbar from "./components/Navbar.vue";
 </script>

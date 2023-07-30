@@ -1,3 +1,1 @@
-export class Race{
-    
-}
+export class Race {}

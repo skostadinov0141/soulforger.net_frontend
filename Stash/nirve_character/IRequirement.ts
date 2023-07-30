@@ -5,12 +5,19 @@ import { ISpell } from "../nirve_character_v2/IMageStats";
 import ISkill from "../nirve_character_v2/ISkill";
 
 export default interface IRequirement {
-    description: string;
-    steps: IRequirementStep[];
+	description: string;
+	steps: IRequirementStep[];
 }
 
 export interface IRequirementStep {
-    mode: 'exist' | '!exist' | '==' | '!=' | '>' | '<' | '>=' | '<=';
-    value: number | string | ISkill | IBenderSkill | ISpell | IItem | IDisadvantage;
-    path: string[];
+	mode: "exist" | "!exist" | "==" | "!=" | ">" | "<" | ">=" | "<=";
+	value:
+		| number
+		| string
+		| ISkill
+		| IBenderSkill
+		| ISpell
+		| IItem
+		| IDisadvantage;
+	path: string[];
 }

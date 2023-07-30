@@ -1,10 +1,10 @@
 export default interface IComputedValue {
-    paths: string[][];
-    values: IValue[];
-    calculation: string;
+	paths: string[][];
+	values: IValue[];
+	calculation: string;
 }
 
 export interface IValue {
-    k: string;
-    v: number;
+	k: string;
+	v: number;
 }

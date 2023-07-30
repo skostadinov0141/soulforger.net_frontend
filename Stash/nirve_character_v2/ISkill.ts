@@ -1,7 +1,7 @@
 export interface ISkill {
-    name: string;
-    level: number;
-    description: string;
+	name: string;
+	level: number;
+	description: string;
 }
 
 // export default interface ISkill {

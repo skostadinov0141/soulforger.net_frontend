@@ -1,87 +1,67 @@
 <template>
-    <!-- DESKTOP -->
-    <v-navigation-drawer
-        color="surface-lighten-1"
-        rail
-        expand-on-hover
-    >
-        <v-list>
-            <v-list-item
-                v-for="item in items"
-                base-color="secondary"
-                :title="item.title"
-                :prepend-icon="item.icon"
-                :value="item.to"
-                @click="test()"
-            />
-        </v-list>
-    </v-navigation-drawer>
-    <!-- MOBILE -->
-    <v-app-bar elevation="4" color="surface-lighten-2" class="d-xs-flex d-lg-none">
-        <v-img 
-            src="/logo.png"
-            class="mx-1"
-            max-height="32"
-            max-width="32"
-            contain
-        />
-        <v-app-bar-title 
-            align-center
-            class="text-uppercase font-weight-light text-secondary mx-2 pt-1 text-h7"
-        >
-            soulforger
-        </v-app-bar-title>
-        <template v-slot:prepend>
-            <v-app-bar-nav-icon 
-                color="secondary" 
-                @click="drawer = !drawer" 
-                class="d-lg-none d-xl-none d-xxl-none"   
-            />
-        </template>
-    </v-app-bar>
-    <v-navigation-drawer
-        color="surface-lighten-1"
-        temporary
-        v-model="drawer"
-    >
-        <v-list>
-            <v-list-item
-                v-for="item in items"
-                base-color="secondary"
-                :title="item.title"
-                :append-icon="item.icon"
-                :value="item.to"
-                @click="test()"
-            />
-        </v-list>
-    </v-navigation-drawer>
-    <v-main>
-        <slot></slot>
-    </v-main>
+	<!-- DESKTOP -->
+	<v-navigation-drawer color="surface-lighten-1" rail expand-on-hover>
+		<v-list>
+			<v-list-item
+				v-for="item in navItems"
+				base-color="secondary"
+				:title="item.title"
+				:prepend-icon="item.icon"
+				:value="item.to"
+				@click="test()"
+			/>
+		</v-list>
+	</v-navigation-drawer>
+	<!-- MOBILE -->
+	<v-app-bar elevation="4" color="surface-lighten-2" class="d-xs-flex d-lg-none">
+		<v-img src="/logo.png" class="mx-1" max-height="32" max-width="32" contain />
+		<v-app-bar-title
+			align-center
+			class="text-uppercase font-weight-light text-secondary mx-2 pt-1 text-h7"
+		>
+			soulforger
+		</v-app-bar-title>
+		<template v-slot:prepend>
+			<v-app-bar-nav-icon
+				color="secondary"
+				@click="drawer = !drawer"
+				class="d-lg-none d-xl-none d-xxl-none"
+			/>
+		</template>
+	</v-app-bar>
+	<v-navigation-drawer color="surface-lighten-1" temporary v-model="drawer">
+		<v-list>
+			<v-list-item
+				v-for="item in navItems"
+				base-color="secondary"
+				:title="item.title"
+				:append-icon="item.icon"
+				:value="item.to"
+				@click="test()"
+			/>
+		</v-list>
+	</v-navigation-drawer>
+	<v-main>
+		<slot></slot>
+	</v-main>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import test from '../functional_components/nirve/nirve_character_v3/TEST'
+import { ref } from "vue";
+import test from "../functional_components/nirve/nirve_character_v3/TEST";
 
 const drawer = ref<boolean>(false);
 
-const items = ref([
-    {
-        title: 'Home',
-        icon: 'mdi-home',
-        to: '/'
-    },
-    {
-        title: 'About',
-        icon: 'mdi-information',
-        to: '/about'
-    },
-    {
-        title: 'Contact',
-        icon: 'mdi-email',
-        to: '/contact'
-    }
-])
-
+const navItems = ref([
+	{
+        title: "Home",
+		icon: "mdi-home",
+		to: "/",
+	},
+	{
+		title: "Backend",
+		icon: "mdi-database-cog",
+		to: "/backend/dashboard",
+	},
+]);
 </script>
