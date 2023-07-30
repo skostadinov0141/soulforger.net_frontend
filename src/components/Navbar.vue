@@ -1,19 +1,41 @@
 <template>
 	<!-- DESKTOP -->
-	<v-navigation-drawer color="surface-lighten-1" rail expand-on-hover>
+	<v-navigation-drawer
+		width="350"
+		color="surface-lighten-1"
+		v-model="drawer"
+		:expand-on-hover="windowSize.width.value >= 1280"
+		:temporary="windowSize.width.value < 1280"
+	>
 		<v-list>
-			<v-list-item
-				v-for="item in navItems"
-				base-color="secondary"
-				:title="item.title"
-				:prepend-icon="item.icon"
-				:value="item.to"
-				@click="test()"
-			/>
+			<div v-for="item in navItems">
+				<v-list-group v-if="item.subMenus" :value="item.title" no-action>
+					<template v-slot:activator="{ props }">
+						<v-list-item
+							:title="item.title"
+							:prepend-icon="item.icon"
+							v-bind="props"
+						/>
+					</template>
+					<v-list-item
+						v-for="subItem in item.subMenus"
+						:key="subItem.title"
+						:title="subItem.title"
+						:to="subItem.to"
+						:prepend-icon="subItem.icon"
+					/>
+				</v-list-group>
+				<v-list-item
+					v-else
+					base-color="secondary"
+					:title="item.title"
+					:prepend-icon="item.icon"
+					:value="item.to"
+				/>
+			</div>
 		</v-list>
 	</v-navigation-drawer>
-	<!-- MOBILE -->
-	<v-app-bar elevation="4" color="surface-lighten-2" class="d-xs-flex d-lg-none">
+	<v-app-bar class="d-xs-flex d-lg-none">
 		<v-img src="/logo.png" class="mx-1" max-height="32" max-width="32" contain />
 		<v-app-bar-title
 			align-center
@@ -29,39 +51,47 @@
 			/>
 		</template>
 	</v-app-bar>
-	<v-navigation-drawer color="surface-lighten-1" temporary v-model="drawer">
-		<v-list>
-			<v-list-item
-				v-for="item in navItems"
-				base-color="secondary"
-				:title="item.title"
-				:append-icon="item.icon"
-				:value="item.to"
-				@click="test()"
-			/>
-		</v-list>
-	</v-navigation-drawer>
 	<v-main>
 		<slot></slot>
 	</v-main>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import test from "../functional_components/nirve/nirve_character_v3/TEST";
+import { Ref, ref } from "vue";
+import { useWindowSize } from "vue-window-size";
 
-const drawer = ref<boolean>(false);
+interface NavItem {
+	title: string;
+	icon: string;
+	to?: string;
+	subMenus?: NavItem[];
+}
 
-const navItems = ref([
+const windowSize = useWindowSize();
+
+const drawer = ref<boolean>(true);
+
+const navItems: Ref<Array<NavItem>> = ref([
 	{
-        title: "Home",
+		title: "Home",
 		icon: "mdi-home",
 		to: "/",
 	},
 	{
 		title: "Backend",
 		icon: "mdi-database-cog",
-		to: "/backend/dashboard",
+		subMenus: [
+			{
+				title: "Dashboard",
+				icon: "mdi-view-dashboard",
+				to: "/backend/dashboard",
+			},
+			{
+				title: "Nirve",
+				icon: "mdi-plus",
+				to: "/backend/create",
+			},
+		],
 	},
 ]);
 </script>

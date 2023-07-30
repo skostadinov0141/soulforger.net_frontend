@@ -26,7 +26,7 @@ export class Roll {
 			_id: v4(),
 			name: this.name,
 			description: this.description,
-            variables: this.variables,
+			variables: this.variables,
 			modifications: this.modifications,
 			formula: this.formula,
 		};
