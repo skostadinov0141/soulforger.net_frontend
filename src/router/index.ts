@@ -7,6 +7,10 @@ const routes = [
 		path: "/",
 		component: () => import("@/views/Dashboard.vue"),
 	},
+  {
+    path: "/creator/nirve/abilities",
+    component: () => null,
+  }
 ];
 
 const router = createRouter({

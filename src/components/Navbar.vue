@@ -7,32 +7,39 @@
 		:expand-on-hover="windowSize.width.value >= 1280"
 		:temporary="windowSize.width.value < 1280"
 	>
-		<v-list>
-			<div v-for="item in navItems">
-				<v-list-group v-if="item.subMenus" :value="item.title" no-action>
+		<v-list base-color="secondary" nav density="compact">
+			<v-list-group value="Autor Bereich">
+				<template v-slot:activator="{ props }">
+					<v-list-item
+						title="Autorenbereich"
+						prepend-icon="mdi-script-text"
+						v-bind="props"
+					/>
+				</template>
+				<v-list-group value="Nirve">
 					<template v-slot:activator="{ props }">
 						<v-list-item
-							:title="item.title"
-							:prepend-icon="item.icon"
+							title="Nirve"
+							prepend-icon="mdi-dice-d20"
 							v-bind="props"
 						/>
 					</template>
 					<v-list-item
-						v-for="subItem in item.subMenus"
-						:key="subItem.title"
-						:title="subItem.title"
-						:to="subItem.to"
-						:prepend-icon="subItem.icon"
+						v-for="([title, icon, to], i) in authorNirve"
+						:key="i"
+						:title="title"
+						:to="to"
+						:prepend-icon="icon"
+						:value="title"
 					/>
 				</v-list-group>
-				<v-list-item
-					v-else
-					base-color="secondary"
-					:title="item.title"
-					:prepend-icon="item.icon"
-					:value="item.to"
-				/>
-			</div>
+			</v-list-group>
+			<!-- <v-list-item
+				:key="v4()"
+				title="Nirve"
+				:to="subItem.to"
+				:prepend-icon="subItem.icon"
+			/> -->
 		</v-list>
 	</v-navigation-drawer>
 	<v-app-bar class="d-xs-flex d-lg-none">
@@ -59,39 +66,19 @@
 <script setup lang="ts">
 import { Ref, ref } from "vue";
 import { useWindowSize } from "vue-window-size";
-
-interface NavItem {
-	title: string;
-	icon: string;
-	to?: string;
-	subMenus?: NavItem[];
-}
+import { v4 } from "uuid";
 
 const windowSize = useWindowSize();
 
 const drawer = ref<boolean>(true);
 
-const navItems: Ref<Array<NavItem>> = ref([
-	{
-		title: "Home",
-		icon: "mdi-home",
-		to: "/",
-	},
-	{
-		title: "Backend",
-		icon: "mdi-database-cog",
-		subMenus: [
-			{
-				title: "Dashboard",
-				icon: "mdi-view-dashboard",
-				to: "/backend/dashboard",
-			},
-			{
-				title: "Nirve",
-				icon: "mdi-plus",
-				to: "/backend/create",
-			},
-		],
-	},
-]);
+const authorNirve = ref([
+	["Fähigkeiten", "mdi-account-star","/creator/nirve/skills"],
+	["Würfe", "mdi-dice-d20", "/creator/nirve/rolls"],
+	["Modifikatoren", "mdi-cog", "/creator/nirve/modifiers"],
+	["Klassen", "mdi-account-multiple", "/creator/nirve/classes"],
+	["Rassen", "mdi-account-group", "/creator/nirve/races"],
+	["Ausrüstung", "mdi-sword", "/creator/nirve/items"],
+])
+
 </script>
