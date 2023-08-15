@@ -4,36 +4,42 @@
 		width="350"
 		color="surface-lighten-1"
 		v-model="drawer"
-		:expand-on-hover="windowSize.width.value >= 1280"
-		:temporary="windowSize.width.value < 1280"
 	>
-		<v-list base-color="secondary" nav density="compact">
-			<v-list-group value="Autor Bereich">
+	<v-list base-color="secondary">
+		<v-list>
+			<v-list-item
+				prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"
+				title="Profil"
+				subtitle="Anmelden"
+			></v-list-item>
+		</v-list>
+		<v-divider></v-divider>
+		<v-list-group value="Autor Bereich">
+			<template v-slot:activator="{ props }">
+				<v-list-item
+					title="Autorenbereich"
+					prepend-icon="mdi-script-text"
+					v-bind="props"
+				/>
+			</template>
+			<v-list-group value="Nirve">
 				<template v-slot:activator="{ props }">
 					<v-list-item
-						title="Autorenbereich"
-						prepend-icon="mdi-script-text"
+						title="Nirve"
+						prepend-icon="mdi-dice-d20"
 						v-bind="props"
 					/>
 				</template>
-				<v-list-group value="Nirve">
-					<template v-slot:activator="{ props }">
-						<v-list-item
-							title="Nirve"
-							prepend-icon="mdi-dice-d20"
-							v-bind="props"
-						/>
-					</template>
-					<v-list-item
-						v-for="([title, icon, to], i) in authorNirve"
-						:key="i"
-						:title="title"
-						:to="to"
-						:prepend-icon="icon"
-						:value="title"
-					/>
-				</v-list-group>
+				<v-list-item
+					v-for="([title, icon, to], i) in authorNirve"
+					:key="i"
+					:title="title"
+					:to="to"
+					:prepend-icon="icon"
+					:value="title"
+				/>
 			</v-list-group>
+		</v-list-group>
 			<!-- <v-list-item
 				:key="v4()"
 				title="Nirve"
