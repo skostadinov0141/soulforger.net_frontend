@@ -4,42 +4,43 @@
 		width="350"
 		color="surface-lighten-1"
 		v-model="drawer"
+		:rail="windowSize.width.value > 1280"
+		:expand-on-hover="windowSize.width.value > 1280"
 	>
-	<v-list base-color="secondary">
-		<v-list>
-			<v-list-item
-				prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"
-				title="Profil"
-				subtitle="Anmelden"
-			></v-list-item>
-		</v-list>
-		<v-divider></v-divider>
-		<v-list-group value="Autor Bereich">
-			<template v-slot:activator="{ props }">
-				<v-list-item
-					title="Autorenbereich"
-					prepend-icon="mdi-script-text"
-					v-bind="props"
-				/>
-			</template>
-			<v-list-group value="Nirve">
+		<v-list base-color="secondary">
+			<v-list>
+				<v-list-item title="" prepend-avatar="/logo.png">
+					<v-list-item-action style="display: flex; gap: 8px">
+						<v-btn variant="plain" to="/login"> Registrieren </v-btn>
+						<v-btn color="purple-darken-4" variant="elevated" to="/login">
+							Anmelden
+						</v-btn>
+					</v-list-item-action>
+				</v-list-item>
+			</v-list>
+			<v-divider></v-divider>
+			<v-list-group value="Autorenbereich">
 				<template v-slot:activator="{ props }">
 					<v-list-item
-						title="Nirve"
-						prepend-icon="mdi-dice-d20"
+						title="Autorenbereich"
+						prepend-icon="mdi-script-text"
 						v-bind="props"
 					/>
 				</template>
-				<v-list-item
-					v-for="([title, icon, to], i) in authorNirve"
-					:key="i"
-					:title="title"
-					:to="to"
-					:prepend-icon="icon"
-					:value="title"
-				/>
+				<v-list-group value="Nirve">
+					<template v-slot:activator="{ props }">
+						<v-list-item title="Nirve" prepend-icon="mdi-dice-d20" v-bind="props" />
+					</template>
+					<v-list-item
+						v-for="([title, icon, to], i) in authorNirve"
+						:key="i"
+						:title="title"
+						:to="to"
+						:prepend-icon="icon"
+						:value="title"
+					/>
+				</v-list-group>
 			</v-list-group>
-		</v-list-group>
 			<!-- <v-list-item
 				:key="v4()"
 				title="Nirve"
@@ -48,7 +49,7 @@
 			/> -->
 		</v-list>
 	</v-navigation-drawer>
-	<v-app-bar class="d-xs-flex d-lg-none">
+	<v-app-bar class="d-xs-flex d-lg-none" v-if="windowSize.width.value < 1280">
 		<v-img src="/logo.png" class="mx-1" max-height="32" max-width="32" contain />
 		<v-app-bar-title
 			align-center
@@ -79,12 +80,11 @@ const windowSize = useWindowSize();
 const drawer = ref<boolean>(true);
 
 const authorNirve = ref([
-	["Fähigkeiten", "mdi-account-star","/creator/nirve/skills"],
+	["Fähigkeiten", "mdi-account-star", "/creator/nirve/skills"],
 	["Würfe", "mdi-dice-d20", "/creator/nirve/rolls"],
 	["Modifikatoren", "mdi-cog", "/creator/nirve/modifiers"],
 	["Klassen", "mdi-account-multiple", "/creator/nirve/classes"],
 	["Rassen", "mdi-account-group", "/creator/nirve/races"],
 	["Ausrüstung", "mdi-sword", "/creator/nirve/items"],
-])
-
+]);
 </script>

@@ -7,10 +7,10 @@ const routes = [
 		path: "/",
 		component: () => import("@/views/Dashboard.vue"),
 	},
-  {
-    path: "/creator/nirve/abilities",
-    component: () => null,
-  }
+	{
+		path: "/login",
+		component: () => import("@/views/Login.vue"),
+	},
 ];
 
 const router = createRouter({
