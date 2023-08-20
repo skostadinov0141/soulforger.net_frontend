@@ -11,6 +11,14 @@ const routes = [
 		path: "/login",
 		component: () => import("@/views/Login.vue"),
 	},
+	{
+		path: "/register",
+		component: () => import("@/views/Register.vue"),
+	},
+	{
+		path: "/legal/privacy-agreement",
+		component: () => import("@/views/PrivacyAgreement.vue"),
+	},
 ];
 
 const router = createRouter({
