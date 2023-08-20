@@ -11,8 +11,13 @@
 			<v-list>
 				<v-list-item title="" prepend-avatar="/logo.png">
 					<v-list-item-action style="display: flex; gap: 8px">
-						<v-btn variant="plain" to="/login"> Registrieren </v-btn>
-						<v-btn color="purple-darken-4" variant="elevated" to="/login">
+						<v-btn size="small" variant="plain" to="/register"> Registrieren </v-btn>
+						<v-btn
+							size="small"
+							color="indigo-darken-3"
+							variant="elevated"
+							to="/login"
+						>
 							Anmelden
 						</v-btn>
 					</v-list-item-action>

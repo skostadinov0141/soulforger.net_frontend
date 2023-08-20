@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { VueCookies } from "vue-cookies";
 import { AuthResult } from "../interfaces/api";
 import { plainToClass } from "class-transformer";
@@ -31,7 +31,7 @@ export default class API {
 		params.append("username", username);
 		params.append("password", password);
 		params.append("remember", "true");
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			this._axios
 				?.post("/auth/login", params)
 				.then((res: AxiosResponse) => {
@@ -41,8 +41,8 @@ export default class API {
 					this.authed = true;
 					resolve(true);
 				})
-				.catch((err) => {
-					resolve(false);
+				.catch((err: AxiosError) => {
+					reject(err);
 				});
 		});
 	}
