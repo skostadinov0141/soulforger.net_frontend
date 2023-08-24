@@ -46,7 +46,6 @@ export default class API {
 				.then((res: AxiosResponse) => {
 					let authResult = plainToClass(AuthResult, res.data);
 					cookies.set("authToken", authResult.access_token, authResult.exp);
-					console.log(new Date(authResult.exp));
 					this.authed = true;
 					resolve(true);
 				})
@@ -67,5 +66,12 @@ export default class API {
 					reject(err);
 				});
 		});
+	}
+
+	getAxios(): AxiosInstance {
+		if (!this._axios) {
+			throw new Error("No axios instance found!");
+		}
+		return this._axios;
 	}
 }

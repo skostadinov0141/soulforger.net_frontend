@@ -2,7 +2,8 @@ import { Transform, Type } from "class-transformer";
 
 export class AuthResult {
 	access_token: string;
-	exp: string;
+	@Transform(({ value }) => new Date(value))
+	exp: Date;
 	token_type: string;
 }
 

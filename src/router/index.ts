@@ -19,6 +19,10 @@ const routes = [
 		path: "/legal/privacy-agreement",
 		component: () => import("@/views/PrivacyAgreement.vue"),
 	},
+	{
+		path: "/profile",
+		component: () => import("@/views/Profile.vue"),
+	},
 ];
 
 const router = createRouter({
