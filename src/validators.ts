@@ -54,9 +54,23 @@ export function required(value: string) {
 	return "Feld darf nicht leer sein";
 }
 
+export function requiredBool(value: boolean) {
+	if (value) {
+		return true;
+	}
+	return "Feld darf nicht leer sein";
+}
+
 export function matches(value: string, value2: string) {
 	if (value === value2) {
 		return true;
 	}
 	return "Felder müssen übereinstimmen";
+}
+
+export function noWhitespace(value: string) {
+	if (!value.match(/\s/)) {
+		return true;
+	}
+	return "Darf keine Leerzeichen enthalten";
 }

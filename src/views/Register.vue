@@ -19,10 +19,10 @@
 						<v-text-field
 							density="compact"
 							class="mb-2"
-							:rules="[validator.required, validator.isEmail]"
+							:rules="[validator.required, validator.isEmail, validator.noWhitespace]"
 							bg-color="surface-lighten-2"
 							variant="solo"
-							v-model="email"
+							v-model="data.email"
 							prepend-inner-icon="mdi-email"
 							required
 							label="E-Mail"
@@ -35,16 +35,17 @@
 							class="mb-2"
 							:rules="[
 								validator.required,
-								validator.min(displayName, 3),
-								validator.max(displayName, 32),
+								validator.min(data.displayName, 3),
+								validator.max(data.displayName, 32),
 							]"
 							bg-color="surface-lighten-2"
 							variant="solo"
-							v-model="displayName"
+							v-model="data.displayName"
 							prepend-inner-icon="mdi-account"
 							required
 							label="Anzeigename"
 							placeholder="Max Mustermann"
+							type="text"
 							clearable
 						></v-text-field>
 						<v-text-field
@@ -52,16 +53,17 @@
 							class="mb-2"
 							:rules="[
 								validator.required,
-								validator.min(pw, 8),
-								validator.max(pw, 32),
+								validator.min(data.password, 8),
+								validator.max(data.password, 32),
 								validator.containsLowercase,
 								validator.containsUppercase,
 								validator.containsNumber,
 								validator.containsSpecialCharacter,
+								validator.noWhitespace,
 							]"
 							bg-color="surface-lighten-2"
 							variant="solo"
-							v-model="pw"
+							v-model="data.password"
 							@click:append-inner="showPassword = !showPassword"
 							prepend-inner-icon="mdi-lock"
 							:append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -72,7 +74,10 @@
 						<v-text-field
 							density="compact"
 							class="mb-2"
-							:rules="[validator.required, validator.matches(pw, pwConfirmation)]"
+							:rules="[
+								validator.required,
+								validator.matches(data.password, pwConfirmation),
+							]"
 							bg-color="surface-lighten-2"
 							variant="solo"
 							v-model="pwConfirmation"
@@ -94,7 +99,11 @@
 						>
 							{{ apiError.message }}
 						</v-alert>
-						<v-checkbox v-model="eula">
+						<v-checkbox
+							:disabled="loading"
+							:rules="[validateEula]"
+							v-model="data.eula"
+						>
 							<template v-slot:label>
 								<div>
 									Ich habe die
@@ -110,6 +119,7 @@
 							</template>
 						</v-checkbox>
 						<v-btn
+							:disabled="loading"
 							class="mb-4"
 							append-icon="mdi-account-plus"
 							color="indigo-darken-2"
@@ -118,6 +128,7 @@
 							>Registrieren</v-btn
 						>
 						<v-btn
+							:disabled="loading"
 							append-icon="mdi-login"
 							color="indigo-lighten-3"
 							style="width: 100%"
@@ -141,6 +152,7 @@ import { inject, ref } from "vue";
 import { VueCookies } from "vue-cookies";
 import { useRouter } from "vue-router";
 import * as validator from "@/validators";
+import { RegistrationData } from "@/functional_components/interfaces/api";
 
 const store = useAppStore();
 const $cookies = inject("$cookies") as VueCookies;
@@ -153,14 +165,35 @@ const apiError = reactive({
 const valid = ref(false);
 const showPassword = ref(false);
 const showPasswordConfirmation = ref(false);
+const loading = ref(false);
 
-const email = ref("");
-const displayName = ref("");
-const pw = ref("");
+const data = reactive(new RegistrationData());
 const pwConfirmation = ref("");
-const eula = ref(false);
 
-function onSubmit() {}
+function onSubmit() {
+	loading.value = true;
+	if (valid.value) {
+		store.api.register(data).then(
+			() => {
+				loading.value = false;
+				router.push("/login");
+			},
+			(error: AxiosError) => {
+				loading.value = false;
+				apiError.status = true;
+				apiError.message = (error.response?.data as any).detail;
+			}
+		);
+	}
+	loading.value = false;
+}
+
+function validateEula(value: boolean) {
+	if (value) {
+		return true;
+	}
+	return "Bitte akzeptiere die Datenschutzerklärung";
+}
 </script>
 
 <style scoped></style>

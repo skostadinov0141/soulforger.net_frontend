@@ -15,7 +15,7 @@
 					src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
 				></v-img>
 				<v-card-item class="pb-4 pt-6">
-					<v-form @submit.prevent="onSubmit" v-model="valid">
+					<v-form :disabled="loading" @submit.prevent="onSubmit" v-model="valid">
 						<v-text-field
 							density="compact"
 							class="mb-2"
@@ -32,7 +32,6 @@
 						></v-text-field>
 						<v-text-field
 							density="compact"
-							class="mb-2"
 							:rules="[required]"
 							bg-color="surface-lighten-2"
 							variant="solo"
@@ -44,6 +43,11 @@
 							label="Passwort"
 							:type="showPassword ? 'text' : 'password'"
 						></v-text-field>
+						<v-checkbox
+							:disabled="loading"
+							label="Angemeldet bleiben"
+							v-model="remember"
+						></v-checkbox>
 						<v-alert
 							icon="mdi-alert-circle"
 							v-if="apiError.status"
@@ -97,6 +101,8 @@ const valid = ref(false);
 const showPassword = ref(false);
 const uname = ref("");
 const pw = ref("");
+const remember = ref(false);
+const loading = ref(false);
 
 function required(value: string) {
 	if (value) {
@@ -106,14 +112,16 @@ function required(value: string) {
 }
 
 function onSubmit() {
+	loading.value = true;
 	if (valid.value) {
 		store.api
-			.login(uname.value, pw.value, $cookies)
+			.login(uname.value, pw.value, remember.value, $cookies)
 			.then((res: boolean) => {
+				loading.value = false;
 				router.push("/");
 			})
 			.catch((err: AxiosError) => {
-				console.log(err);
+				loading.value = false;
 				apiError.status = true;
 				apiError.message = "E-Mail oder Passwort falsch";
 			});

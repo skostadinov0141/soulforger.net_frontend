@@ -5,3 +5,11 @@ export class AuthResult {
 	exp: string;
 	token_type: string;
 }
+
+export class RegistrationData {
+	email: string = "";
+	displayName: string = "";
+	passwordConfirmation: string = "";
+	password: string = "";
+	eula: boolean = false;
+}
