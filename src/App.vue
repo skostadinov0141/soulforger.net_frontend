@@ -17,6 +17,8 @@ const $cookies: VueCookies = inject("$cookies") as VueCookies;
 const store = useAppStore();
 
 onMounted(() => {
-	store.api = new API($cookies.get("authToken"));
+	if ($cookies.isKey("authToken")) {
+		store.api.authorize($cookies.get("authToken"));
+	}
 });
 </script>

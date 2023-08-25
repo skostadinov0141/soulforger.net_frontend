@@ -20,17 +20,20 @@ const own = ref(false);
 
 onMounted(() => {
 	if (route.query.id === undefined) {
-		let profile: CProfile = new CProfile();
 		store.api
 			.getAxios()
 			.get("/user/profile")
 			.then((response) => {
-				plainToClassFromExist(profile, response.data);
-				router.replace({ path: "/profile", query: { id: profile.owner } });
+				plainToClassFromExist(store.profile, response.data);
+				store.profile.setApi(store.api);
+				router.push({ path: "/profile", query: { id: store.profile.owner } });
+				let decodedToken: any = jwt_decode(store.api.getAuthToken());
+				if (decodedToken.sub === store.profile.owner) {
+					own.value = true;
+				}
 			});
 	}
-	let token = $cookies.get("authToken");
-	let decodedToken: any = jwt_decode(token);
+	let decodedToken: any = jwt_decode(store.api.getAuthToken());
 	if (decodedToken.sub === route.query.id) {
 		own.value = true;
 	}

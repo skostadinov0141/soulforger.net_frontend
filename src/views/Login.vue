@@ -118,12 +118,12 @@ function onSubmit() {
 			.login(uname.value, pw.value, remember.value, $cookies)
 			.then((res: boolean) => {
 				loading.value = false;
-				router.push("/");
+				router.push("/profile");
 			})
 			.catch((err: AxiosError) => {
-				loading.value = false;
 				apiError.status = true;
 				apiError.message = "E-Mail oder Passwort falsch";
+				loading.value = false;
 			});
 	}
 }
