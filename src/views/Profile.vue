@@ -1,5 +1,9 @@
 <template>
-	<div>{{ own }}</div>
+	<div>
+		<v-img :src="store.profile.profile_picture">
+
+		</v-img>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -16,6 +20,7 @@ const $cookies: VueCookies = inject("$cookies") as VueCookies;
 const store = useAppStore();
 const route = useRoute();
 const router = useRouter();
+
 const own = ref(false);
 
 onMounted(() => {
