@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<v-img :src="store.profile.profile_picture">
-
-		</v-img>
+		<v-img :src="store.profile.profile_picture"> </v-img>
 	</div>
 </template>
 
@@ -36,6 +34,9 @@ onMounted(() => {
 				if (decodedToken.sub === store.profile.owner) {
 					own.value = true;
 				}
+			})
+			.catch((err) => {
+				router.push({ path: "/error", query: { error: JSON.stringify(err) } });
 			});
 	}
 	let decodedToken: any = jwt_decode(store.api.getAuthToken());

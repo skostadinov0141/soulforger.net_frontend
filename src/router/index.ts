@@ -23,6 +23,10 @@ const routes = [
 		path: "/profile",
 		component: () => import("@/views/Profile.vue"),
 	},
+	{
+		path: "/error",
+		component: () => import("@/views/Error.vue"),
+	},
 ];
 
 const router = createRouter({

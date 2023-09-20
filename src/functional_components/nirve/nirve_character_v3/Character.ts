@@ -68,7 +68,7 @@ export default class Character implements ICharacter {
 					this.xp -= input.levelCost;
 				}
 				this.modifierLinks.push(
-					`characterClass.${currentClassCount}.modifiers.${i}`,
+					`characterClass.${currentClassCount}.modifiers.${i}`
 				);
 				this.applyModifier(this.modifierLinks.length - 1);
 			}
@@ -103,7 +103,7 @@ export default class Character implements ICharacter {
 	applyModifier(id: number): boolean {
 		let modifier: IModifier = getProperty(
 			this,
-			this.modifierLinks[id],
+			this.modifierLinks[id]
 		) as IModifier;
 		let target = getProperty(this, modifier.target);
 		if (typeof modifier.value !== typeof target) {
