@@ -27,6 +27,10 @@ const routes = [
 		path: "/error",
 		component: () => import("@/views/Error.vue"),
 	},
+	{
+		path: "/creation/:type",
+		component: () => import("@/views/Creation.vue"),
+	},
 ];
 
 const router = createRouter({
