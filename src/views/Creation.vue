@@ -39,9 +39,91 @@ import { useRoute, useRouter } from 'vue-router';
 </script>
 
 
-
-
 <template>
+
+    <v-row 
+        style="height: 100%"
+    >
+        <v-col 
+            align-self="center" v-for="n in 3" :key="n" cols="12" lg="4"
+        >
+            <v-card
+                class="text-secondary ma-8 ma-lg-0"
+				variant="elevated"
+				rounded="md"
+				elevation="3"
+				color="surface-lighten-1"
+                v-if="n == 2"
+            >
+                <v-card-item class="pb-4 pt-6">
+                    <v-form>
+                        <v-textarea
+                            v-model="reactiveModel.name"
+                            rows="1"
+                            label="Name"
+							class="mb-2"
+                            bg-color="surface-lighten-2"
+                            prepend-inner-icon="mdi-pencil"
+                        >
+
+                        </v-textarea>
+                        <v-textarea
+                            rows="1"
+                            v-model="reactiveModel.description"
+                            label="Beschreibung"
+							class="mb-2"
+                            bg-color="surface-lighten-2"
+                            prepend-inner-icon="mdi-text-box-edit"
+                            auto-grow
+                        >
+                        
+                        </v-textarea>
+                        <v-btn 
+                            width="100%"
+                            bg-color="indigo-lighten-2"
+                            color="indigo-darken-2"
+                            @click="Submit"
+                        >
+                        Speichern
+                        </v-btn>
+                    </v-form>
+                </v-card-item>
+            </v-card>
+        </v-col>
+    </v-row>
+
+</template>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <template>
     <div class="container-form">
         <input 
             class="input-field"
@@ -63,12 +145,12 @@ import { useRoute, useRouter } from 'vue-router';
             {{ output }}
         </p>
     </div>
-</template>
+</template> -->
 
 
 
 
-<style scoped>
+<!-- <style scoped>
     .input-field{
         color: black;
         background-color: white;
@@ -82,4 +164,4 @@ import { useRoute, useRouter } from 'vue-router';
         flex-direction: column;
         gap: 8px;
     }
-</style>
+</style> -->
