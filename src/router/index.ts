@@ -28,8 +28,8 @@ const routes = [
 		component: () => import("@/views/Error.vue"),
 	},
 	{
-		path: "/creation/:type",
-		component: () => import("@/views/Creation.vue"),
+		path: "/creator/nirve/:type",
+		component: () => import("@/views/Creator.vue"),
 	},
 ];
 
