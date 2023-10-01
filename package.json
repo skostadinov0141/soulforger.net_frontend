@@ -24,7 +24,7 @@
     "vue-cookies": "^1.8.3",
     "vue-router": "^4.0.0",
     "vue-window-size": "^2.0.0",
-    "vuetify": "^3.0.0",
+    "vuetify": "^3.3.19",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

@@ -12,7 +12,6 @@ import "reflect-metadata";
 import "es6-shim";
 import { useAppStore } from "./store/app";
 import VueCookies from "vue-cookies";
-import API from "./functional_components/API/api";
 
 const app = createApp(App);
 

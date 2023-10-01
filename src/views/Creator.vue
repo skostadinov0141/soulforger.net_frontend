@@ -1,9 +1,9 @@
 <script setup lang="ts">
     import BaseModel from '@/functional_components/nirve/nirve_character_v4/CBaseModel';
-import { useAppStore } from '@/store/app';
-import { onMounted } from 'vue';
-import { Ref, reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+    import { useAppStore } from '@/store/app';
+    import { DeepReadonly, onMounted } from 'vue';
+    import { Ref, reactive, ref } from 'vue';
+    import { useRoute, useRouter } from 'vue-router';
     const reactiveModel = reactive(new BaseModel());
     const store = useAppStore();
     const output: Ref<string> = ref<string>("");
@@ -19,6 +19,17 @@ import { useRoute, useRouter } from 'vue-router';
         "religions",
         "skills"
     ];
+    const perPage = ref(10);
+    const page = ref(1);
+    const datatableName = (route.params.type as string).toLocaleUpperCase();
+    const items = ref<any[]>([]);
+    const search = ref<string>("");
+    const headers = [
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'Actions', key: 'actions', sortable: false }
+    ];
+    
 
         
     function Submit(){
@@ -28,16 +39,29 @@ import { useRoute, useRouter } from 'vue-router';
         })
     }
 
-    onMounted(()=>{
+    async function GetItems(): Promise<any[]> {
+        const response = await store.api.getAxios().get(`/nirve/creator/${route.params.type}`)
+        return response.data;
+    }
+
+    onMounted(async () => {
         if(!types.includes(route.params.type as string))
         {
             router.push("/error")
             console.log(route.params.type);
         }
+        items.value = await GetItems();
     })
 
-</script>
+    function Edit(item: any) {
+      // TODO: Implement edit functionality
+    }
 
+    function Delete(item: any) {
+      // TODO: Implement delete functionality
+    }
+
+</script>
 
 <template>
 
@@ -47,6 +71,43 @@ import { useRoute, useRouter } from 'vue-router';
         <v-col 
             align-self="center" v-for="n in 3" :key="n" cols="12" lg="4"
         >
+
+
+            <v-card
+                class="text-secondary ma-8 ma-lg-0"
+				variant="elevated"
+				rounded="md"
+				elevation="3"
+				color="surface-lighten-1"
+                v-if="n == 1"
+            >
+                <v-card-title>
+                    {{ datatableName }}
+                    <v-spacer/>
+                    <v-text-field
+                        single-line
+                        hide-details
+                        label="Suche"
+                        class="mb-2"
+                        bg-color="surface-lighten-2"
+                        prepend-inner-icon="mdi-magnify"
+                        v-model="search"
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                    :headers="headers"
+                    :items="items"
+                    :search="search"
+                    :items-per-page="perPage"
+                    :page.sync="page"
+                >
+                    <template v-slot:item.actions="{ item }">
+                        <v-btn color="primary" @click="Edit(item)">Edit</v-btn>
+                        <v-btn color="error" @click="Delete(item)">Delete</v-btn>
+                    </template>
+                </v-data-table>
+            </v-card>
+
             <v-card
                 class="text-secondary ma-8 ma-lg-0"
 				variant="elevated"
