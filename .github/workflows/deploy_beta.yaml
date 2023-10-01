@@ -1,7 +1,7 @@
 name: Deploy Beta
 on:
   push:
-    branches: [ staging ]
+    branches: [staging]
 
 jobs:
   job_one:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: connecting and deploying to staging
         uses: appleboy/ssh-action@master
-        with: 
+        with:
           host: soulforger.net
           username: simeon
           key: ${{ secrets.SSH_KEY }}
@@ -20,5 +20,5 @@ jobs:
             git pull origin staging
             npm i
             npm run build
+            rm -r /var/www/beta.soulforger.net/*
             cp -r dist/* /var/www/beta.soulforger.net/
-            

@@ -1,118 +1,199 @@
-<script setup lang="ts">
-
-import { inject, ref, type Ref } from 'vue';
-import InputField from '../components/global/inputField.vue';
-import PageSplitter from '@/components/global/pageSplitter.vue';
-import CheckBox from '@/components/global/checkBox.vue';
-import Button from '@/components/global/button.vue';
-import type axios from 'axios';
-import type { AxiosError, AxiosInstance } from 'axios';
-import { computed } from '@vue/reactivity';
-import type { Account, Login, RegistrationError } from '@/interfaces/authentification';
-import type { ApiError } from '@/interfaces/general';
-import { useRoute, useRouter } from 'vue-router';
-import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
-
-let email: Ref<string> = ref('');
-let displayName: Ref<string> = ref('');
-let password: Ref<string> = ref('');
-let passwordConfirm: Ref<string> = ref('');
-let eula: Ref<boolean> = ref(false);
-
-let emailE: Ref<Array<string>> = ref([]);
-let passwordE: Ref<Array<string>> = ref([]);
-let passwordConfE: Ref<Array<string>> = ref([]);
-let eulaE: Ref<Array<string>> = ref([]);
-let displayNameE: Ref<Array<string>> = ref([]);
-
-let loading: Ref<boolean> = ref(false);
-
-const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
-const router = useRouter();
-
-function createAccount(){
-    loading.value = true;
-    let data : Account = <Account>{
-        email:email.value,
-        display_name:displayName.value,
-        password:password.value,
-        password_confirmation: passwordConfirm.value,
-        eula:eula.value
-    }
-
-    emailE.value = [];
-    passwordE.value = [];
-    eulaE.value = [];
-    passwordConfE.value = [];
-    displayNameE.value = [];
-
-    api.post(`/auth/register`, data).then((data) => {
-        loading.value = false;
-            api.post('/auth/login',<Login>{
-                email: email.value,
-                password: password.value,
-                keep_logged_in: true
-            }).then(() => {
-                router.push({'name':'home'});
-            }).catch(err => {
-                console.log(err);
-                router.push({'name':'login'});
-            })
-    }).catch((error: AxiosError) => {
-        (error.response?.data as ApiError).detail.forEach((element: RegistrationError) => {
-            (element.category === 'email')? emailE.value.push(element.detail) : undefined;
-            (element.category === 'password')? passwordE.value.push(element.detail) : undefined;
-            (element.category === 'password_confirmation')? passwordConfE.value.push(element.detail) : undefined;
-            (element.category === 'eula')? eulaE.value.push(element.detail) : undefined;
-            (element.category === 'display_name')? displayNameE.value.push(element.detail) : undefined;
-        });
-        loading.value = false;
-    });
-}
-
-</script>
-
-
 <template>
-    <FloatingHomeButton></FloatingHomeButton>
-    <div class="main-container">
-        <div class="form-container">
-            <PageSplitter title="Account Erstellen" margin-top="0" margin-bottom="24px">Das Anlegen eines Accounts ist kostenlos, dauert nur eine Minute und macht Schluss mit den Schwierigkeiten beim Verwalten und Spielen von DSA.</PageSplitter>
-            <InputField :errors="emailE" label="E-Mail" placeholder="" type="email" v-model="email"></InputField>
-            <InputField :errors="displayNameE" label="Anzeigename" placeholder="" v-model="displayName"></InputField>
-            <InputField :errors="passwordE" label="Passwort" placeholder="" type="password" v-model="password"></InputField>
-            <InputField :errors="passwordConfE" label="Passwort Bestätigen" placeholder="" type="password" v-model="passwordConfirm"></InputField>
-            <div style="height: 8px;"></div>
-            <CheckBox :errors="emailE" @checked="eula = !eula" tag="eula">Ich bin damit einverstanden, dass meine E-Mail zum Zwecke der Kommunikation und Passwortwiederherstellung gespeichert wird.</CheckBox>
-            <div style="height: 8px;"></div>
-            <Button :loading="loading" @pressed="createAccount()">Account Erstellen</Button>
-        </div>
-    </div>
+	<v-row style="height: 100%">
+		<v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+			<v-card
+				class="text-secondary ma-8 ma-lg-0"
+				variant="elevated"
+				rounded="md"
+				elevation="3"
+				color="surface-lighten-1"
+				v-if="n == 2"
+			>
+				<v-img
+					height="160px"
+					cover
+					src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
+				></v-img>
+				<v-card-item class="pb-4 pt-6">
+					<v-form @submit.prevent="onSubmit" v-model="valid">
+						<v-text-field
+							density="compact"
+							class="mb-2"
+							:rules="[validator.required, validator.isEmail, validator.noWhitespace]"
+							bg-color="surface-lighten-2"
+							variant="solo"
+							v-model="data.email"
+							prepend-inner-icon="mdi-email"
+							required
+							label="E-Mail"
+							placeholder="musterman@gmail.com"
+							type="email"
+							clearable
+						></v-text-field>
+						<v-text-field
+							density="compact"
+							class="mb-2"
+							:rules="[
+								validator.required,
+								validator.min(data.displayName, 3),
+								validator.max(data.displayName, 32),
+							]"
+							bg-color="surface-lighten-2"
+							variant="solo"
+							v-model="data.displayName"
+							prepend-inner-icon="mdi-account"
+							required
+							label="Anzeigename"
+							placeholder="Max Mustermann"
+							type="text"
+							clearable
+						></v-text-field>
+						<v-text-field
+							density="compact"
+							class="mb-2"
+							:rules="[
+								validator.required,
+								validator.min(data.password, 8),
+								validator.max(data.password, 32),
+								validator.containsLowercase,
+								validator.containsUppercase,
+								validator.containsNumber,
+								validator.containsSpecialCharacter,
+								validator.noWhitespace,
+							]"
+							bg-color="surface-lighten-2"
+							variant="solo"
+							v-model="data.password"
+							@click:append-inner="showPassword = !showPassword"
+							prepend-inner-icon="mdi-lock"
+							:append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+							required
+							label="Passwort"
+							:type="showPassword ? 'text' : 'password'"
+						></v-text-field>
+						<v-text-field
+							density="compact"
+							class="mb-2"
+							:rules="[
+								validator.required,
+								validator.matches(data.password, pwConfirmation),
+							]"
+							bg-color="surface-lighten-2"
+							variant="solo"
+							v-model="pwConfirmation"
+							@click:append-inner="
+								showPasswordConfirmation = !showPasswordConfirmation
+							"
+							prepend-inner-icon="mdi-lock"
+							:append-inner-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
+							required
+							label="Passwort bestätigen"
+							:type="showPasswordConfirmation ? 'text' : 'password'"
+						></v-text-field>
+						<v-alert
+							icon="mdi-alert-circle"
+							v-if="apiError.status"
+							class="mb-4"
+							color="error"
+							dense
+						>
+							{{ apiError.message }}
+						</v-alert>
+						<v-checkbox
+							:disabled="loading"
+							:rules="[validateEula]"
+							v-model="data.eula"
+						>
+							<template v-slot:label>
+								<div>
+									Ich habe die
+									<a
+										class="text-decoration-none text-indigo-lighten-1"
+										@click.stop
+										target="_blank"
+										href="https://soulforger.net/legal/privacy-agreement"
+										>Datenschutzerklärung</a
+									>
+									gelesen und akzeptiere diese.
+								</div>
+							</template>
+						</v-checkbox>
+						<v-btn
+							:disabled="loading"
+							class="mb-4"
+							append-icon="mdi-account-plus"
+							color="indigo-darken-2"
+							style="width: 100%"
+							type="submit"
+							>Registrieren</v-btn
+						>
+						<v-btn
+							:disabled="loading"
+							append-icon="mdi-login"
+							color="indigo-lighten-3"
+							style="width: 100%"
+							type="submit"
+							variant="text"
+							>Anmelden</v-btn
+						>
+					</v-form>
+				</v-card-item>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
+<script setup lang="ts">
+import API from "@/functional_components/API/api";
+import { useAppStore } from "@/store/app";
+import { AxiosError } from "axios";
+import { reactive } from "vue";
+import { inject, ref } from "vue";
+import { VueCookies } from "vue-cookies";
+import { useRouter } from "vue-router";
+import * as validator from "@/validators";
+import { RegistrationData } from "@/functional_components/interfaces/api";
 
-<style scoped>
+const store = useAppStore();
+const $cookies = inject("$cookies") as VueCookies;
 
-.title{
-    display: flex;
-    align-items: center;
+const router = useRouter();
+const apiError = reactive({
+	status: false,
+	message: "",
+});
+const valid = ref(false);
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
+const loading = ref(false);
+
+const data = reactive(new RegistrationData());
+const pwConfirmation = ref("");
+
+function onSubmit() {
+	loading.value = true;
+	if (valid.value) {
+		store.api.register(data).then(
+			() => {
+				loading.value = false;
+				router.push("/login");
+			},
+			(error: AxiosError) => {
+				loading.value = false;
+				apiError.status = true;
+				apiError.message = (error.response?.data as any).detail;
+			}
+		);
+	}
+	loading.value = false;
 }
 
-.main-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 100vh;
+function validateEula(value: boolean) {
+	if (value) {
+		return true;
+	}
+	return "Bitte akzeptiere die Datenschutzerklärung";
 }
+</script>
 
-.form-container{
-    padding: 24px;
-    width: 416px;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    gap: 8px;
-}
-
-</style>
+<style scoped></style>

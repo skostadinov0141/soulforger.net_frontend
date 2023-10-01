@@ -1,53 +1,23 @@
-import { createApp } from 'vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUserSecret, 
-    faBook, faHandFist, 
-    faEarthEurope, 
-    faListCheck, 
-    faDiceD20, 
-    faHandHoldingHand, 
-    faArrowRight,
-    faPenToSquare,
-    faLink,
-    faHouse,
-    faDeleteLeft,
-} from '@fortawesome/free-solid-svg-icons';
-import App from './App.vue'
-import router from './router'
-import data from '../config.json';
+/**
+ * main.ts
+ *
+ * Bootstraps Vuetify and other plugins then mounts the App`
+ */
 
-import './assets/main.css'
-import axios, { type AxiosInstance } from 'axios'
-
-
-library.add(faUserSecret);
-library.add(faBook);
-library.add(faHandFist);
-library.add(faEarthEurope);
-library.add(faListCheck);
-library.add(faDiceD20);
-library.add(faHandHoldingHand);
-library.add(faArrowRight);
-library.add(faPenToSquare);
-library.add(faLink);
-library.add(faHouse);
-library.add(faDeleteLeft);
+// Components
+import App from "./App.vue";
+import { createApp } from "vue";
+import { registerPlugins } from "@/plugins";
+import "reflect-metadata";
+import "es6-shim";
+import { useAppStore } from "./store/app";
+import VueCookies from "vue-cookies";
 
 const app = createApp(App);
 
-app.use(router);
+registerPlugins(app);
 
-app.component('font-awesome-icon', FontAwesomeIcon);
+const store = useAppStore();
 
-app.provide<AxiosInstance>('apiBase', axios.create({
-    baseURL: data.api_base_url,
-    withCredentials: true,
-    headers:{
-        Accept:'applications/json'
-    }
-}));
-
-app.mount('#app')
-
-export {app}
+app.use(VueCookies);
+app.mount("#app");

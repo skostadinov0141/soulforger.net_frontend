@@ -1,13 +1,24 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
-
-  <RouterView />
-
+	<v-app>
+		<Navbar>
+			<RouterView />
+		</Navbar>
+	</v-app>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { inject, onMounted } from "vue";
+import Navbar from "./components/Navbar.vue";
+import { useAppStore } from "./store/app";
+import API from "./functional_components/API/api";
+import { VueCookies } from "vue-cookies";
 
-</style>
+const $cookies: VueCookies = inject("$cookies") as VueCookies;
+const store = useAppStore();
+
+onMounted(() => {
+	if ($cookies.isKey("authToken")) {
+		store.api.authorize($cookies.get("authToken"));
+	}
+});
+</script>

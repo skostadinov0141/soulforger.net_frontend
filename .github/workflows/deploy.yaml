@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   job_one:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: testing ssh connection
         uses: appleboy/ssh-action@master
-        with: 
+        with:
           host: soulforger.net
           username: simeon
           key: ${{ secrets.SSH_KEY }}
@@ -20,5 +20,5 @@ jobs:
             git pull origin master
             npm i
             npm run build
+            rm -r /var/www/soulforger.net/*
             cp -r dist/* /var/www/soulforger.net/
-            
