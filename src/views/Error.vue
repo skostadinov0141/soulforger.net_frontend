@@ -24,7 +24,11 @@ const route = useRoute();
 const error = ref<AxiosError>(new AxiosError());
 
 onMounted(() => {
-	error.value = JSON.parse(route.query.error as string);
+	if (route.query.error) {
+		error.value = JSON.parse(route.query.error as string);
+	} else {
+		error.value = new AxiosError();
+	}
 });
 </script>
 

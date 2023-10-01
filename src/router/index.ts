@@ -1,4 +1,5 @@
 // Composables
+import { useAppStore } from "@/store/app";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -37,5 +38,13 @@ const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),
 	routes,
 });
+
+// router.beforeEach(async (to, from, next) => {
+// 	const store = useAppStore();
+// 	if (!store.api.authed && to.meta.authLevel) {
+// 		return { name: "Login" };
+// 	}
+// 	next();
+// });
 
 export default router;

@@ -21,12 +21,14 @@ export default class Query {
 	}
 
 	toString(): string {
-		const queryParts: string[] = [];
+		const queryParts: object[] = [];
 		this.operations.forEach((operation) => {
 			queryParts.push(
-				`{ "${this.field}": { "$${operation.operator}": ${JSON.stringify(
-					operation.value
-				)} } }`
+				JSON.parse(
+					`{ "${this.field}": { "$${operation.operator}": ${JSON.stringify(
+						operation.value
+					)} } }`
+				)
 			);
 		});
 		return JSON.stringify({ $and: queryParts });
