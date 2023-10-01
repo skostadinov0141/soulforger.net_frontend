@@ -31,6 +31,9 @@ const routes = [
 	{
 		path: "/creator/nirve/:type",
 		component: () => import("@/views/Creator.vue"),
+		meta: {
+			authLevel: 50,
+		},
 	},
 ];
 
@@ -39,12 +42,11 @@ const router = createRouter({
 	routes,
 });
 
-// router.beforeEach(async (to, from, next) => {
-// 	const store = useAppStore();
-// 	if (!store.api.authed && to.meta.authLevel) {
-// 		return { name: "Login" };
-// 	}
-// 	next();
-// });
+router.beforeEach(async (to, from) => {
+	const store = useAppStore();
+	if (!store.api.authed && !to.meta.authLevel && to.path !== "/login") {
+		return "/login";
+	}
+});
 
 export default router;
