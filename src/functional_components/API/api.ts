@@ -96,14 +96,16 @@ export default class API {
 
 	validatePrivileges(privileges: Array<number>): boolean {
 		if (this.decodedToken) {
+			privileges.push(100);
 			return privileges.some((i) => this.decodedToken.priv_level.includes(i));
 		}
 		return false;
 	}
 
-	validatePrivilegesStrict(privilege: Array<number>): boolean {
+	validatePrivilegesStrict(privileges: Array<number>): boolean {
 		if (this.decodedToken) {
-			return privilege.every((i) => this.decodedToken.priv_level.includes(i));
+			privileges.push(100);
+			return privileges.every((i) => this.decodedToken.priv_level.includes(i));
 		}
 		return false;
 	}

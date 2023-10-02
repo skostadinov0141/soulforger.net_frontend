@@ -61,8 +61,6 @@ router.beforeEach((to, from) => {
 router.beforeEach((to, from) => {
 	const store = useAppStore();
 	const snackbarStore = useSnackbarStore();
-	console.log(to.meta.authLevels);
-	// console.log(store.api.validatePrivileges(to.meta.authLevels as Array<number>));
 	if (to.meta.authLevels) {
 		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {
 			snackbarStore.$patch({
