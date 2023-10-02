@@ -1,5 +1,6 @@
 // Composables
 import { useAppStore } from "@/store/app";
+import { useSnackbarStore } from "@/store/snackbar";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -44,7 +45,14 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
 	const store = useAppStore();
-	if (!store.api.authed && !to.meta.authLevel && to.path !== "/login") {
+	const snackbarStore = useSnackbarStore();
+	if (!store.api.authed && to.meta.authLevel && to.path !== "/login") {
+		snackbarStore.$patch({
+			snackbar: {
+				message: "Sie müssen sich zuerst anmelden!",
+				type: "warning",
+			},
+		});
 		return "/login";
 	}
 });
