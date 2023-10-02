@@ -1,5 +1,6 @@
 <template>
 	<v-app>
+		<Snackbar />
 		<Navbar>
 			<RouterView />
 		</Navbar>
@@ -7,11 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted } from "vue";
+import { inject, onMounted, watch } from "vue";
 import Navbar from "./components/Navbar.vue";
 import { useAppStore } from "./store/app";
-import API from "./functional_components/API/api";
 import { VueCookies } from "vue-cookies";
+import { useRoute } from "vue-router";
+import Snackbar from "./components/Snackbar.vue";
 
 const $cookies: VueCookies = inject("$cookies") as VueCookies;
 const store = useAppStore();

@@ -55,8 +55,7 @@ function getItems() {
 
 onMounted(() => {
 	if (!types.value.includes(route.params.type as string)) {
-		router.replace("/error");
-		console.log(route.params.type);
+		router.push("/error");
 		return;
 	}
 	getItems();

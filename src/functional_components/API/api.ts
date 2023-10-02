@@ -2,11 +2,13 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { VueCookies } from "vue-cookies";
 import { AuthResult, RegistrationData } from "../interfaces/api";
 import { plainToClass } from "class-transformer";
+import jwtDecode from "jwt-decode";
 
 export default class API {
 	axios: AxiosInstance;
 	authed: boolean = false;
 	token: string = "";
+	decodedToken: any = undefined;
 
 	constructor(authToken?: string) {
 		if (authToken) {
@@ -43,7 +45,7 @@ export default class API {
 		params.append("remember", remember.toString());
 		return new Promise((resolve, reject) => {
 			this.axios
-				?.post("/auth/login", params)
+				.post("/auth/login", params)
 				.then((res: AxiosResponse) => {
 					let authResult = plainToClass(AuthResult, res.data);
 					cookies.set("authToken", authResult.access_token, authResult.exp);
@@ -77,6 +79,7 @@ export default class API {
 			},
 		});
 		this.token = authToken;
+		this.decodedToken = jwtDecode(authToken);
 		this.authed = true;
 	}
 
@@ -89,5 +92,21 @@ export default class API {
 			throw new Error("No axios instance found!");
 		}
 		return this.axios;
+	}
+
+	validatePrivileges(privileges: Array<number>): boolean {
+		if (this.decodedToken) {
+			privileges.push(100);
+			return privileges.some((i) => this.decodedToken.priv_level.includes(i));
+		}
+		return false;
+	}
+
+	validatePrivilegesStrict(privileges: Array<number>): boolean {
+		if (this.decodedToken) {
+			privileges.push(100);
+			return privileges.every((i) => this.decodedToken.priv_level.includes(i));
+		}
+		return false;
 	}
 }
