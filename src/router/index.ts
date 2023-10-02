@@ -33,7 +33,8 @@ const routes = [
 		path: "/creator/nirve/:type",
 		component: () => import("@/views/Creator.vue"),
 		meta: {
-			authLevel: 50,
+			authLevels: [50],
+			requiresAuth: true,
 		},
 	},
 ];
@@ -43,17 +44,35 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach((to, from) => {
 	const store = useAppStore();
 	const snackbarStore = useSnackbarStore();
-	if (!store.api.authed && to.meta.authLevel && to.path !== "/login") {
+	if (!store.api.authed && to.meta.requiresAuth && to.path !== "/login") {
 		snackbarStore.$patch({
 			snackbar: {
-				message: "Sie müssen sich zuerst anmelden!",
+				message: "Du musst dich zuerst einloggen!",
 				type: "warning",
 			},
 		});
 		return "/login";
+	}
+});
+
+router.beforeEach((to, from) => {
+	const store = useAppStore();
+	const snackbarStore = useSnackbarStore();
+	console.log(to.meta.authLevels);
+	// console.log(store.api.validatePrivileges(to.meta.authLevels as Array<number>));
+	if (to.meta.authLevels) {
+		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {
+			snackbarStore.$patch({
+				snackbar: {
+					message: "Du hast keine ausreichenden Berechtigungen!",
+					type: "warning",
+				},
+			});
+			return from.fullPath;
+		}
 	}
 });
 
