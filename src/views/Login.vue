@@ -1,7 +1,7 @@
 <template>
-	<VRow style="height: 100%">
-		<VCol v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
-			<VCard
+	<v-row style="height: 100%">
+		<v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+			<v-card
 				class="text-secondary ma-8 ma-lg-0"
 				variant="elevated"
 				rounded="md"
@@ -9,14 +9,14 @@
 				color="surface-lighten-1"
 				v-if="n == 2"
 			>
-				<VImg
+				<v-img
 					height="160px"
 					cover
 					src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
-				></VImg>
-				<VCardItem class="pb-4 pt-6">
-					<VForm :disabled="loading" @submit.prevent="onSubmit" v-model="valid">
-						<VTextField
+				></v-img>
+				<v-card-item class="pb-4 pt-6">
+					<v-form :disabled="loading" @submit.prevent="onSubmit" v-model="valid">
+						<v-text-field
 							density="compact"
 							class="mb-2"
 							:rules="[required]"
@@ -29,8 +29,8 @@
 							placeholder="musterman@gmail.com"
 							type="email"
 							clearable
-						></VTextField>
-						<VTextField
+						></v-text-field>
+						<v-text-field
 							density="compact"
 							:rules="[required]"
 							bg-color="surface-lighten-2"
@@ -42,13 +42,13 @@
 							required
 							label="Passwort"
 							:type="showPassword ? 'text' : 'password'"
-						></VTextField>
-						<VCheckbox
+						></v-text-field>
+						<v-checkbox
 							:disabled="loading"
 							label="Angemeldet bleiben"
 							v-model="remember"
-						></VCheckbox>
-						<VAlert
+						></v-checkbox>
+						<v-alert
 							icon="mdi-alert-circle"
 							v-if="apiError.status"
 							class="mb-4"
@@ -56,28 +56,28 @@
 							dense
 						>
 							{{ apiError.message }}
-						</VAlert>
-						<VBtn
+						</v-alert>
+						<v-btn
 							class="mb-4"
 							append-icon="mdi-login"
 							color="indigo-darken-2"
 							style="width: 100%"
 							type="submit"
-							>Anmelden</VBtn
+							>Anmelden</v-btn
 						>
-						<VBtn
+						<v-btn
 							append-icon="mdi-account-plus"
 							color="indigo-lighten-3"
 							style="width: 100%"
 							type="submit"
 							variant="text"
-							>Registrieren</VBtn
+							>Registrieren</v-btn
 						>
-					</VForm>
-				</VCardItem>
-			</VCard>
-		</VCol>
-	</VRow>
+					</v-form>
+				</v-card-item>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script setup lang="ts">
