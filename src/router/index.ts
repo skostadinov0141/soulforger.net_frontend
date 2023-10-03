@@ -1,7 +1,8 @@
 // Composables
 import { useAppStore } from "@/store/app";
 import { useSnackbarStore } from "@/store/snackbar";
-import { createRouter, createWebHistory } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
+import { nirveCreatorGuard } from "./routingGuards";
 
 const routes = [
 	{
@@ -36,6 +37,8 @@ const routes = [
 			authLevels: [50],
 			requiresAuth: true,
 		},
+		beforeEnter: nirveCreatorGuard,
+		onBeforeRouteUpdate: nirveCreatorGuard,
 	},
 ];
 
@@ -69,7 +72,7 @@ router.beforeEach((to, from) => {
 					type: "warning",
 				},
 			});
-			return from.fullPath;
+			return false;
 		}
 	}
 });

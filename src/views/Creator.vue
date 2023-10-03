@@ -1,25 +1,16 @@
 <script setup lang="ts">
 import Query from "@/functional_components/API/queryConstructor";
 import BaseModel from "@/functional_components/nirve/nirve_character_v4/CBaseModel";
+import { nirveCreatorGuard } from "@/router/routingGuards";
 import { useAppStore } from "@/store/app";
 import { DeepReadonly, onMounted } from "vue";
 import { Ref, reactive, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 const reactiveModel = reactive(new BaseModel());
 const store = useAppStore();
 const output: Ref<string> = ref<string>("");
 const route = useRoute();
 const router = useRouter();
-const types: Ref<string[]> = ref([
-	"bending-skills",
-	"items",
-	"spells",
-	"character-classes",
-	"disadvantages",
-	"races",
-	"religions",
-	"skills",
-]);
 const perPage = ref(10);
 const page = ref(1);
 const datatableName = (route.params.type as string).toLocaleUpperCase();
@@ -54,12 +45,10 @@ function getItems() {
 }
 
 onMounted(() => {
-	if (!types.value.includes(route.params.type as string)) {
-		router.push("/error");
-		return;
-	}
 	getItems();
 });
+
+onBeforeRouteUpdate(nirveCreatorGuard);
 
 function editItem(item: any) {
 	// TODO: Implement edit functionality
