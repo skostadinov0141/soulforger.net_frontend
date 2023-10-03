@@ -6,6 +6,7 @@ import { useAppStore } from "@/store/app";
 import { DeepReadonly, onMounted } from "vue";
 import { Ref, reactive, ref } from "vue";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+
 const reactiveModel = reactive(new BaseModel());
 const store = useAppStore();
 const output: Ref<string> = ref<string>("");
