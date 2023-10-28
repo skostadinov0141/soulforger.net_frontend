@@ -50,7 +50,7 @@ export default class API {
 	 * @throws {AxiosError} API Error if token refresh was not successful
 	 * @memberof API
 	 */
-	async refreshToken(refreshToken: string) {
+	private async refreshToken(refreshToken: string) {
 		return new Promise((resolve, reject) => {
 			axios
 				.post(`${this.baseUrl}/${this.apiVersion}/auth/refresh`, {
