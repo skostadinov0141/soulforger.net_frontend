@@ -20,7 +20,7 @@ export class ProfileService extends BaseService {
 	override async getById(id: string): Promise<Profile> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.get(`${this.uri}/${id}`)
 					.then((res) => {
@@ -49,7 +49,7 @@ export class ProfileService extends BaseService {
 	): Promise<Profile> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				let parsedQuery: any = undefined;
 				if (query) {
 					parsedQuery = {};
@@ -87,7 +87,7 @@ export class ProfileService extends BaseService {
 	async patch(id: string, data: Partial<UpdateUserDto>): Promise<Profile> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.patch(`${this.uri}/${id}`, data)
 					.then((res) => {

@@ -24,7 +24,7 @@ export class NirveCreatorService {
 	async post(data: NirveCreateDto): Promise<NirveCommon> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.post(`${this.uri}`, data)
 					.then((res) => {
@@ -47,7 +47,7 @@ export class NirveCreatorService {
 	async getById(id: string, type: string): Promise<NirveCommon> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.get(`${this.uri}/${id}`)
 					.then((res) => {
@@ -76,7 +76,7 @@ export class NirveCreatorService {
 	): Promise<NirveCommon> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				let parsedQuery: any = undefined;
 				if (query) {
 					parsedQuery = {};
@@ -114,7 +114,7 @@ export class NirveCreatorService {
 	async patch(id: string, data: Partial<NirveCommon>): Promise<NirveCommon> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.patch(`${this.uri}/${id}`, data)
 					.then((res) => {
@@ -137,7 +137,7 @@ export class NirveCreatorService {
 	async deleteById(id: string): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios();
 				axiosInstance
 					.delete(`${this.uri}/${id}`)
 					.then((res) => {

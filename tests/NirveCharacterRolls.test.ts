@@ -11,8 +11,8 @@ import {
 
 test("Parse formula", () => {
 	// create
-	let character = new Character();
-	let roll = new Roll();
+	const character = new Character();
+	const roll = new Roll();
 
 	// modify
 	character.baseStats.strength.default = 10;
@@ -25,9 +25,9 @@ test("Parse formula", () => {
 		value: "baseStats.acrobatics.current",
 	});
 	roll.formula = "(Kraft + Akrobatik):2";
-	let result = roll.parseFormula(character);
-	let startStrength = character.baseStats.strength.current;
-	let startAcrobatics = character.baseStats.acrobatics.current;
+	const result = roll.parseFormula(character);
+	const startStrength = character.baseStats.strength.current;
+	const startAcrobatics = character.baseStats.acrobatics.current;
 
 	// assert
 	expect(result).toBe(`(${startStrength} + ${startAcrobatics}):2`);
@@ -35,8 +35,8 @@ test("Parse formula", () => {
 
 test("Calculate roll value", () => {
 	// create
-	let character = new Character();
-	let roll = new Roll();
+	const character = new Character();
+	const roll = new Roll();
 
 	// modify
 	character.baseStats.strength.default = 10;
@@ -49,9 +49,9 @@ test("Calculate roll value", () => {
 		value: "baseStats.acrobatics.current",
 	});
 	roll.formula = "(Kraft + Akrobatik)/2";
-	let result = roll.roll(character);
-	let startStrength = character.baseStats.strength.current;
-	let startAcrobatics = character.baseStats.acrobatics.current;
+	const result = roll.roll(character);
+	const startStrength = character.baseStats.strength.current;
+	const startAcrobatics = character.baseStats.acrobatics.current;
 
 	// assert
 	expect(result).not.toBe(false);
@@ -62,8 +62,8 @@ test("Calculate roll value", () => {
 
 test("Calculate roll value with modification", () => {
 	// create
-	let character = new Character();
-	let roll = new Roll();
+	const character = new Character();
+	const roll = new Roll();
 
 	// modify
 	character.baseStats.strength.default = 10;
@@ -76,11 +76,11 @@ test("Calculate roll value with modification", () => {
 		value: "baseStats.acrobatics.current",
 	});
 	roll.formula = "(Kraft + Akrobatik)/2";
-	let modification: number = 10;
+	const modification: number = 10;
 	roll.modifications.push(modification);
-	let result = roll.roll(character);
-	let startStrength = character.baseStats.strength.current;
-	let startAcrobatics = character.baseStats.acrobatics.current;
+	const result = roll.roll(character);
+	const startStrength = character.baseStats.strength.current;
+	const startAcrobatics = character.baseStats.acrobatics.current;
 
 	// assert
 	expect(result).not.toBe(false);

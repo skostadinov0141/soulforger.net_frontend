@@ -7,8 +7,8 @@ import { v4 } from "uuid";
 
 test("Add general Modifier", () => {
 	// create
-	let character = new Character();
-	let modifier = <IModifier>{
+	const character = new Character();
+	const modifier = <IModifier>{
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -19,7 +19,7 @@ test("Add general Modifier", () => {
 	};
 
 	// modify
-	let result = character.addModifier(modifier);
+	const result = character.addModifier(modifier);
 
 	// assert
 	expect(result).toBe(true);
@@ -29,8 +29,8 @@ test("Add general Modifier", () => {
 
 test("Add and apply general Modifier", () => {
 	// create
-	let character = new Character();
-	let modifier = <IModifier>{
+	const character = new Character();
+	const modifier = <IModifier>{
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -39,11 +39,11 @@ test("Add and apply general Modifier", () => {
 		active: false,
 		target: "age",
 	};
-	let startAge = character.age;
+	const startAge = character.age;
 
 	// modify
-	let resultAddition = character.addModifier(modifier);
-	let resultApply = character.applyModifier(0);
+	const resultAddition = character.addModifier(modifier);
+	const resultApply = character.applyModifier(0);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -56,8 +56,8 @@ test("Add and apply general Modifier", () => {
 
 test("Add and apply general Modifier with negative value", () => {
 	// create
-	let character = new Character();
-	let modifier = <IModifier>{
+	const character = new Character();
+	const modifier = <IModifier>{
 		id: "test",
 		description: "test modifier",
 		mode: "-",
@@ -66,11 +66,11 @@ test("Add and apply general Modifier with negative value", () => {
 		active: false,
 		target: "age",
 	};
-	let startAge = character.age;
+	const startAge = character.age;
 
 	// modify
-	let resultAddition = character.addModifier(modifier);
-	let resultApply = character.applyModifier(0);
+	const resultAddition = character.addModifier(modifier);
+	const resultApply = character.applyModifier(0);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -83,9 +83,9 @@ test("Add and apply general Modifier with negative value", () => {
 
 test("Add and apply general Modifier with multiplication", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.age = 10;
-	let modifier = <IModifier>{
+	const modifier = <IModifier>{
 		id: "test",
 		description: "test modifier",
 		mode: "*",
@@ -94,11 +94,11 @@ test("Add and apply general Modifier with multiplication", () => {
 		active: false,
 		target: "age",
 	};
-	let startAge = character.age;
+	const startAge = character.age;
 
 	// modify
-	let resultAddition = character.addModifier(modifier);
-	let resultApply = character.applyModifier(0);
+	const resultAddition = character.addModifier(modifier);
+	const resultApply = character.applyModifier(0);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -111,9 +111,9 @@ test("Add and apply general Modifier with multiplication", () => {
 
 test("Add and apply general Modifier with division", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.age = 10;
-	let modifier = <IModifier>{
+	const modifier = <IModifier>{
 		id: "test",
 		description: "test modifier",
 		mode: "/",
@@ -122,11 +122,11 @@ test("Add and apply general Modifier with division", () => {
 		active: false,
 		target: "age",
 	};
-	let startAge = character.age;
+	const startAge = character.age;
 
 	// modify
-	let resultAddition = character.addModifier(modifier);
-	let resultApply = character.applyModifier(0);
+	const resultAddition = character.addModifier(modifier);
+	const resultApply = character.applyModifier(0);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -139,10 +139,10 @@ test("Add and apply general Modifier with division", () => {
 
 test("Add Class with one requirement (fulfilled)", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.level = 1;
 	character.xp = 100;
-	let modifier: IModifier = {
+	const modifier: IModifier = {
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -151,13 +151,13 @@ test("Add Class with one requirement (fulfilled)", () => {
 		active: false,
 		target: "age",
 	};
-	let requirement: IRequirement = {
+	const requirement: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 1,
 		target: "level",
 	};
-	let _class: ICharacterClassBase = {
+	const _class: ICharacterClassBase = {
 		id: v4(),
 		name: "test class",
 		level: 1,
@@ -167,11 +167,11 @@ test("Add Class with one requirement (fulfilled)", () => {
 		requirements: [requirement],
 		options: [[modifier]],
 	};
-	let startAge = character.age;
-	let startXP = character.xp;
+	const startAge = character.age;
+	const startXP = character.xp;
 
 	// modify
-	let resultAddition = character.addClass(_class);
+	const resultAddition = character.addClass(_class);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -188,10 +188,10 @@ test("Add Class with one requirement (fulfilled)", () => {
 
 test("Add Class with one requirement (not fulfilled)", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.level = 1;
 	character.xp = 100;
-	let modifier: IModifier = {
+	const modifier: IModifier = {
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -200,13 +200,13 @@ test("Add Class with one requirement (not fulfilled)", () => {
 		active: false,
 		target: "age",
 	};
-	let requirement: IRequirement = {
+	const requirement: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 2,
 		target: "level",
 	};
-	let _class: ICharacterClassBase = {
+	const _class: ICharacterClassBase = {
 		id: v4(),
 		name: "test class",
 		level: 1,
@@ -216,11 +216,11 @@ test("Add Class with one requirement (not fulfilled)", () => {
 		requirements: [requirement],
 		options: [[modifier]],
 	};
-	let startAge = character.age;
-	let startXP = character.xp;
+	const startAge = character.age;
+	const startXP = character.xp;
 
 	// modify
-	let resultAddition = character.addClass(_class);
+	const resultAddition = character.addClass(_class);
 
 	// assert
 	expect(resultAddition).toBe(false);
@@ -232,10 +232,10 @@ test("Add Class with one requirement (not fulfilled)", () => {
 
 test("Add Class with multiple requirements (fulfilled)", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.level = 2;
 	character.xp = 100;
-	let modifier: IModifier = {
+	const modifier: IModifier = {
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -244,19 +244,19 @@ test("Add Class with multiple requirements (fulfilled)", () => {
 		active: false,
 		target: "age",
 	};
-	let requirement1: IRequirement = {
+	const requirement1: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 1,
 		target: "level",
 	};
-	let requirement2: IRequirement = {
+	const requirement2: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 2,
 		target: "level",
 	};
-	let _class: ICharacterClassBase = {
+	const _class: ICharacterClassBase = {
 		id: v4(),
 		name: "test class",
 		level: 1,
@@ -266,11 +266,11 @@ test("Add Class with multiple requirements (fulfilled)", () => {
 		requirements: [requirement1, requirement2],
 		options: [[modifier]],
 	};
-	let startAge = character.age;
-	let startXP = character.xp;
+	const startAge = character.age;
+	const startXP = character.xp;
 
 	// modify
-	let resultAddition = character.addClass(_class);
+	const resultAddition = character.addClass(_class);
 
 	// assert
 	expect(resultAddition).toBe(true);
@@ -287,10 +287,10 @@ test("Add Class with multiple requirements (fulfilled)", () => {
 
 test("Add Class with multiple requirements (not fulfilled)", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.level = 1;
 	character.xp = 100;
-	let modifier: IModifier = {
+	const modifier: IModifier = {
 		id: "test",
 		description: "test modifier",
 		mode: "+",
@@ -299,19 +299,19 @@ test("Add Class with multiple requirements (not fulfilled)", () => {
 		active: false,
 		target: "age",
 	};
-	let requirement1: IRequirement = {
+	const requirement1: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 1,
 		target: "level",
 	};
-	let requirement2: IRequirement = {
+	const requirement2: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 2,
 		target: "level",
 	};
-	let _class: ICharacterClassBase = {
+	const _class: ICharacterClassBase = {
 		id: v4(),
 		name: "test class",
 		level: 1,
@@ -321,11 +321,11 @@ test("Add Class with multiple requirements (not fulfilled)", () => {
 		requirements: [requirement1, requirement2],
 		options: [[modifier]],
 	};
-	let startAge = character.age;
-	let startXP = character.xp;
+	const startAge = character.age;
+	const startXP = character.xp;
 
 	// modify
-	let resultAddition = character.addClass(_class);
+	const resultAddition = character.addClass(_class);
 
 	// assert
 	expect(resultAddition).toBe(false);
@@ -337,10 +337,10 @@ test("Add Class with multiple requirements (not fulfilled)", () => {
 
 test("Add Class with multiple modifiers", () => {
 	// create
-	let character = new Character();
+	const character = new Character();
 	character.level = 1;
 	character.xp = 100;
-	let modifier1: IModifier = {
+	const modifier1: IModifier = {
 		id: "test1",
 		description: "test modifier",
 		mode: "+",
@@ -349,7 +349,7 @@ test("Add Class with multiple modifiers", () => {
 		active: false,
 		target: "age",
 	};
-	let modifier2: IModifier = {
+	const modifier2: IModifier = {
 		id: "test2",
 		description: "test modifier",
 		mode: "+",
@@ -358,13 +358,13 @@ test("Add Class with multiple modifiers", () => {
 		active: false,
 		target: "level",
 	};
-	let requirement1: IRequirement = {
+	const requirement1: IRequirement = {
 		description: "test requirement",
 		mode: ">=",
 		value: 1,
 		target: "level",
 	};
-	let _class: ICharacterClassBase = {
+	const _class: ICharacterClassBase = {
 		id: v4(),
 		name: "test class",
 		level: 1,
@@ -377,12 +377,12 @@ test("Add Class with multiple modifiers", () => {
 		],
 		requirements: [requirement1],
 	};
-	let startAge = character.age;
-	let startXP = character.xp;
-	let startLevel = character.level;
+	const startAge = character.age;
+	const startXP = character.xp;
+	const startLevel = character.level;
 
 	// modify
-	let resultAddition = character.addClass(_class);
+	const resultAddition = character.addClass(_class);
 
 	// assert
 	expect(resultAddition).toBe(true);

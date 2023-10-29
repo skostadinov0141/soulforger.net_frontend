@@ -50,11 +50,11 @@ export default class Character implements ICharacter {
 			}
 		}
 		this.xp -= input.baseCost;
-		let modifiers: IModifier[] = [];
+		const modifiers: IModifier[] = [];
 		for (let i = 0; i < input.options.length; i++) {
 			modifiers.push(input.options[i][input.choices[i]]);
 		}
-		let compiledClass: ICharacterClass = {
+		const compiledClass: ICharacterClass = {
 			id: input.id,
 			name: input.name,
 			level: input.level,
@@ -62,7 +62,7 @@ export default class Character implements ICharacter {
 		};
 		this.characterClass.push(compiledClass);
 		if (modifiers && modifiers.length > 0) {
-			let currentClassCount = this.characterClass.length - 1;
+			const currentClassCount = this.characterClass.length - 1;
 			for (let i = 0; i < modifiers.length; i++) {
 				if (i > 0) {
 					this.xp -= input.levelCost;
@@ -77,7 +77,7 @@ export default class Character implements ICharacter {
 	}
 
 	checkRequirement(requirement: IRequirement): boolean {
-		let target = getProperty(this, requirement.target);
+		const target = getProperty(this, requirement.target);
 		if (typeof target !== typeof requirement.value) {
 			return false;
 		}
@@ -101,11 +101,11 @@ export default class Character implements ICharacter {
 	}
 
 	applyModifier(id: number): boolean {
-		let modifier: IModifier = getProperty(
+		const modifier: IModifier = getProperty(
 			this,
 			this.modifierLinks[id]
 		) as IModifier;
-		let target = getProperty(this, modifier.target);
+		const target = getProperty(this, modifier.target);
 		if (typeof modifier.value !== typeof target) {
 			return false;
 		}

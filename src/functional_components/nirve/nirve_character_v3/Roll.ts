@@ -35,7 +35,7 @@ export class Roll {
 	parseFormula(parent: object): string | false {
 		let parsedFormula = this.formula;
 		for (const variable of this.variables) {
-			let findResult = getProperty(parent, variable.value);
+			const findResult = getProperty(parent, variable.value);
 			if (!findResult) {
 				return false;
 			}
@@ -51,7 +51,7 @@ export class Roll {
 	}
 
 	roll(parent: object): IRollResult | false {
-		let parsedFormula = this.parseFormula(parent);
+		const parsedFormula = this.parseFormula(parent);
 		if (!parsedFormula) {
 			return false;
 		}
@@ -60,8 +60,8 @@ export class Roll {
 		for (const modification of this.modifications) {
 			rollValue += modification;
 		}
-		let rollDice = this.rollDice(1, 100);
-		let difference = rollValue - rollDice;
+		const rollDice = this.rollDice(1, 100);
+		const difference = rollValue - rollDice;
 		return {
 			success: rollValue >= rollDice,
 			rollValue: rollValue,
