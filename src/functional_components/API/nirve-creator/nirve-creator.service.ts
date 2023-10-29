@@ -3,11 +3,40 @@ import BaseService from "../abstract.service";
 import API from "../api";
 import { Queries } from "../queryConstructor";
 import { NirveCommon } from "./nirve-common.class";
+import { NirveCreateDto } from "./dto/nirve-create.dto";
+import { NirveCommonDto } from "./dto/nirve-common.dto";
 
-export class UserService extends BaseService {
+export class NirveCreatorService {
+	api: API;
+	uri: string;
+
 	constructor(api: API) {
-		super(api);
-		this.uri = "profile";
+		this.api = api;
+		this.uri = "nirve-creator";
+	}
+
+	/**
+	 * Sends a POST request to create a new Nirve object.
+	 * @param data - The data to be sent in the request body.
+	 * @returns A Promise that resolves with the created Nirve object.
+	 * @throws An error if the request fails.
+	 */
+	async post(data: NirveCreateDto): Promise<NirveCommon> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let axiosInstance = await this.api.getAxios();
+				axiosInstance
+					.post(`${this.uri}`, data)
+					.then((res) => {
+						resolve(plainToClass(NirveCommon, res.data));
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			} catch (err) {
+				reject(err);
+			}
+		});
 	}
 
 	/**
@@ -15,7 +44,7 @@ export class UserService extends BaseService {
 	 * @param id The ID of the user to retrieve.
 	 * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
 	 */
-	override async getById(id: string): Promise<NirveCommon> {
+	async getById(id: string, type: string): Promise<NirveCommon> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let axiosInstance = await this.api.getAxios();

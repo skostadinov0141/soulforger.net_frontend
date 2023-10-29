@@ -12,7 +12,7 @@ export default abstract class BaseService {
 	/**
 	 * NOT IMPLEMENTED, DO NOT USE
 	 */
-	async post(data: any): Promise<any> {}
+	async post(data: any, ...args: any): Promise<any> {}
 
 	/**
 	 * NOT IMPLEMENTED, DO NOT USE
