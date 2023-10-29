@@ -1,4 +1,5 @@
-import API from "./api_new";
+import API from "./api";
+import { Queries } from "./queryConstructor";
 
 export default abstract class BaseService {
 	protected api: API;
@@ -8,19 +9,31 @@ export default abstract class BaseService {
 		this.api = api;
 	}
 
-	// Create
-	abstract post(data: any): Promise<any>;
+	/**
+	 * NOT IMPLEMENTED, DO NOT USE
+	 */
+	async post(data: any): Promise<any> {}
 
-	// Read
-	abstract get(): Promise<any>;
-	abstract getById(id: string): Promise<any>;
-	abstract search(query: string): Promise<any>;
+	/**
+	 * NOT IMPLEMENTED, DO NOT USE
+	 */
+	async getById(id: string): Promise<any> {}
+	/**
+	 * NOT IMPLEMENTED, DO NOT USE
+	 */
+	async search<T>(
+		query?: Partial<{ [K in keyof T]: Queries }>,
+		limit?: number,
+		skip?: number
+	): Promise<any> {}
 
-	// Update
-	abstract put(data: any): Promise<any>;
-	abstract putById(id: string, data: any): Promise<any>;
+	/**
+	 * NOT IMPLEMENTED, DO NOT USE
+	 */
+	async patch(id: string, data: any): Promise<any> {}
 
-	// Delete
-	abstract delete(): Promise<any>;
-	abstract deleteById(id: string): Promise<any>;
+	/**
+	 * NOT IMPLEMENTED, DO NOT USE
+	 */
+	async deleteById(id: string): Promise<any> {}
 }
