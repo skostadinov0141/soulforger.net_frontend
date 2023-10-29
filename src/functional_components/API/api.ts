@@ -1,18 +1,20 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { TokenDto } from "./dto/token.dto";
 import { SignInDto } from "./dto/sign-in.dto";
 import { VueCookies } from "vue-cookies";
 import { UserService } from "./user/user.service";
 import { ProfileService } from "./profile/profile.service";
+import { NirveCreatorService } from "./nirve-creator/nirve-creator.service";
+import jwtDecode from "jwt-decode";
 
 export default class API {
-	token?: TokenDto;
 	cookies: VueCookies;
 	baseUrl: string = import.meta.env.VITE_API_URL;
 	apiVersion: string = import.meta.env.VITE_API_VERSION;
 
 	userService: UserService = new UserService(this);
 	profileService: ProfileService = new ProfileService(this);
+	nirveCreatorService: NirveCreatorService = new NirveCreatorService(this);
 
 	constructor(cookies: VueCookies) {
 		this.cookies = cookies;
@@ -25,14 +27,19 @@ export default class API {
 	 * @throws {AxiosError} API Error if token refresh was not successful
 	 * @memberof API
 	 */
-	async getAxios(): Promise<AxiosInstance> {
+	async getAxios(isPublic?: boolean): Promise<AxiosInstance> {
+		if (isPublic) {
+			return axios.create({
+				baseURL: `${this.baseUrl}/${this.apiVersion}`,
+			});
+		}
 		return new Promise(async (resolve, reject) => {
-			if (!this.token) {
+			if (!this.getToken()) {
 				reject("Du bist nicht eingeloggt!");
 			}
-			if (this.token!.expires_at < Date.now()) {
+			if (this.getToken()!.expires_at < Date.now()) {
 				try {
-					await this.refreshToken(this.token!.refresh_token);
+					await this.refreshToken();
 				} catch (err) {
 					reject(err);
 				}
@@ -41,7 +48,7 @@ export default class API {
 				axios.create({
 					baseURL: `${this.baseUrl}/${this.apiVersion}`,
 					headers: {
-						Authorization: `Bearer ${this.token?.access_token}`,
+						Authorization: `Bearer ${this.getToken()?.access_token}`,
 					},
 				})
 			);
@@ -55,19 +62,15 @@ export default class API {
 	 * @throws {AxiosError} API Error if token refresh was not successful
 	 * @memberof API
 	 */
-	private async refreshToken(refreshToken: string) {
+	async refreshToken() {
+		console.log(this.getToken());
 		return new Promise((resolve, reject) => {
 			axios
 				.post(`${this.baseUrl}/${this.apiVersion}/auth/refresh`, {
-					refresh_token: refreshToken,
+					refresh_token: this.getToken()?.refresh_token,
 				})
-				.then((res) => {
-					this.token = res.data;
-					this.cookies.set(
-						"token",
-						this.token?.access_token,
-						this.token?.expires_at
-					);
+				.then((res: AxiosResponse) => {
+					this.cookies.set("token", res.data, res.data.expires_at);
 					resolve(true);
 				})
 				.catch((err: AxiosError) => {
@@ -83,22 +86,39 @@ export default class API {
 	 * @throws {AxiosError} API Error if login was not successful
 	 * @memberof API
 	 */
-	async login(loginDto: SignInDto): Promise<boolean> {
+	async login(
+		loginDto: SignInDto,
+		cookiesInstance: VueCookies
+	): Promise<boolean> {
+		this.cookies = cookiesInstance;
 		return new Promise((resolve, reject) => {
 			axios
 				.post(`${this.baseUrl}/${this.apiVersion}/auth/sign-in`, loginDto)
-				.then((res) => {
-					this.token = res.data;
-					this.cookies.set(
-						"token",
-						this.token?.access_token,
-						this.token?.expires_at
-					);
+				.then((res: AxiosResponse) => {
+					this.cookies.set("token", res.data, res.data.expires_at);
 					resolve(true);
 				})
 				.catch((err: AxiosError) => {
 					reject(err.message);
 				});
 		});
+	}
+
+	/**
+	 * Decodes the access token and returns the decoded token data.
+	 * @returns {TokenDto} The decoded token data.
+	 * @throws {Error} If no token is found.
+	 */
+	decodeToken(): any {
+		if (!this.getToken()?.access_token) throw new Error("No token found!");
+		return jwtDecode(this.getToken()?.access_token!);
+	}
+
+	/**
+	 * Retrieves the token from the cookies.
+	 * @returns The token if it exists, otherwise undefined.
+	 */
+	getToken(): TokenDto | undefined {
+		return this.cookies.get("token");
 	}
 }

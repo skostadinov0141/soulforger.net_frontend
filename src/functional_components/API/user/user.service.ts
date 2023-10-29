@@ -44,7 +44,7 @@ export class UserService extends BaseService {
 	async post(data: CreateUserDto): Promise<User> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const axiosInstance = await this.api.getAxios();
+				const axiosInstance = await this.api.getAxios(true);
 				axiosInstance
 					.post(`${this.uri}`, data)
 					.then((res) => {

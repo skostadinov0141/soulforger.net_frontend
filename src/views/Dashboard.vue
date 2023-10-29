@@ -1,69 +1,20 @@
 <script setup lang="ts">
-import TestKlasse from '@/functional_components/TestKlasse';
-import { text } from 'stream/consumers';
-import { ComputedRef, computed, reactive } from 'vue';
-import { watch } from 'vue';
-import { Ref, ref } from 'vue';
+import { EqualsQuery } from "@/functional_components/API/queryConstructor";
+import { useApiStore } from "@/store/api";
+import { useAppStore } from "@/store/app";
 
-	const testObjekt = reactive(new TestKlasse());
+const appStore = useApiStore();
 
+async function test() {
+	await appStore.api.refreshToken();
+	const profile = appStore.api.profileService.search({
+		owner: new EqualsQuery(appStore.api.decodeToken().sub),
+	});
+}
 </script>
-
-
-
 
 <template>
 	<div class="input-container">
-		<input 
-			type="number" 
-			name="" 
-			id="val1"
-			v-model="testObjekt.value1"/>
-		<input 
-			type="number" 
-			name="" 
-			id="val2"
-			v-model="testObjekt.value2"/>
-		<button class="calc-button" @click="testObjekt.AddNumbers()">
-			Add
-		</button>
-		<button class="calc-button" @click="testObjekt.SubtractNumbers()">
-			Sub
-		</button>
-		<button class="calc-button" @click="testObjekt.MultiplyNumbers()">
-			Mul
-		</button>
-		<button class="calc-button" @click="testObjekt.DivideNumbers()">
-			Div
-		</button>
-		<p>
-			{{ testObjekt.result }}
-		</p>
+		<v-btn variant="flat" color="primary" @click="test">TEST</v-btn>
 	</div>
 </template>
-
-
-
-
-<style scoped>
-	input{
-		background-color: white;
-		color: black;
-	}
-	.red{
-		color: red;
-	}
-	.green{
-		color: green;
-	}
-	.input-container{
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		width: 20%;
-	}
-	.calc-button{
-		background-color: orange;
-		color: aquamarine;
-	}
-</style>
