@@ -99,4 +99,27 @@ export class UserService extends BaseService {
 			}
 		});
 	}
+
+	/**
+	 * Deletes an item from the database by its ID.
+	 * @param id The ID of the item to delete.
+	 * @returns A Promise that resolves with the deleted item.
+	 */
+	async deleteById(id: string): Promise<any> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let axiosInstance = await this.api.getAxios();
+				axiosInstance
+					.delete(`${this.uri}/${id}`)
+					.then((res) => {
+						resolve(res.data);
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			} catch (err) {
+				reject(err);
+			}
+		});
+	}
 }
