@@ -5,9 +5,9 @@ export default class QueryConstructor {
 }
 
 export class EqualsQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -19,9 +19,9 @@ export class EqualsQuery {
 }
 
 export class NotEqualsQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -33,9 +33,9 @@ export class NotEqualsQuery {
 }
 
 export class GreaterThanQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -47,9 +47,9 @@ export class GreaterThanQuery {
 }
 
 export class GreaterThanOrEqualsQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -61,9 +61,9 @@ export class GreaterThanOrEqualsQuery {
 }
 
 export class LessThanQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -75,9 +75,9 @@ export class LessThanQuery {
 }
 
 export class LessThanOrEqualsQuery {
-	value: string;
+	value: any;
 
-	constructor(value: string) {
+	constructor(value: any) {
 		this.value = value;
 	}
 
@@ -89,7 +89,7 @@ export class LessThanOrEqualsQuery {
 }
 
 export class InQuery {
-	value: string[];
+	value: any[];
 
 	constructor(value: any[]) {
 		this.value = value;
@@ -103,7 +103,7 @@ export class InQuery {
 }
 
 export class NotInQuery {
-	value: string[];
+	value: any[];
 
 	constructor(value: any[]) {
 		this.value = value;

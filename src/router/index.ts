@@ -48,22 +48,22 @@ const router = createRouter({
 	routes,
 });
 
-// router.beforeEach((to, from) => {
-// 	const store = useApiStore();
-// 	const snackbarStore = useSnackbarStore();
-// 	if (!store.api.authed && to.meta.requiresAuth && to.path !== "/login") {
-// 		snackbarStore.$patch({
-// 			snackbar: {
-// 				message: "Du musst dich zuerst einloggen!",
-// 				type: "warning",
-// 			},
-// 		});
-// 		return "/login";
-// 	}
-// });
+router.beforeEach((to, from) => {
+	const store = useApiStore();
+	const snackbarStore = useSnackbarStore();
+	if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
+		snackbarStore.$patch({
+			snackbar: {
+				message: "Du musst dich zuerst einloggen!",
+				type: "warning",
+			},
+		});
+		return "/login";
+	}
+});
 
 // router.beforeEach((to, from) => {
-// 	const store = useAppStore();
+// 	const store = useApiStore();
 // 	const snackbarStore = useSnackbarStore();
 // 	if (to.meta.authLevels) {
 // 		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {

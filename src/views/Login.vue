@@ -119,7 +119,8 @@ function onSubmit() {
 			.login({ email: uname.value, password: pw.value }, $cookies)
 			.then((res: boolean) => {
 				loading.value = false;
-				console.log(store.api);
+				store.authed = true;
+				router.push("/dashboard");
 			})
 			.catch((err: AxiosError) => {
 				apiError.status = true;

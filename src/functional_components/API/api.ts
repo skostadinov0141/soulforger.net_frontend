@@ -63,7 +63,6 @@ export default class API {
 	 * @memberof API
 	 */
 	async refreshToken() {
-		console.log(this.getToken());
 		return new Promise((resolve, reject) => {
 			axios
 				.post(`${this.baseUrl}/${this.apiVersion}/auth/refresh`, {

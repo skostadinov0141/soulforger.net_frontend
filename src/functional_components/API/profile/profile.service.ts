@@ -56,7 +56,6 @@ export class ProfileService extends BaseService {
 					Object.keys(query).forEach((key: string) => {
 						parsedQuery[key] = (query as any)[key].parse();
 					});
-					console.log(parsedQuery);
 				}
 				axiosInstance
 					.get(`${this.uri}`, {
