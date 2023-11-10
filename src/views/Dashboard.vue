@@ -9,14 +9,11 @@ import { useApiStore } from "@/store/api";
 const appStore = useApiStore();
 
 async function test() {
-	await appStore.api.refreshToken();
+	// await appStore.api.refreshToken();
 	const profile = await appStore.api.profileService.search({
-		owner: new EqualsQuery(appStore.api.decodeToken().sub),
-		createdAt: new LessThanQuery(new Date(Date.now() - 3600 * 1000 * 24 * 7)),
-	});
-	console.log({
-		owner: new EqualsQuery(appStore.api.decodeToken().sub).parse(),
-		createdAt: new LessThanQuery(Date.now() - 3600 * 1000 * 24 * 7).parse(),
+		createdAt: {
+			$lt: Date.now() - 3600 * 1000 * 24 * 7,
+		},
 	});
 	console.log(profile);
 	// let constructedQuery = new AndQuery([
