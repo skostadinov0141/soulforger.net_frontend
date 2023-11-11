@@ -10,9 +10,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-row align="center">
-    <v-col cols="12" md="6">
-      <SearchCard></SearchCard>
+  <v-row align="center" class="h-100 pa-4">
+    <v-col cols="12" md="4">
+      <SearchCard />
     </v-col>
   </v-row>
 </template>
