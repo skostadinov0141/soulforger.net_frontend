@@ -69,8 +69,8 @@
 							append-icon="mdi-account-plus"
 							color="indigo-lighten-3"
 							style="width: 100%"
-							type="submit"
 							variant="text"
+							@click="router.push('/register')"
 							>Registrieren</v-btn
 						>
 					</v-form>
@@ -82,6 +82,7 @@
 
 <script setup lang="ts">
 import API from "@/functional_components/API/api";
+import { useApiStore } from "@/store/api";
 import { useAppStore } from "@/store/app";
 import { AxiosError } from "axios";
 import { reactive } from "vue";
@@ -89,7 +90,7 @@ import { inject, ref } from "vue";
 import { VueCookies } from "vue-cookies";
 import { useRouter } from "vue-router";
 
-const store = useAppStore();
+const store = useApiStore();
 const $cookies = inject("$cookies") as VueCookies;
 
 const router = useRouter();
@@ -115,14 +116,15 @@ function onSubmit() {
 	loading.value = true;
 	if (valid.value) {
 		store.api
-			.login(uname.value, pw.value, remember.value, $cookies)
+			.login({ email: uname.value, password: pw.value }, $cookies)
 			.then((res: boolean) => {
 				loading.value = false;
-				router.push("/profile");
+				store.authed = true;
+				router.push("/dashboard");
 			})
 			.catch((err: AxiosError) => {
 				apiError.status = true;
-				apiError.message = "E-Mail oder Passwort falsch";
+				apiError.message = err.message;
 				loading.value = false;
 			});
 	}

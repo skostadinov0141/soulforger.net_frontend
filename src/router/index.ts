@@ -3,6 +3,7 @@ import { useAppStore } from "@/store/app";
 import { useSnackbarStore } from "@/store/snackbar";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { nirveCreatorGuard } from "./routingGuards";
+import { useApiStore } from "@/store/api";
 
 const routes = [
 	{
@@ -48,9 +49,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-	const store = useAppStore();
+	const store = useApiStore();
 	const snackbarStore = useSnackbarStore();
-	if (!store.api.authed && to.meta.requiresAuth && to.path !== "/login") {
+	if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
 		snackbarStore.$patch({
 			snackbar: {
 				message: "Du musst dich zuerst einloggen!",
@@ -61,20 +62,20 @@ router.beforeEach((to, from) => {
 	}
 });
 
-router.beforeEach((to, from) => {
-	const store = useAppStore();
-	const snackbarStore = useSnackbarStore();
-	if (to.meta.authLevels) {
-		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {
-			snackbarStore.$patch({
-				snackbar: {
-					message: "Du hast keine ausreichenden Berechtigungen!",
-					type: "warning",
-				},
-			});
-			return false;
-		}
-	}
-});
+// router.beforeEach((to, from) => {
+// 	const store = useApiStore();
+// 	const snackbarStore = useSnackbarStore();
+// 	if (to.meta.authLevels) {
+// 		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {
+// 			snackbarStore.$patch({
+// 				snackbar: {
+// 					message: "Du hast keine ausreichenden Berechtigungen!",
+// 					type: "warning",
+// 				},
+// 			});
+// 			return false;
+// 		}
+// 	}
+// });
 
 export default router;

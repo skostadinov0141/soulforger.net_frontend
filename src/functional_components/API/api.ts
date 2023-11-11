@@ -1,112 +1,123 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { TokenDto } from "./dto/token.dto";
+import { SignInDto } from "./dto/sign-in.dto";
 import { VueCookies } from "vue-cookies";
-import { AuthResult, RegistrationData } from "../interfaces/api";
-import { plainToClass } from "class-transformer";
+import { UserService } from "./user/user.service";
+import { ProfileService } from "./profile/profile.service";
+import { NirveCreatorService } from "./nirve-creator/nirve-creator.service";
 import jwtDecode from "jwt-decode";
 
 export default class API {
-	axios: AxiosInstance;
-	authed: boolean = false;
-	token: string = "";
-	decodedToken: any = undefined;
+	cookies: VueCookies;
+	baseUrl: string = import.meta.env.VITE_API_URL;
+	apiVersion: string = import.meta.env.VITE_API_VERSION;
 
-	constructor(authToken?: string) {
-		if (authToken) {
-			this.axios = axios.create({
-				baseURL: import.meta.env.VITE_API_URL,
-				headers: {
-					Authorization: `Bearer ${authToken}`,
-				},
-			});
-		} else {
-			this.axios = axios.create({
-				baseURL: import.meta.env.VITE_API_URL,
-			});
-		}
+	userService: UserService = new UserService(this);
+	profileService: ProfileService = new ProfileService(this);
+	nirveCreatorService: NirveCreatorService = new NirveCreatorService(this);
+
+	constructor(cookies: VueCookies) {
+		this.cookies = cookies;
 	}
 
 	/**
-	 * Attepmts to login with the given credentials
-	 * @param username The user's unique identifier, in this case an email address
-	 * @param password The user's password
-	 * @param cookies An instance of VueCookies, used to save the auth token
-	 * @returns Promise<boolean> True if the login was successful
-	 * @throws AxiosError If the login was not successful
+	 * @description Get an axios instance with the authorization header, automatically refreshes the token if it is expired
+	 * @returns {Promise<AxiosInstance>} Axios instance
+	 * @throws {string} Error if user is not logged in
+	 * @throws {AxiosError} API Error if token refresh was not successful
+	 * @memberof API
+	 */
+	async getAxios(isPublic?: boolean): Promise<AxiosInstance> {
+		if (isPublic) {
+			return axios.create({
+				baseURL: `${this.baseUrl}/${this.apiVersion}`,
+			});
+		}
+		return new Promise(async (resolve, reject) => {
+			if (!this.getToken()) {
+				reject("Du bist nicht eingeloggt!");
+			}
+			if (this.getToken()!.expires_at < Date.now()) {
+				try {
+					await this.refreshToken();
+				} catch (err) {
+					reject(err);
+				}
+			}
+			resolve(
+				axios.create({
+					baseURL: `${this.baseUrl}/${this.apiVersion}`,
+					headers: {
+						Authorization: `Bearer ${this.getToken()?.access_token}`,
+					},
+				})
+			);
+		});
+	}
+
+	/**
+	 * @description Refresh the access token
+	 * @param {string} refreshToken Refresh token
+	 * @returns {Promise<boolean>} True if refresh was successful
+	 * @throws {AxiosError} API Error if token refresh was not successful
+	 * @memberof API
+	 */
+	async refreshToken() {
+		return new Promise((resolve, reject) => {
+			axios
+				.post(`${this.baseUrl}/${this.apiVersion}/auth/refresh`, {
+					refresh_token: this.getToken()?.refresh_token,
+				})
+				.then((res: AxiosResponse) => {
+					this.cookies.set("token", res.data, res.data.expires_at);
+					resolve(true);
+				})
+				.catch((err: AxiosError) => {
+					reject(err);
+				});
+		});
+	}
+
+	/**
+	 * @description Login to the API and save the access token
+	 * @param {SignInDto} loginDto Login data (username, password)
+	 * @returns {Promise<boolean>} True if login was successful
+	 * @throws {AxiosError} API Error if login was not successful
+	 * @memberof API
 	 */
 	async login(
-		username: string,
-		password: string,
-		remember: boolean,
-		cookies: VueCookies
+		loginDto: SignInDto,
+		cookiesInstance: VueCookies
 	): Promise<boolean> {
-		const params = new URLSearchParams();
-		params.append("username", username);
-		params.append("password", password);
-		params.append("remember", remember.toString());
+		this.cookies = cookiesInstance;
 		return new Promise((resolve, reject) => {
-			this.axios
-				.post("/auth/login", params)
+			axios
+				.post(`${this.baseUrl}/${this.apiVersion}/auth/sign-in`, loginDto)
 				.then((res: AxiosResponse) => {
-					let authResult = plainToClass(AuthResult, res.data);
-					cookies.set("authToken", authResult.access_token, authResult.exp);
-					this.authorize(authResult.access_token);
+					this.cookies.set("token", res.data, res.data.expires_at);
 					resolve(true);
 				})
 				.catch((err: AxiosError) => {
-					reject(err);
+					reject(err.message);
 				});
 		});
 	}
 
-	async register(registrationData: RegistrationData): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.axios
-				?.post("/auth/register", registrationData)
-				.then((res: AxiosResponse) => {
-					resolve(true);
-				})
-				.catch((err: AxiosError) => {
-					reject(err);
-				});
-		});
+	/**
+	 * Decodes the access token and returns the decoded token data.
+	 * @returns {TokenDto} The decoded token data.
+	 * @throws {Error} If no token is found.
+	 */
+	decodeToken(): any {
+		if (!this.getToken()?.access_token) throw new Error("No token found!");
+		return jwtDecode(this.getToken()?.access_token!);
 	}
 
-	authorize(authToken: string) {
-		this.axios = axios.create({
-			baseURL: import.meta.env.VITE_API_URL,
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		});
-		this.token = authToken;
-		this.decodedToken = jwtDecode(authToken);
-		this.authed = true;
-	}
-
-	getAuthToken(): string {
-		return this.token;
-	}
-
-	getAxios(): AxiosInstance {
-		if (!this.axios) {
-			throw new Error("No axios instance found!");
-		}
-		return this.axios;
-	}
-
-	validatePrivileges(privileges: Array<number>): boolean {
-		if (this.decodedToken) {
-			privileges.push(100);
-			return privileges.some((i) => this.decodedToken.priv_level.includes(i));
-		}
-		return false;
-	}
-
-	validatePrivilegesStrict(privileges: Array<number>): boolean {
-		if (this.decodedToken) {
-			privileges.push(100);
-			return privileges.every((i) => this.decodedToken.priv_level.includes(i));
-		}
-		return false;
+	/**
+	 * Retrieves the token from the cookies.
+	 * @returns The token if it exists, otherwise undefined.
+	 */
+	getToken(): TokenDto | undefined {
+		return this.cookies.get("token");
 	}
 }

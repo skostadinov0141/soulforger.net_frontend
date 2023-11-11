@@ -35,12 +35,12 @@
 							class="mb-2"
 							:rules="[
 								validator.required,
-								validator.min(data.displayName, 3),
-								validator.max(data.displayName, 32),
+								validator.min(data.username, 3),
+								validator.max(data.username, 32),
 							]"
 							bg-color="surface-lighten-2"
 							variant="solo"
-							v-model="data.displayName"
+							v-model="data.username"
 							prepend-inner-icon="mdi-account"
 							required
 							label="Anzeigename"
@@ -99,11 +99,7 @@
 						>
 							{{ apiError.message }}
 						</v-alert>
-						<v-checkbox
-							:disabled="loading"
-							:rules="[validateEula]"
-							v-model="data.eula"
-						>
+						<v-checkbox :disabled="loading" :rules="[validateEula]">
 							<template v-slot:label>
 								<div>
 									Ich habe die
@@ -153,6 +149,7 @@ import { VueCookies } from "vue-cookies";
 import { useRouter } from "vue-router";
 import * as validator from "@/validators";
 import { RegistrationData } from "@/functional_components/interfaces/api";
+import { CreateUserDto } from "@/functional_components/API/user/dto/create-user.dto";
 
 const store = useAppStore();
 const $cookies = inject("$cookies") as VueCookies;
@@ -167,13 +164,13 @@ const showPassword = ref(false);
 const showPasswordConfirmation = ref(false);
 const loading = ref(false);
 
-const data = reactive(new RegistrationData());
+const data = reactive(new CreateUserDto());
 const pwConfirmation = ref("");
 
 function onSubmit() {
 	loading.value = true;
 	if (valid.value) {
-		store.api.register(data).then(
+		store.api.userService.post(data).then(
 			() => {
 				loading.value = false;
 				router.push("/login");

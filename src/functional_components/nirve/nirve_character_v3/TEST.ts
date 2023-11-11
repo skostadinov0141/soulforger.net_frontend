@@ -5,7 +5,7 @@ import { IModifier } from "./Modifier";
 import { IRequirement } from "./Requirement";
 
 export default function test() {
-	let character = new Character();
+	const character = new Character();
 	console.log(character.xp);
 	character.addClass(<ICharacterClassBase>{
 		id: v4(),
