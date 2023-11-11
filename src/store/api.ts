@@ -4,13 +4,13 @@ import { inject, reactive, ref } from "vue";
 import { VueCookies } from "vue-cookies";
 
 export const useApiStore = defineStore("api", () => {
-	const cookies: VueCookies = inject<VueCookies>("$cookies")!;
+  const cookies: VueCookies = inject<VueCookies>("$cookies")!;
 
-	const api = reactive(new API(cookies));
-	const authed = ref(false);
+  const api = reactive(new API(cookies));
+  const authed = ref(false);
 
-	return {
-		api,
-		authed,
-	};
+  return {
+    api,
+    authed,
+  };
 });

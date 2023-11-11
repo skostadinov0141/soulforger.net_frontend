@@ -2,64 +2,64 @@
 import { useAppStore } from "@/store/app";
 import { useSnackbarStore } from "@/store/snackbar";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
-import { nirveCreatorGuard } from "./routingGuards";
 import { useApiStore } from "@/store/api";
 
 const routes = [
-	{
-		default: true,
-		path: "/",
-		component: () => import("@/views/Dashboard.vue"),
-	},
-	{
-		path: "/login",
-		component: () => import("@/views/Login.vue"),
-	},
-	{
-		path: "/register",
-		component: () => import("@/views/Register.vue"),
-	},
-	{
-		path: "/legal/privacy-agreement",
-		component: () => import("@/views/PrivacyAgreement.vue"),
-	},
-	{
-		path: "/profile",
-		component: () => import("@/views/Profile.vue"),
-	},
-	{
-		path: "/error",
-		component: () => import("@/views/Error.vue"),
-	},
-	{
-		path: "/creator/nirve/:type",
-		component: () => import("@/views/Creator.vue"),
-		meta: {
-			authLevels: [50],
-			requiresAuth: true,
-		},
-		beforeEnter: nirveCreatorGuard,
-		onBeforeRouteUpdate: nirveCreatorGuard,
-	},
+  {
+    default: true,
+    path: "/",
+    component: () => import("@/views/Dashboard.vue"),
+  },
+  {
+    path: "/login",
+    component: () => import("@/views/Login.vue"),
+  },
+  {
+    path: "/register",
+    component: () => import("@/views/Register.vue"),
+  },
+  {
+    path: "/legal/privacy-agreement",
+    component: () => import("@/views/PrivacyAgreement.vue"),
+  },
+  {
+    path: "/profile",
+    component: () => import("@/views/Profile.vue"),
+  },
+  {
+    path: "/error",
+    component: () => import("@/views/Error.vue"),
+  },
+  {
+    path: "/creator/nirve",
+    component: () => import("@/views/NirveCreator.vue"),
+    meta: {
+      authLevels: [50],
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
-	routes,
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
 });
 
 router.beforeEach((to, from) => {
-	const store = useApiStore();
-	const snackbarStore = useSnackbarStore();
-	if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
-		snackbarStore.$patch({
-			snackbar: {
-				message: "Du musst dich zuerst einloggen!",
-				type: "warning",
-			},
-		});
-		return "/login";
-	}
+  const store = useApiStore();
+  const snackbarStore = useSnackbarStore();
+  console.log(store.authed);
+  console.log(to.meta.requiresAuth);
+  console.log(to.path);
+  if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
+    snackbarStore.$patch({
+      snackbar: {
+        message: "Du musst dich zuerst einloggen!",
+        type: "warning",
+      },
+    });
+    return "/login";
+  }
 });
 
 // router.beforeEach((to, from) => {

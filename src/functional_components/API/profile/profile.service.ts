@@ -54,8 +54,8 @@ export class ProfileService extends BaseService {
           .post(`${this.uri}/search`, query, {
             params: {
               limit: limit,
-              skip: skip
-            }
+              skip: skip,
+            },
           })
           .then((res) => {
             resolve(res.data);

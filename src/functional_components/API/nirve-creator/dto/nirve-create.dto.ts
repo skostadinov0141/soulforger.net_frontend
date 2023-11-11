@@ -1,5 +1,5 @@
 export class NirveCreateDto {
-	name: string;
-	description: string;
-	updatedAt?: Date;
+  name: string;
+  description: string;
+  updatedAt?: Date;
 }

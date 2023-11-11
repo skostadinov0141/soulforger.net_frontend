@@ -1,7 +1,7 @@
 <template>
-	<v-snackbar v-model="showSnackbar" variant="tonal" :color="snackbarColor">
-		{{ snackbarStore.snackbar.message }}
-	</v-snackbar>
+  <v-snackbar v-model="showSnackbar" variant="tonal" :color="snackbarColor">
+    {{ snackbarStore.snackbar.message }}
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -14,8 +14,8 @@ const showSnackbar = ref(false);
 const snackbarColor = ref("error");
 
 snackbarStore.$subscribe((mutation, state) => {
-	showSnackbar.value = true;
-	snackbarColor.value = state.snackbar.type;
+  showSnackbar.value = true;
+  snackbarColor.value = state.snackbar.type;
 });
 </script>
 

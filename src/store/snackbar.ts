@@ -4,13 +4,13 @@ import { defineStore } from "pinia";
 import { reactive } from "vue";
 
 export const useSnackbarStore = defineStore("snackbar", () => {
-	const snackbar = reactive<SnackBar>({
-		title: "",
-		message: "",
-		type: "success",
-	});
+  const snackbar = reactive<SnackBar>({
+    title: "",
+    message: "",
+    type: "success",
+  });
 
-	return {
-		snackbar,
-	};
+  return {
+    snackbar,
+  };
 });

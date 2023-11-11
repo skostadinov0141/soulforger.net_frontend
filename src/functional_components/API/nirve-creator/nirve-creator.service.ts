@@ -4,7 +4,7 @@ import API from "../api";
 import { Queries } from "../queryConstructor";
 import { NirveCommon } from "./nirve-common.class";
 import { NirveCreateDto } from "./dto/nirve-create.dto";
-import { NirveCommonDto } from "./dto/nirve-common.dto";
+import { NirveCommonDto, NirveTypes } from "./dto/nirve-common.dto";
 
 export class NirveCreatorService {
   api: API;
@@ -44,7 +44,7 @@ export class NirveCreatorService {
    * @param id The ID of the user to retrieve.
    * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
    */
-  async getById(id: string, type: string): Promise<NirveCommon> {
+  async getById(id: string, type: NirveTypes): Promise<NirveCommon> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
@@ -70,7 +70,7 @@ export class NirveCreatorService {
    * @returns A Promise that resolves with the search results or rejects with an error.
    */
   async search(
-    type: string,
+    type: NirveTypes,
     query?: Partial<{ [K in keyof NirveCommon]: Queries }>,
     limit?: number,
     skip?: number
@@ -82,8 +82,8 @@ export class NirveCreatorService {
           .post(`${this.uri}/${type}/search`, query, {
             params: {
               limit: limit,
-              skip: skip
-            }
+              skip: skip,
+            },
           })
           .then((res) => {
             resolve(res.data);
@@ -106,7 +106,7 @@ export class NirveCreatorService {
   async patch(
     id: string,
     data: Partial<NirveCommon>,
-    type: string
+    type: NirveTypes
   ): Promise<NirveCommon> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -130,7 +130,7 @@ export class NirveCreatorService {
    * @param id The ID of the item to delete.
    * @returns A Promise that resolves with the deleted item.
    */
-  async deleteById(id: string, type: string): Promise<any> {
+  async deleteById(id: string, type: NirveTypes): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
