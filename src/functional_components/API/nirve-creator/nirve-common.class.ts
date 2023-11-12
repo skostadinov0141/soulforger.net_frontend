@@ -1,3 +1,5 @@
+import { NirveTypes } from "./dto/nirve-common.dto";
+
 export class NirveCommon {
   _id: string;
   name: string;
@@ -7,4 +9,6 @@ export class NirveCommon {
   createdAt: Date;
   updatedAt: Date;
   creationPhase: number;
+  creatorNotes: string;
+  type: NirveTypes;
 }

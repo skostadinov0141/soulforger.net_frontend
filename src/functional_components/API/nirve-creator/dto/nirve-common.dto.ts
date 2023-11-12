@@ -7,15 +7,16 @@ export class NirveCommonDto {
   createdAt: Date;
   updatedAt: Date;
   creationPhase: number;
+  creatorNotes: string;
+  type: NirveTypes;
 }
 
-export enum NirveTypes {
-  "bending-skill",
-  "character-class",
-  "disadvantage",
-  "item",
-  "race",
-  "religion",
-  "skill",
-  "spell",
-}
+export type NirveTypes =
+  | "bending-skill"
+  | "character-class"
+  | "disadvantage"
+  | "item"
+  | "race"
+  | "religion"
+  | "skill"
+  | "spell";

@@ -1,20 +1,43 @@
-<script setup lang="ts">
-import { DeepReadonly, onMounted } from "vue";
-import SearchCard from "@/components/NirveCreator/SearchCard.vue";
+<template>
+  <v-container>
+    <v-row align="center" class="h-100 pa-4">
+      <v-col cols="12">
+        <SearchCard
+          ref="searchCardRef"
+          @select-for-edit="(i:NirveCommon) => selectItemForEdit(i)"
+        />
+      </v-col>
+      <v-col cols="12">
+        <CreateElementCard
+          ref="createCardRef"
+          @submit-success="searchCardRef?.getItems()"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
-function getItems() {}
+<script setup lang="ts">
+import { DeepReadonly, onMounted, ref } from "vue";
+import SearchCard from "@/components/NirveCreator/SearchCard.vue";
+import CreateElementCard from "@/components/NirveCreator/CreateElementCard.vue";
+import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
+
+const searchCardRef = ref<InstanceType<typeof SearchCard>>();
+const createCardRef = ref<InstanceType<typeof CreateElementCard>>();
+
+function refresh() {
+  searchCardRef.value!.getItems();
+}
 
 onMounted(() => {
-  getItems();
+  refresh();
 });
-</script>
 
-<template>
-  <v-row align="center" class="h-100 pa-4">
-    <v-col cols="12" md="4">
-      <SearchCard />
-    </v-col>
-  </v-row>
-</template>
+function selectItemForEdit(item: NirveCommon) {
+  console.log(item);
+  createCardRef.value?.load(item);
+}
+</script>
 
 <style scoped></style>

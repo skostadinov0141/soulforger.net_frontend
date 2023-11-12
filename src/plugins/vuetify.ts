@@ -10,9 +10,14 @@ import "vuetify/styles";
 
 // Composables
 import { createVuetify } from "vuetify";
+import { de } from "vuetify/locale";
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
+  locale: {
+    locale: "de",
+    messages: { de }
+  },
   theme: {
     defaultTheme: "dark",
     themes: {
@@ -36,9 +41,9 @@ export default createVuetify({
           "secondary-darken-3": "#A59A78",
           success: "#56BA57",
           error: "#BA5656",
-          warning: "#BD9C55",
-        },
-      },
-    },
-  },
+          warning: "#BD9C55"
+        }
+      }
+    }
+  }
 });

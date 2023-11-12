@@ -44,12 +44,12 @@ export class NirveCreatorService {
    * @param id The ID of the user to retrieve.
    * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
    */
-  async getById(id: string, type: NirveTypes): Promise<NirveCommon> {
+  async getById(id: string): Promise<NirveCommon> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
         axiosInstance
-          .get(`${this.uri}/${type}/${id}`)
+          .get(`${this.uri}/${id}`)
           .then((res) => {
             resolve(plainToClass(NirveCommon, res.data));
           })
@@ -70,20 +70,19 @@ export class NirveCreatorService {
    * @returns A Promise that resolves with the search results or rejects with an error.
    */
   async search(
-    type: NirveTypes,
     query?: Partial<{ [K in keyof NirveCommon]: Queries }>,
     limit?: number,
     skip?: number
-  ): Promise<NirveCommon> {
+  ): Promise<NirveCommon[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
         axiosInstance
-          .post(`${this.uri}/${type}/search`, query, {
+          .post(`${this.uri}/search`, query, {
             params: {
               limit: limit,
-              skip: skip,
-            },
+              skip: skip
+            }
           })
           .then((res) => {
             resolve(res.data);
@@ -103,16 +102,12 @@ export class NirveCreatorService {
    * @param data The data to update the user with.
    * @returns A Promise that resolves with the updated User object.
    */
-  async patch(
-    id: string,
-    data: Partial<NirveCommon>,
-    type: NirveTypes
-  ): Promise<NirveCommon> {
+  async patch(id: string, data: Partial<NirveCommon>): Promise<NirveCommon> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
         axiosInstance
-          .patch(`${this.uri}/${type}/${id}`, data)
+          .patch(`${this.uri}/${id}`, data)
           .then((res) => {
             resolve(plainToClass(NirveCommon, res.data));
           })
@@ -130,12 +125,12 @@ export class NirveCreatorService {
    * @param id The ID of the item to delete.
    * @returns A Promise that resolves with the deleted item.
    */
-  async deleteById(id: string, type: NirveTypes): Promise<any> {
+  async deleteById(id: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const axiosInstance = await this.api.getAxios();
         axiosInstance
-          .delete(`${this.uri}/${type}/${id}`)
+          .delete(`${this.uri}/${id}`)
           .then((res) => {
             resolve(res.data);
           })

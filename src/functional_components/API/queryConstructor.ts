@@ -13,7 +13,7 @@ export class EqualsQuery {
 
   parse(): string {
     return JSON.stringify({
-      $eq: this.value,
+      $eq: this.value
     });
   }
 }
@@ -27,7 +27,7 @@ export class NotEqualsQuery {
 
   parse(): string {
     return JSON.stringify({
-      $ne: this.value,
+      $ne: this.value
     });
   }
 }
@@ -41,7 +41,7 @@ export class GreaterThanQuery {
 
   parse(): string {
     return JSON.stringify({
-      $gt: this.value,
+      $gt: this.value
     });
   }
 }
@@ -55,7 +55,7 @@ export class GreaterThanOrEqualsQuery {
 
   parse(): string {
     return JSON.stringify({
-      $gte: this.value,
+      $gte: this.value
     });
   }
 }
@@ -69,7 +69,7 @@ export class LessThanQuery {
 
   parse(): string {
     return JSON.stringify({
-      $lt: this.value,
+      $lt: this.value
     });
   }
 }
@@ -83,7 +83,7 @@ export class LessThanOrEqualsQuery {
 
   parse(): string {
     return JSON.stringify({
-      $lte: this.value,
+      $lte: this.value
     });
   }
 }
@@ -97,7 +97,7 @@ export class InQuery {
 
   parse(): string {
     return JSON.stringify({
-      $in: this.value,
+      $in: this.value
     });
   }
 }
@@ -111,7 +111,7 @@ export class NotInQuery {
 
   parse(): string {
     return JSON.stringify({
-      $nin: this.value,
+      $nin: this.value
     });
   }
 }
@@ -153,7 +153,7 @@ export class AndQuery {
 
   parse(): string {
     return JSON.stringify({
-      $and: this.value.map((query) => query.parse()),
+      $and: this.value.map((query) => query.parse())
     });
   }
 }
@@ -195,7 +195,7 @@ export class OrQuery {
 
   parse(): string {
     return JSON.stringify({
-      $or: this.value.map((query) => query.parse()),
+      $or: this.value.map((query) => query.parse())
     });
   }
 }
@@ -237,7 +237,7 @@ export class NorQuery {
 
   parse(): string {
     return JSON.stringify({
-      $nor: this.value.map((query) => query.parse()),
+      $nor: this.value.map((query) => query.parse())
     });
   }
 }
@@ -279,7 +279,7 @@ export class NotQuery {
 
   parse(): string {
     return JSON.stringify({
-      $not: this.value.map((query) => query.parse()),
+      $not: this.value.map((query) => query.parse())
     });
   }
 }
@@ -293,7 +293,7 @@ export class ExistQuery {
 
   parse(): string {
     return JSON.stringify({
-      $exists: this.value,
+      $exists: this.value
     });
   }
 }
@@ -325,4 +325,5 @@ export type Queries =
   | { $or: Queries[] }
   | { $nor: Queries[] }
   | { $not: Queries[] }
-  | { $exists: boolean };
+  | { $exists: boolean }
+  | { $regex: string };
