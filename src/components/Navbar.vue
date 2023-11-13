@@ -4,8 +4,6 @@
     width="350"
     color="surface-lighten-1"
     v-model="drawer"
-    :rail="windowSize.width.value > 1280"
-    :expand-on-hover="windowSize.width.value > 1280"
   >
     <v-list base-color="secondary">
       <v-list>

@@ -2,16 +2,33 @@
   <v-card color="surface-lighten-1" title="Nirve Suche">
     <v-divider />
     <v-card-text>
-      <v-sheet rounded color="surface-lighten-1">
-        <v-data-table
-          class="mt-2 pb-2"
-          select-strategy="all"
-          show-select
-          item-value="_id"
-          :headers="headers"
-          :items="searchResults"
-        />
-      </v-sheet>
+      <v-autocomplete
+        label="Suche"
+        variant="solo"
+        bg-color="surface-lighten-2"
+        prepend-inner-icon="mdi-magnify"
+      />
+      <v-expansion-panels>
+        <v-expansion-panel
+          bg-color="surface-lighten-2"
+          title="Erweiterte Suche"
+        >
+          <v-expansion-panel-text class="pt-4">
+            <v-select
+              variant="solo"
+              bg-color="surface-lighten-3"
+              multiple
+              chips
+              :items="nirveTypes"
+              label="Erlaubte Kategorien"
+              v-model="selectedCategories"
+            />
+            <div class="">
+
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card-text>
   </v-card>
 </template>
@@ -33,7 +50,7 @@ const selectedCategories = ref<string[]>([
   "race",
   "religion",
   "skill",
-  "spell"
+  "spell",
 ]);
 const search = ref<string>("");
 const searchResults = ref<NirveCommon[]>([]);
@@ -46,39 +63,39 @@ const nirveTypes = [
   { title: "Rassen", value: "race" },
   { title: "Religionen", value: "religion" },
   { title: "Fähigkeiten", value: "skill" },
-  { title: "Zauber", value: "spell" }
+  { title: "Zauber", value: "spell" },
 ];
 const headers = [
-  { title: "Name", value: "name" },
+  { title: "Name", key: "name" },
   {
     title: "Typ",
     key: "type",
     value: (item: Record<string, any>) =>
-      nirveTypes.find((i) => i.value === item.type)?.title
+      nirveTypes.find((i) => i.value === item.type)?.title,
   },
   {
     title: "Erstellungsdatum",
     key: "createdAt",
     value: (item: Record<string, any>) =>
-      new Date(item.createdAt).toLocaleString("de-DE")
+      new Date(item.createdAt).toLocaleString("de-DE"),
   },
   {
     title: "Letzte Änderung",
-    key: "updatedAd",
+    key: "updatedAt",
     value: (item: Record<string, any>) =>
-      new Date(item.createdAt).toLocaleString("de-DE")
-  }
+      new Date(item.updatedAt).toLocaleString("de-DE"),
+  },
 ];
 
 function getItems() {
   apiStore.api.nirveCreatorService
     .search({
       type: {
-        $in: selectedCategories.value!
+        $in: selectedCategories.value!,
       },
       name: {
-        $regex: search.value!
-      }
+        $regex: search.value!,
+      },
     })
     .then((res) => {
       searchResults.value = res;
@@ -87,7 +104,7 @@ function getItems() {
 
 const emits = defineEmits(["select-for-edit"]);
 defineExpose({
-  getItems
+  getItems,
 });
 
 function selectItemForEdit(item: NirveCommon) {
@@ -95,4 +112,8 @@ function selectItemForEdit(item: NirveCommon) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-data-table__tr {
+  background-color: rgb(var(--v-theme-surface-lighten-2)) !important;
+}
+</style>
