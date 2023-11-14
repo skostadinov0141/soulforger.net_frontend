@@ -1,43 +1,32 @@
 <template>
   <!-- DESKTOP -->
-  <v-navigation-drawer width="350" color="surface-lighten-1" v-model="drawer">
-    <v-list base-color="secondary" bg-color="surface-lighten-1">
+  <v-navigation-drawer v-model="drawer" width="350">
+    <v-list base-color="secondary">
       <v-list>
-        <v-list-item
-          color="surface-lighten-1"
-          title=""
-          prepend-avatar="/logo.png"
-        >
+        <v-list-item prepend-avatar="/logo.png">
           <v-list-item-action style="display: flex; gap: 8px">
-            <v-btn size="small" variant="plain" to="/register">
+            <v-btn size="small" variant="text" to="/register">
               Registrieren
             </v-btn>
-            <v-btn
-              size="small"
-              color="indigo-darken-3"
-              variant="elevated"
-              to="/login"
-            >
+            <v-btn size="small" color="primary" variant="elevated" to="/login">
               Anmelden
             </v-btn>
           </v-list-item-action>
         </v-list-item>
       </v-list>
-      <v-divider></v-divider>
-      <v-list base-color="secondary" density="compact" nav>
+      <v-divider />
+      <v-list density="compact" nav>
         <v-list-item
-          color="surface-lighten-1"
           v-for="location in locations"
-          :key="location.id"
+          :value="location.id"
           :to="location.path"
           :prepend-icon="location.icon"
           :title="location.title"
-        >
-        </v-list-item>
+        />
       </v-list>
     </v-list>
   </v-navigation-drawer>
-  <v-app-bar class="d-xs-flex d-lg-none" v-if="windowSize.width.value < 1280">
+  <v-app-bar v-if="windowSize.width.value < 1280" class="d-xs-flex d-lg-none">
     <v-img
       src="/logo.png"
       class="mx-1"
@@ -51,16 +40,16 @@
     >
       soulforger
     </v-app-bar-title>
-    <template v-slot:prepend>
+    <template #prepend>
       <v-app-bar-nav-icon
         color="secondary"
-        @click="drawer = !drawer"
         class="d-lg-none d-xl-none d-xxl-none"
+        @click="drawer = !drawer"
       />
     </template>
   </v-app-bar>
   <v-main>
-    <slot></slot>
+    <slot />
   </v-main>
 </template>
 
@@ -85,8 +74,8 @@ const locations = ref<Location[]>([
   {
     id: v4(),
     title: "Autorenbereich",
-    path: "/",
-    icon: "mdi-fountain-pen-tip",
-  },
+    path: "/creator/nirve",
+    icon: "mdi-fountain-pen-tip"
+  }
 ]);
 </script>

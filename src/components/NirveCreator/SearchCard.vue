@@ -1,34 +1,80 @@
 <template>
-  <v-card color="surface-lighten-1" title="Nirve Suche">
+  <v-card
+    :elevation="5"
+    title="Suchen"
+    subtitle="Hier kannst du die Datenbank an erstellte Nirve elemente durchsuchen."
+  >
     <v-divider />
     <v-card-text>
-      <v-autocomplete
-        label="Suche"
-        variant="solo"
-        bg-color="surface-lighten-2"
+      <v-text-field
+        label="Suchbegriff"
+        variant="outlined"
         prepend-inner-icon="mdi-magnify"
       />
-      <v-expansion-panels>
-        <v-expansion-panel
-          bg-color="surface-lighten-2"
-          title="Erweiterte Suche"
+      <p class="text-subtitle-1 text-left" style="flex: 1">Weitere Filter</p>
+      <v-divider />
+      <v-select
+        v-model="selectedCategories"
+        variant="outlined"
+        multiple
+        class="mt-6"
+        chips
+        :items="nirveTypes"
+        label="Kategorien"
+      />
+      <div class="d-flex flex-md-row flex-column align-stretch">
+        <v-text-field
+          v-model="createdAfter"
+          class="mr-0 mr-md-2"
+          type="date"
+          label="Erstellt nach"
+          variant="outlined"
+        />
+        <v-text-field
+          v-model="updatedAfter"
+          class="mr-0 mr-md-2"
+          type="date"
+          label="Zuletzt geändert nach"
+          variant="outlined"
+        />
+      </div>
+      <v-btn
+        variant="elevated"
+        text="Suchen"
+        block
+        color="primary"
+        append-icon="mdi-magnify"
+        @click="getItems"
+      />
+      <v-list elevation="4" class="mt-6 rounded" bg-color="surface-lighten-1">
+        <v-list-item
+          v-for="item in searchResults"
+          :key="item._id"
+          class="py-2"
+          @click="selectItemForEdit(item)"
         >
-          <v-expansion-panel-text class="pt-4">
-            <v-select
-              variant="solo"
-              bg-color="surface-lighten-3"
-              multiple
-              chips
-              :items="nirveTypes"
-              label="Erlaubte Kategorien"
-              v-model="selectedCategories"
-            />
-            <div class="">
-
-            </div>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
+          <v-list-item-subtitle>
+            {{ nirveTypes.find((t) => t.value === item.type)?.title }}
+          </v-list-item-subtitle>
+          <template #append>
+            <v-tooltip
+              location="start"
+              :text="`Erstellt am: ${date.format(
+                item.createdAt,
+                'normalDateWithWeekday'
+              )} ----- Letzte Änderung: ${date.format(
+                item.updatedAt,
+                'normalDateWithWeekday'
+              )}`"
+            >
+              <template #activator="{ props }">
+                <v-icon v-bind="props"> mdi-information-outline </v-icon>
+              </template>
+            </v-tooltip>
+          </template>
+        </v-list-item>
+      </v-list>
     </v-card-text>
   </v-card>
 </template>
@@ -36,11 +82,14 @@
 <script setup lang="ts">
 import { NirveTypes } from "@/functional_components/API/nirve-creator/dto/nirve-common.dto";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
+import { NirveCreatorSearchQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import { useApiStore } from "@/store/api";
 import { ref } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
+import { useDate } from "vuetify/labs/date";
 
 const apiStore = useApiStore();
+const date = useDate();
 
 const selectedCategories = ref<string[]>([
   "bending-skill",
@@ -50,10 +99,13 @@ const selectedCategories = ref<string[]>([
   "race",
   "religion",
   "skill",
-  "spell",
+  "spell"
 ]);
 const search = ref<string>("");
+const createdAfter = ref<Date>();
+const updatedAfter = ref<Date>();
 const searchResults = ref<NirveCommon[]>([]);
+const loading = ref<boolean>(false);
 
 const nirveTypes = [
   { title: "Bändiger Fähigkeiten", value: "bending-skill" },
@@ -63,48 +115,35 @@ const nirveTypes = [
   { title: "Rassen", value: "race" },
   { title: "Religionen", value: "religion" },
   { title: "Fähigkeiten", value: "skill" },
-  { title: "Zauber", value: "spell" },
-];
-const headers = [
-  { title: "Name", key: "name" },
-  {
-    title: "Typ",
-    key: "type",
-    value: (item: Record<string, any>) =>
-      nirveTypes.find((i) => i.value === item.type)?.title,
-  },
-  {
-    title: "Erstellungsdatum",
-    key: "createdAt",
-    value: (item: Record<string, any>) =>
-      new Date(item.createdAt).toLocaleString("de-DE"),
-  },
-  {
-    title: "Letzte Änderung",
-    key: "updatedAt",
-    value: (item: Record<string, any>) =>
-      new Date(item.updatedAt).toLocaleString("de-DE"),
-  },
+  { title: "Zauber", value: "spell" }
 ];
 
 function getItems() {
-  apiStore.api.nirveCreatorService
-    .search({
-      type: {
-        $in: selectedCategories.value!,
-      },
-      name: {
-        $regex: search.value!,
-      },
-    })
-    .then((res) => {
-      searchResults.value = res;
-    });
+  let query: NirveCreatorSearchQuery = {};
+  query.type = {
+    $in: selectedCategories.value!
+  };
+  query.name = {
+    $regex: search.value!
+  };
+  if (createdAfter.value) {
+    query.createdAt = {
+      $gte: createdAfter.value
+    };
+  }
+  if (updatedAfter.value) {
+    query.updatedAt = {
+      $gte: updatedAfter.value
+    };
+  }
+  apiStore.api.nirveCreatorService.search(query).then((res) => {
+    searchResults.value = res;
+  });
 }
 
 const emits = defineEmits(["select-for-edit"]);
 defineExpose({
-  getItems,
+  getItems
 });
 
 function selectItemForEdit(item: NirveCommon) {

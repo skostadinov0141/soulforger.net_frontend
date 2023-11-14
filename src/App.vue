@@ -1,9 +1,11 @@
 <template>
   <v-app>
-    <Snackbar />
-    <Navbar>
-      <RouterView />
-    </Navbar>
+    <v-locale-provider locale="de">
+      <Snackbar />
+      <Navbar>
+        <RouterView />
+      </Navbar>
+    </v-locale-provider>
   </v-app>
 </template>
 

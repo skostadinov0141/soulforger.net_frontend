@@ -1,13 +1,11 @@
 <template>
-  <v-card color="surface-lighten-1" :title="id ? 'Bearbeiten' : 'Erstellen'">
+  <v-card :elevation="5" :title="id ? 'Bearbeiten' : 'Erstellen'">
     <v-divider />
     <v-card-text>
       <v-form v-model="valid">
         <v-autocomplete
           v-model="modal.type"
-          density="compact"
-          bg-color="surface-lighten-2"
-          variant="solo"
+          variant="outlined"
           item-title="title"
           item-value="value"
           label="Kategorie"
@@ -21,9 +19,7 @@
           v-model="modal.name"
           class="mb-1"
           label="Name"
-          density="compact"
-          bg-color="surface-lighten-2"
-          variant="solo"
+          variant="outlined"
           clearable
           :loading="loading"
           :rules="[required]"
@@ -35,9 +31,7 @@
           class="mb-1"
           rows="8"
           label="Beschreibung"
-          density="compact"
-          bg-color="surface-lighten-2"
-          variant="solo"
+          variant="outlined"
           clearable
           :loading="loading"
           :rules="[required]"
@@ -48,9 +42,7 @@
           class="mb-1"
           rows="8"
           label="Ersteller Notizen"
-          density="compact"
-          bg-color="surface-lighten-2"
-          variant="solo"
+          variant="outlined"
           clearable
           :loading="loading"
           :rules="[required]"
@@ -58,17 +50,19 @@
         <div class="d-flex justify-end">
           <v-btn
             variant="text"
-            append-icon="mdi-close-box"
+            append-icon="mdi-close-box-outline"
             :loading="loading"
-            color="red"
+            color="error"
             text="Felder zurücksetzen"
             class="mb-2 mr-4"
             @click.prevent="reset"
           />
           <v-btn
-            :append-icon="id ? 'mdi-content-save' : 'mdi-plus-box'"
+            :append-icon="
+              id ? 'mdi-content-save-outline' : 'mdi-plus-box-outline'
+            "
             :loading="loading"
-            color="green-darken-4"
+            color="success"
             :text="id ? 'Änderungen speichern' : 'Erstellen'"
             @click.prevent="submit"
           />

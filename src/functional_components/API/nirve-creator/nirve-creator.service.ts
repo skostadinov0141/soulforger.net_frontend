@@ -6,6 +6,10 @@ import { NirveCommon } from "./nirve-common.class";
 import { NirveCreateDto } from "./dto/nirve-create.dto";
 import { NirveCommonDto, NirveTypes } from "./dto/nirve-common.dto";
 
+export type NirveCreatorSearchQuery = Partial<{
+  [K in keyof NirveCommonDto]: Queries;
+}>;
+
 export class NirveCreatorService {
   api: API;
   uri: string;
