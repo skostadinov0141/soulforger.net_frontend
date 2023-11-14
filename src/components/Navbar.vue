@@ -1,13 +1,13 @@
 <template>
   <!-- DESKTOP -->
-  <v-navigation-drawer
-    width="350"
-    color="surface-lighten-1"
-    v-model="drawer"
-  >
-    <v-list base-color="secondary">
+  <v-navigation-drawer width="350" color="surface-lighten-1" v-model="drawer">
+    <v-list base-color="secondary" bg-color="surface-lighten-1">
       <v-list>
-        <v-list-item title="" prepend-avatar="/logo.png">
+        <v-list-item
+          color="surface-lighten-1"
+          title=""
+          prepend-avatar="/logo.png"
+        >
           <v-list-item-action style="display: flex; gap: 8px">
             <v-btn size="small" variant="plain" to="/register">
               Registrieren
@@ -24,38 +24,17 @@
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
-      <v-list-group value="Autorenbereich">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            title="Autorenbereich"
-            prepend-icon="mdi-script-text"
-            v-bind="props"
-          />
-        </template>
-        <v-list-group value="Nirve">
-          <template v-slot:activator="{ props }">
-            <v-list-item
-              title="Nirve"
-              prepend-icon="mdi-dice-d20"
-              v-bind="props"
-            />
-          </template>
-          <v-list-item
-            v-for="([title, icon, to], i) in authorNirve"
-            :key="i"
-            :title="title"
-            :to="to"
-            :prepend-icon="icon"
-            :value="title"
-          />
-        </v-list-group>
-      </v-list-group>
-      <!-- <v-list-item
-				:key="v4()"
-				title="Nirve"
-				:to="subItem.to"
-				:prepend-icon="subItem.icon"
-			/> -->
+      <v-list base-color="secondary" density="compact" nav>
+        <v-list-item
+          color="surface-lighten-1"
+          v-for="location in locations"
+          :key="location.id"
+          :to="location.path"
+          :prepend-icon="location.icon"
+          :title="location.title"
+        >
+        </v-list-item>
+      </v-list>
     </v-list>
   </v-navigation-drawer>
   <v-app-bar class="d-xs-flex d-lg-none" v-if="windowSize.width.value < 1280">
@@ -90,9 +69,24 @@ import { Ref, ref } from "vue";
 import { useWindowSize } from "vue-window-size";
 import { v4 } from "uuid";
 
+interface Location {
+  id: string;
+  title: string;
+  path: string;
+  icon: string;
+}
+
 const windowSize = useWindowSize();
 
 const drawer = ref<boolean>(true);
 
-const authorNirve = ref([["Erstellen", "mdi-pencil", "/creator/nirve/"]]);
+const locations = ref<Location[]>([
+  { id: v4(), title: "Dashboard", path: "/", icon: "mdi-home" },
+  {
+    id: v4(),
+    title: "Autorenbereich",
+    path: "/",
+    icon: "mdi-fountain-pen-tip",
+  },
+]);
 </script>
