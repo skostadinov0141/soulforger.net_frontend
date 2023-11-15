@@ -48,7 +48,7 @@
       />
       <v-list elevation="4" class="mt-6 rounded" bg-color="surface-lighten-1">
         <v-list-item
-          v-for="item in searchResults"
+          v-for="item in paginatedSearchResults"
           :key="item._id"
           class="py-2"
           @click="selectItemForEdit(item)"
@@ -58,22 +58,26 @@
             {{ nirveTypes.find((t) => t.value === item.type)?.title }}
           </v-list-item-subtitle>
           <template #append>
-            <v-tooltip
-              location="start"
-              :text="`Erstellt am: ${date.format(
-                item.createdAt,
-                'normalDateWithWeekday'
-              )} ----- Letzte Änderung: ${date.format(
-                item.updatedAt,
-                'normalDateWithWeekday'
-              )}`"
-            >
+            <v-tooltip location="start">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> mdi-information-outline </v-icon>
               </template>
+              <p>
+                ID: {{ item._id }}
+                <br />
+                Erstellt am: {{ date.format(item.createdAt, "keyboardDate") }}
+                <br />
+                Letzte Änderung:
+                {{ date.format(item.updatedAt, "keyboardDate") }}
+              </p>
             </v-tooltip>
           </template>
         </v-list-item>
+        <v-pagination
+          v-model="currentPage"
+          :length="Math.ceil(searchResults.length / 10)"
+          class="mt-2"
+        />
       </v-list>
     </v-card-text>
   </v-card>
@@ -84,6 +88,7 @@ import { NirveTypes } from "@/functional_components/API/nirve-creator/dto/nirve-
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 import { NirveCreatorSearchQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import { useApiStore } from "@/store/api";
+import { computed } from "vue";
 import { ref } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import { useDate } from "vuetify/labs/date";
@@ -106,6 +111,14 @@ const createdAfter = ref<Date>();
 const updatedAfter = ref<Date>();
 const searchResults = ref<NirveCommon[]>([]);
 const loading = ref<boolean>(false);
+const currentPage = ref<number>(1);
+
+const paginatedSearchResults = computed<NirveCommon[]>(() => {
+  return searchResults.value.slice(
+    (currentPage.value - 1) * 10,
+    currentPage.value * 10
+  );
+});
 
 const nirveTypes = [
   { title: "Bändiger Fähigkeiten", value: "bending-skill" },
