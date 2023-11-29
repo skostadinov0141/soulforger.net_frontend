@@ -54,7 +54,7 @@
               append-icon="mdi-close-box-outline"
               :loading="loading"
               color="error"
-              text="Felder zurücksetzen"
+              text="Zurücksetzen"
               class="mb-2 mr-4"
               @click.prevent="reset"
             />
@@ -64,7 +64,7 @@
               "
               :loading="loading"
               color="success"
-              :text="id ? 'Änderungen speichern' : 'Erstellen'"
+              :text="id ? 'Speichern' : 'Erstellen'"
               @click.prevent="submit"
             />
           </div>
@@ -118,7 +118,7 @@ const emit = defineEmits(["submit-success"]);
 
 function submit() {
   if (!valid.value) {
-    snackbarStore.snackbar.message = "Bitte fülle alle Felder aus";
+    snackbarStore.snackbar.message = "Ein Validierungsfehler ist aufgetreten";
     snackbarStore.snackbar.type = "error";
     snackbarStore.snackbar.title = "Fehler";
     return;
@@ -127,11 +127,13 @@ function submit() {
     apiStore.api.nirveCreatorService.patch(id.value, modal).then(() => {
       loading.value = false;
       emit("submit-success");
+      closeDialog();
     });
   } else {
     apiStore.api.nirveCreatorService.post(modal).then(() => {
       loading.value = false;
       emit("submit-success");
+      closeDialog();
     });
   }
 }
@@ -155,7 +157,12 @@ function load(loadFrom: NirveCommon) {
 }
 
 function openDialog() {
+  reset();
   opened.value = true;
+}
+
+function closeDialog() {
+  opened.value = false;
 }
 </script>
 

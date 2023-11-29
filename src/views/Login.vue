@@ -1,12 +1,6 @@
 <template>
   <v-row style="height: 100%">
-    <v-col
-      v-for="n in 3"
-      :key="n"
-      cols="12"
-      lg="4"
-      align-self="center"
-    >
+    <v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
       <v-card
         v-if="n == 2"
         class="text-secondary ma-8 ma-lg-0"

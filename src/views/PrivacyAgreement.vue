@@ -1,8 +1,6 @@
 <template>
   <div class="pa-16 ma-16 text-secondary">
-    <h1 style="margin-top: 0">
-      Datenschutz&shy;erkl&auml;rung
-    </h1>
+    <h1 style="margin-top: 0">Datenschutz&shy;erkl&auml;rung</h1>
     <h2>1. Datenschutz auf einen Blick</h2>
     <h3>Allgemeine Hinweise</h3>
     <p>
@@ -74,7 +72,8 @@
         href="https://www.strato.de/datenschutz/"
         target="_blank"
         rel="noopener noreferrer"
-      >https://www.strato.de/datenschutz/</a>.
+        >https://www.strato.de/datenschutz/</a
+      >.
     </p>
     <p>
       Die Verwendung von Strato erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f
@@ -117,11 +116,11 @@
     </p>
     <p>Wir setzen folgende(n) Hoster ein:</p>
     <p>
-      DigitalOcean, LLC.<br>
-      101 Avenue of the Americas<br>
-      10th Floor<br>
-      New York<br>
-      NY 10013<br>
+      DigitalOcean, LLC.<br />
+      101 Avenue of the Americas<br />
+      10th Floor<br />
+      New York<br />
+      NY 10013<br />
       United States of America
     </p>
     <h2>3. Allgemeine Hinweise und Pflicht&shy;informationen</h2>
@@ -152,13 +151,13 @@
       Website ist:
     </p>
     <p>
-      Simeon Kostadinov<br>
-      Am K&ouml;nigsberg 4<br>
+      Simeon Kostadinov<br />
+      Am K&ouml;nigsberg 4<br />
       29525, Uelzen
     </p>
 
     <p>
-      Telefon: +49 176 63213726<br>
+      Telefon: +49 176 63213726<br />
       E-Mail: soulforger.net@gmail.com
     </p>
     <p>

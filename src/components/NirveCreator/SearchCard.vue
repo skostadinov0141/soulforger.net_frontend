@@ -1,8 +1,8 @@
 <template>
   <v-card
     :elevation="5"
-    title="Suchen"
-    subtitle="Hier kannst du die Datenbank an erstellte Nirve elemente durchsuchen."
+    title="Erstellen"
+    subtitle="Erstelle ein neues Element für Nirve."
   >
     <v-divider />
     <v-card-text>
