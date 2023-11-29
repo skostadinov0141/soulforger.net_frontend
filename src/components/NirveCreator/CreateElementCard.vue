@@ -1,9 +1,6 @@
 <template>
-  <v-overlay :model-value="opened">
-    <v-card
-      :elevation="5"
-      :title="id ? 'Bearbeiten' : 'Erstellen'"
-    >
+  <v-dialog v-model="opened" width="1024">
+    <v-card :elevation="5" :title="id ? 'Bearbeiten' : 'Erstellen'">
       <v-divider />
       <v-card-text>
         <v-form v-model="valid">
@@ -14,7 +11,7 @@
             item-value="value"
             label="Kategorie"
             :items="nirveTypes"
-            clearable
+            :clearable="true"
             :rules="[required]"
             :loading="loading"
             class="mb-1"
@@ -24,7 +21,7 @@
             class="mb-1"
             label="Name"
             variant="outlined"
-            clearable
+            :clearable="true"
             :loading="loading"
             :rules="[required]"
             autocomplete="off"
@@ -36,7 +33,7 @@
             rows="8"
             label="Beschreibung"
             variant="outlined"
-            clearable
+            :clearable="true"
             :loading="loading"
             :rules="[required]"
           />
@@ -47,7 +44,7 @@
             rows="8"
             label="Ersteller Notizen"
             variant="outlined"
-            clearable
+            :clearable="true"
             :loading="loading"
             :rules="[required]"
           />
@@ -74,7 +71,7 @@
         </v-form>
       </v-card-text>
     </v-card>
-  </v-overlay>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -98,6 +95,8 @@ const modal = reactive<NirveCreateDto>({
   creatorNotes: "",
   updatedAt: new Date(),
 });
+const opened = ref(false);
+
 const nirveTypes = [
   { title: "Bändiger Fähigkeiten", value: "bending-skill" },
   { title: "Klassen", value: "character-class" },
@@ -108,11 +107,11 @@ const nirveTypes = [
   { title: "Fähigkeiten", value: "skill" },
   { title: "Zauber", value: "spell" },
 ];
-const opened = ref(false);
 
 defineExpose({
   reset,
   load,
+  openDialog,
 });
 
 const emit = defineEmits(["submit-success"]);
@@ -153,6 +152,10 @@ function load(loadFrom: NirveCommon) {
   modal.creatorNotes = loadFrom.creatorNotes;
   modal.updatedAt = new Date();
   id.value = loadFrom._id;
+}
+
+function openDialog() {
+  opened.value = true;
 }
 </script>
 

@@ -11,12 +11,7 @@
         variant="outlined"
         prepend-inner-icon="mdi-magnify"
       />
-      <p
-        class="text-subtitle-1 text-left"
-        style="flex: 1"
-      >
-        Weitere Filter
-      </p>
+      <p class="text-subtitle-1 text-left" style="flex: 1">Weitere Filter</p>
       <v-divider />
       <v-select
         v-model="selectedCategories"
@@ -51,11 +46,16 @@
         append-icon="mdi-magnify"
         @click="getItems"
       />
-      <v-list
-        elevation="4"
-        class="mt-6 rounded"
-        bg-color="surface-lighten-1"
-      >
+      <v-btn
+        class="mt-2"
+        variant="elevated"
+        text="Erstellen"
+        :block="true"
+        color="secondary"
+        append-icon="mdi-plus"
+        @click="emits('create')"
+      />
+      <v-list elevation="4" class="mt-6 rounded" bg-color="surface-lighten-1">
         <v-list-item
           v-for="item in paginatedSearchResults"
           :key="item._id"
@@ -69,15 +69,13 @@
           <template #append>
             <v-tooltip location="start">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  mdi-information-outline
-                </v-icon>
+                <v-icon v-bind="props"> mdi-information-outline</v-icon>
               </template>
               <p>
                 ID: {{ item._id }}
-                <br>
+                <br />
                 Erstellt am: {{ date.format(item.createdAt, "keyboardDate") }}
-                <br>
+                <br />
                 Letzte Änderung:
                 {{ date.format(item.updatedAt, "keyboardDate") }}
               </p>
@@ -162,7 +160,7 @@ function getItems() {
   });
 }
 
-const emits = defineEmits(["select-for-edit"]);
+const emits = defineEmits(["select-for-edit", "create"]);
 defineExpose({
   getItems,
 });
