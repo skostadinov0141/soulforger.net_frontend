@@ -4,7 +4,6 @@ import API from "../api";
 import { Queries } from "../queryConstructor";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { Profile } from "./profile.class";
-import { UpdateProfileDto } from "./dto/update-profile.dto";
 
 export class ProfileService extends BaseService {
   constructor(api: API) {
@@ -18,9 +17,9 @@ export class ProfileService extends BaseService {
    * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
    */
   override async getById(id: string): Promise<Profile> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .get(`${this.uri}/${id}`)
           .then((res) => {
@@ -47,9 +46,9 @@ export class ProfileService extends BaseService {
     limit?: number,
     skip?: number
   ): Promise<Profile> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .post(`${this.uri}/search`, query, {
             params: {
@@ -76,9 +75,9 @@ export class ProfileService extends BaseService {
    * @returns A Promise that resolves with the updated User object.
    */
   async patch(id: string, data: Partial<UpdateUserDto>): Promise<Profile> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .patch(`${this.uri}/${id}`, data)
           .then((res) => {

@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, watch } from "vue";
+import { inject, onMounted } from "vue";
 import Navbar from "./components/Navbar.vue";
 import { VueCookies } from "vue-cookies";
 import Snackbar from "./components/Snackbar.vue";

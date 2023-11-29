@@ -1,75 +1,80 @@
 <template>
-  <v-card :elevation="5" :title="id ? 'Bearbeiten' : 'Erstellen'">
-    <v-divider />
-    <v-card-text>
-      <v-form v-model="valid">
-        <v-autocomplete
-          v-model="modal.type"
-          variant="outlined"
-          item-title="title"
-          item-value="value"
-          label="Kategorie"
-          :items="nirveTypes"
-          clearable
-          :rules="[required]"
-          :loading="loading"
-          class="mb-1"
-        />
-        <v-text-field
-          v-model="modal.name"
-          class="mb-1"
-          label="Name"
-          variant="outlined"
-          clearable
-          :loading="loading"
-          :rules="[required]"
-          autocomplete="off"
-        />
-        <v-textarea
-          v-model="modal.description"
-          autocomplete="off"
-          class="mb-1"
-          rows="8"
-          label="Beschreibung"
-          variant="outlined"
-          clearable
-          :loading="loading"
-          :rules="[required]"
-        />
-        <v-textarea
-          v-model="modal.creatorNotes"
-          autocomplete="off"
-          class="mb-1"
-          rows="8"
-          label="Ersteller Notizen"
-          variant="outlined"
-          clearable
-          :loading="loading"
-          :rules="[required]"
-        />
-        <div class="d-flex justify-end">
-          <v-btn
-            variant="text"
-            append-icon="mdi-close-box-outline"
+  <v-overlay :model-value="opened">
+    <v-card
+      :elevation="5"
+      :title="id ? 'Bearbeiten' : 'Erstellen'"
+    >
+      <v-divider />
+      <v-card-text>
+        <v-form v-model="valid">
+          <v-autocomplete
+            v-model="modal.type"
+            variant="outlined"
+            item-title="title"
+            item-value="value"
+            label="Kategorie"
+            :items="nirveTypes"
+            clearable
+            :rules="[required]"
             :loading="loading"
-            color="error"
-            text="Felder zurücksetzen"
-            class="mb-2 mr-4"
-            @click.prevent="reset"
+            class="mb-1"
           />
-          <v-btn
-            :append-icon="
-              id ? 'mdi-content-save-outline' : 'mdi-plus-box-outline'
-            "
+          <v-text-field
+            v-model="modal.name"
+            class="mb-1"
+            label="Name"
+            variant="outlined"
+            clearable
             :loading="loading"
-            color="success"
-            :text="id ? 'Änderungen speichern' : 'Erstellen'"
-            @click.prevent="submit"
+            :rules="[required]"
+            autocomplete="off"
           />
-        </div>
-      </v-form>
-    </v-card-text>
-  </v-card>
+          <v-textarea
+            v-model="modal.description"
+            autocomplete="off"
+            class="mb-1"
+            rows="8"
+            label="Beschreibung"
+            variant="outlined"
+            clearable
+            :loading="loading"
+            :rules="[required]"
+          />
+          <v-textarea
+            v-model="modal.creatorNotes"
+            autocomplete="off"
+            class="mb-1"
+            rows="8"
+            label="Ersteller Notizen"
+            variant="outlined"
+            clearable
+            :loading="loading"
+            :rules="[required]"
+          />
+          <div class="d-flex justify-end">
+            <v-btn
+              variant="text"
+              append-icon="mdi-close-box-outline"
+              :loading="loading"
+              color="error"
+              text="Felder zurücksetzen"
+              class="mb-2 mr-4"
+              @click.prevent="reset"
+            />
+            <v-btn
+              :append-icon="
+                id ? 'mdi-content-save-outline' : 'mdi-plus-box-outline'
+              "
+              :loading="loading"
+              color="success"
+              :text="id ? 'Änderungen speichern' : 'Erstellen'"
+              @click.prevent="submit"
+            />
+          </div>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-overlay>
 </template>
 
 <script setup lang="ts">
@@ -77,8 +82,8 @@ import { NirveCreateDto } from "@/functional_components/API/nirve-creator/dto/ni
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 import { useApiStore } from "@/store/api";
 import { useSnackbarStore } from "@/store/snackbar";
-import { max, required } from "@/validators";
-import { DeepReadonly, reactive, ref } from "vue";
+import { required } from "@/validators";
+import { reactive, ref } from "vue";
 
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
@@ -91,7 +96,7 @@ const modal = reactive<NirveCreateDto>({
   description: "",
   type: "bending-skill",
   creatorNotes: "",
-  updatedAt: new Date()
+  updatedAt: new Date(),
 });
 const nirveTypes = [
   { title: "Bändiger Fähigkeiten", value: "bending-skill" },
@@ -101,12 +106,13 @@ const nirveTypes = [
   { title: "Rassen", value: "race" },
   { title: "Religionen", value: "religion" },
   { title: "Fähigkeiten", value: "skill" },
-  { title: "Zauber", value: "spell" }
+  { title: "Zauber", value: "spell" },
 ];
+const opened = ref(false);
 
 defineExpose({
   reset,
-  load
+  load,
 });
 
 const emit = defineEmits(["submit-success"]);

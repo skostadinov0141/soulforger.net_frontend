@@ -1,11 +1,19 @@
 <template>
   <v-container class="h-100">
-    <v-row align="center" class="h-100" no-gutters>
-      <v-col cols="12" md="6" offset-md="3">
+    <v-row
+      align="center"
+      class="h-100"
+      no-gutters
+    >
+      <v-col
+        cols="12"
+        md="6"
+        offset-md="3"
+      >
         <v-card color="surface-lighten-1">
-          <v-card-title class="text-error"
-            >Ein Fehler ist aufgetreten!</v-card-title
-          >
+          <v-card-title class="text-error">
+            Ein Fehler ist aufgetreten!
+          </v-card-title>
           <v-card-text>
             {{ `${error.config?.baseURL}${error.config?.url}` }}
           </v-card-text>

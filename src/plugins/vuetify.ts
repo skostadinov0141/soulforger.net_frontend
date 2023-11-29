@@ -16,11 +16,11 @@ import { VuetifyDateAdapter } from "vuetify/labs/date/adapters/vuetify";
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   date: {
-    adapter: VuetifyDateAdapter
+    adapter: VuetifyDateAdapter,
   },
   locale: {
     locale: "de",
-    messages: { de }
+    messages: { de },
   },
   theme: {
     defaultTheme: "dark",
@@ -51,8 +51,8 @@ export default createVuetify({
           "on-error": "#000000",
 
           info: "#9FA8DA",
-          "on-info": "#000000"
-        }
+          "on-info": "#000000",
+        },
         // colors: {
         //   background: "#06080F",
         //   surface: "#06080F",
@@ -73,7 +73,7 @@ export default createVuetify({
         //   error: "#BA5656",
         //   warning: "#BD9C55"
         // }
-      }
-    }
-  }
+      },
+    },
+  },
 });

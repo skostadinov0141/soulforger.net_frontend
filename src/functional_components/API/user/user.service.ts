@@ -3,7 +3,7 @@ import BaseService from "../abstract.service";
 import API from "../api";
 import User from "./user.class";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { AndQuery, Queries } from "../queryConstructor";
+import { Queries } from "../queryConstructor";
 import { UpdateUserDto } from "../dto/update-user.dto";
 
 export class UserService extends BaseService {
@@ -18,9 +18,9 @@ export class UserService extends BaseService {
    * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
    */
   override async getById(id: string): Promise<User> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .get(`${this.uri}/${id}`)
           .then((res) => {
@@ -42,9 +42,9 @@ export class UserService extends BaseService {
    * @throws An error if the request fails.
    */
   async post(data: CreateUserDto): Promise<User> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios(true);
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios(true);
         axiosInstance
           .post(`${this.uri}`, data)
           .then((res) => {
@@ -71,9 +71,9 @@ export class UserService extends BaseService {
     limit?: number,
     skip?: number
   ): Promise<User> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .post(`${this.uri}/search`, query, {
             params: {
@@ -100,9 +100,9 @@ export class UserService extends BaseService {
    * @returns A Promise that resolves with the updated User object.
    */
   async patch(id: string, data: Partial<UpdateUserDto>): Promise<User> {
-    return new Promise(async (resolve, reject) => {
+    const axiosInstance = await this.api.getAxios();
+    return new Promise((resolve, reject) => {
       try {
-        const axiosInstance = await this.api.getAxios();
         axiosInstance
           .patch(`${this.uri}/${id}`, data)
           .then((res) => {

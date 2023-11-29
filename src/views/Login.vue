@@ -1,60 +1,66 @@
 <template>
   <v-row style="height: 100%">
-    <v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+    <v-col
+      v-for="n in 3"
+      :key="n"
+      cols="12"
+      lg="4"
+      align-self="center"
+    >
       <v-card
+        v-if="n == 2"
         class="text-secondary ma-8 ma-lg-0"
         variant="elevated"
         rounded="md"
         elevation="3"
         color="surface-lighten-1"
-        v-if="n == 2"
       >
         <v-img
           height="160px"
           cover
           src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
-        ></v-img>
+        />
         <v-card-item class="pb-4 pt-6">
           <v-form
+            v-model="valid"
             :disabled="loading"
             @submit.prevent="onSubmit"
-            v-model="valid"
           >
             <v-text-field
+              v-model="uname"
               density="compact"
               class="mb-2"
               :rules="[required]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="uname"
               prepend-inner-icon="mdi-account"
               required
               label="E-Mail"
               placeholder="musterman@gmail.com"
               type="email"
               clearable
-            ></v-text-field>
+            />
             <v-text-field
+              v-model="pw"
               density="compact"
               :rules="[required]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="pw"
-              @click:append-inner="showPassword = !showPassword"
               prepend-inner-icon="mdi-lock"
               :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               required
               label="Passwort"
               :type="showPassword ? 'text' : 'password'"
-            ></v-text-field>
+              @click:append-inner="showPassword = !showPassword"
+            />
             <v-checkbox
+              v-model="remember"
               :disabled="loading"
               label="Angemeldet bleiben"
-              v-model="remember"
-            ></v-checkbox>
+            />
             <v-alert
-              icon="mdi-alert-circle"
               v-if="apiError.status"
+              icon="mdi-alert-circle"
               class="mb-4"
               color="error"
               dense
@@ -67,16 +73,18 @@
               color="indigo-darken-2"
               style="width: 100%"
               type="submit"
-              >Anmelden</v-btn
             >
+              Anmelden
+            </v-btn>
             <v-btn
               append-icon="mdi-account-plus"
               color="indigo-lighten-3"
               style="width: 100%"
               variant="text"
               @click="router.push('/register')"
-              >Registrieren</v-btn
             >
+              Registrieren
+            </v-btn>
           </v-form>
         </v-card-item>
       </v-card>

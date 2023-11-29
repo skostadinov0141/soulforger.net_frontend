@@ -1,22 +1,32 @@
 <template>
   <v-row style="height: 100%">
-    <v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+    <v-col
+      v-for="n in 3"
+      :key="n"
+      cols="12"
+      lg="4"
+      align-self="center"
+    >
       <v-card
+        v-if="n == 2"
         class="text-secondary ma-8 ma-lg-0"
         variant="elevated"
         rounded="md"
         elevation="3"
         color="surface-lighten-1"
-        v-if="n == 2"
       >
         <v-img
           height="160px"
           cover
           src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
-        ></v-img>
+        />
         <v-card-item class="pb-4 pt-6">
-          <v-form @submit.prevent="onSubmit" v-model="valid">
+          <v-form
+            v-model="valid"
+            @submit.prevent="onSubmit"
+          >
             <v-text-field
+              v-model="data.email"
               density="compact"
               class="mb-2"
               :rules="[
@@ -26,15 +36,15 @@
               ]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="data.email"
               prepend-inner-icon="mdi-email"
               required
               label="E-Mail"
               placeholder="musterman@gmail.com"
               type="email"
               clearable
-            ></v-text-field>
+            />
             <v-text-field
+              v-model="data.username"
               density="compact"
               class="mb-2"
               :rules="[
@@ -44,15 +54,15 @@
               ]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="data.username"
               prepend-inner-icon="mdi-account"
               required
               label="Anzeigename"
               placeholder="Max Mustermann"
               type="text"
               clearable
-            ></v-text-field>
+            />
             <v-text-field
+              v-model="data.password"
               density="compact"
               class="mb-2"
               :rules="[
@@ -67,15 +77,15 @@
               ]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="data.password"
-              @click:append-inner="showPassword = !showPassword"
               prepend-inner-icon="mdi-lock"
               :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               required
               label="Passwort"
               :type="showPassword ? 'text' : 'password'"
-            ></v-text-field>
+              @click:append-inner="showPassword = !showPassword"
+            />
             <v-text-field
+              v-model="pwConfirmation"
               density="compact"
               class="mb-2"
               :rules="[
@@ -84,10 +94,6 @@
               ]"
               bg-color="surface-lighten-2"
               variant="solo"
-              v-model="pwConfirmation"
-              @click:append-inner="
-                showPasswordConfirmation = !showPasswordConfirmation
-              "
               prepend-inner-icon="mdi-lock"
               :append-inner-icon="
                 showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'
@@ -95,27 +101,32 @@
               required
               label="Passwort bestätigen"
               :type="showPasswordConfirmation ? 'text' : 'password'"
-            ></v-text-field>
+              @click:append-inner="
+                showPasswordConfirmation = !showPasswordConfirmation
+              "
+            />
             <v-alert
-              icon="mdi-alert-circle"
               v-if="apiError.status"
+              icon="mdi-alert-circle"
               class="mb-4"
               color="error"
               dense
             >
               {{ apiError.message }}
             </v-alert>
-            <v-checkbox :disabled="loading" :rules="[validateEula]">
-              <template v-slot:label>
+            <v-checkbox
+              :disabled="loading"
+              :rules="[validateEula]"
+            >
+              <template #label>
                 <div>
                   Ich habe die
                   <a
                     class="text-decoration-none text-indigo-lighten-1"
-                    @click.stop
                     target="_blank"
                     href="https://soulforger.net/legal/privacy-agreement"
-                    >Datenschutzerklärung</a
-                  >
+                    @click.stop
+                  >Datenschutzerklärung</a>
                   gelesen und akzeptiere diese.
                 </div>
               </template>
@@ -127,8 +138,9 @@
               color="indigo-darken-2"
               style="width: 100%"
               type="submit"
-              >Registrieren</v-btn
             >
+              Registrieren
+            </v-btn>
             <v-btn
               :disabled="loading"
               append-icon="mdi-login"
@@ -136,8 +148,9 @@
               style="width: 100%"
               type="submit"
               variant="text"
-              >Anmelden</v-btn
             >
+              Anmelden
+            </v-btn>
           </v-form>
         </v-card-item>
       </v-card>

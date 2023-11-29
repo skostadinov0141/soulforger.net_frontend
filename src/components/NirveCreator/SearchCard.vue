@@ -11,14 +11,19 @@
         variant="outlined"
         prepend-inner-icon="mdi-magnify"
       />
-      <p class="text-subtitle-1 text-left" style="flex: 1">Weitere Filter</p>
+      <p
+        class="text-subtitle-1 text-left"
+        style="flex: 1"
+      >
+        Weitere Filter
+      </p>
       <v-divider />
       <v-select
         v-model="selectedCategories"
         variant="outlined"
-        multiple
+        :multiple="true"
         class="mt-6"
-        chips
+        :chips="true"
         :items="nirveTypes"
         label="Kategorien"
       />
@@ -41,12 +46,16 @@
       <v-btn
         variant="elevated"
         text="Suchen"
-        block
+        :block="true"
         color="primary"
         append-icon="mdi-magnify"
         @click="getItems"
       />
-      <v-list elevation="4" class="mt-6 rounded" bg-color="surface-lighten-1">
+      <v-list
+        elevation="4"
+        class="mt-6 rounded"
+        bg-color="surface-lighten-1"
+      >
         <v-list-item
           v-for="item in paginatedSearchResults"
           :key="item._id"
@@ -60,13 +69,15 @@
           <template #append>
             <v-tooltip location="start">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> mdi-information-outline </v-icon>
+                <v-icon v-bind="props">
+                  mdi-information-outline
+                </v-icon>
               </template>
               <p>
                 ID: {{ item._id }}
-                <br />
+                <br>
                 Erstellt am: {{ date.format(item.createdAt, "keyboardDate") }}
-                <br />
+                <br>
                 Letzte Änderung:
                 {{ date.format(item.updatedAt, "keyboardDate") }}
               </p>
@@ -84,13 +95,11 @@
 </template>
 
 <script setup lang="ts">
-import { NirveTypes } from "@/functional_components/API/nirve-creator/dto/nirve-common.dto";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 import { NirveCreatorSearchQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import { useApiStore } from "@/store/api";
 import { computed } from "vue";
 import { ref } from "vue";
-import { VDataTable } from "vuetify/labs/VDataTable";
 import { useDate } from "vuetify/labs/date";
 
 const apiStore = useApiStore();
@@ -104,13 +113,12 @@ const selectedCategories = ref<string[]>([
   "race",
   "religion",
   "skill",
-  "spell"
+  "spell",
 ]);
 const search = ref<string>("");
 const createdAfter = ref<Date>();
 const updatedAfter = ref<Date>();
 const searchResults = ref<NirveCommon[]>([]);
-const loading = ref<boolean>(false);
 const currentPage = ref<number>(1);
 
 const paginatedSearchResults = computed<NirveCommon[]>(() => {
@@ -128,25 +136,25 @@ const nirveTypes = [
   { title: "Rassen", value: "race" },
   { title: "Religionen", value: "religion" },
   { title: "Fähigkeiten", value: "skill" },
-  { title: "Zauber", value: "spell" }
+  { title: "Zauber", value: "spell" },
 ];
 
 function getItems() {
   let query: NirveCreatorSearchQuery = {};
   query.type = {
-    $in: selectedCategories.value!
+    $in: selectedCategories.value!,
   };
   query.name = {
-    $regex: search.value!
+    $regex: search.value!,
   };
   if (createdAfter.value) {
     query.createdAt = {
-      $gte: createdAfter.value
+      $gte: createdAfter.value,
     };
   }
   if (updatedAfter.value) {
     query.updatedAt = {
-      $gte: updatedAfter.value
+      $gte: updatedAfter.value,
     };
   }
   apiStore.api.nirveCreatorService.search(query).then((res) => {
@@ -156,7 +164,7 @@ function getItems() {
 
 const emits = defineEmits(["select-for-edit"]);
 defineExpose({
-  getItems
+  getItems,
 });
 
 function selectItemForEdit(item: NirveCommon) {
@@ -164,8 +172,4 @@ function selectItemForEdit(item: NirveCommon) {
 }
 </script>
 
-<style scoped>
-.v-data-table__tr {
-  background-color: rgb(var(--v-theme-surface-lighten-2)) !important;
-}
-</style>
+<style scoped></style>

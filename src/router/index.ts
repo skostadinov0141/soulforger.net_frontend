@@ -48,17 +48,18 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useApiStore();
   const snackbarStore = useSnackbarStore();
-  console.log(store.authed);
-  console.log(to.meta.requiresAuth);
-  console.log(to.path);
   if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
-    snackbarStore.$patch({
-      snackbar: {
-        message: "Du musst dich zuerst einloggen!",
-        type: "warning",
-      },
-    });
-    return "/login";
+    try {
+      store.api.getAxios();
+    } catch (err) {
+      snackbarStore.$patch({
+        snackbar: {
+          message: "Du musst dich zuerst einloggen!",
+          type: "warning",
+        },
+      });
+      return "/login";
+    }
   }
 });
 

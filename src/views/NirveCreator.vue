@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <v-row align="center" class="h-100 pa-4">
+    <v-row
+      align="center"
+      class="h-100 pa-4"
+    >
       <v-col cols="12">
         <SearchCard
           ref="searchCardRef"

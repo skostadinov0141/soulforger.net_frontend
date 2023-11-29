@@ -34,38 +34,28 @@ export default class API {
         baseURL: `${this.baseUrl}/${this.apiVersion}`,
       });
     }
-    return new Promise(async (resolve, reject) => {
-      if (!this.getToken()) {
-        reject("Du bist nicht eingeloggt!");
-      }
-      if (this.getToken()!.expires_at < Date.now()) {
-        try {
-          await this.refreshToken();
-        } catch (err) {
-          reject(err);
-        }
-      }
-      useApiStore().authed = true;
-      resolve(
-        axios.create({
-          baseURL: `${this.baseUrl}/${this.apiVersion}`,
-          headers: {
-            Authorization: `Bearer ${this.getToken()?.access_token}`,
-          },
-        })
-      );
+    if (!this.getToken()) {
+      throw new Error("Du bist nicht eingeloggt!");
+    }
+    if (this.getToken()!.expires_at < Date.now()) {
+      await this.refreshToken();
+    }
+    return axios.create({
+      baseURL: `${this.baseUrl}/${this.apiVersion}`,
+      headers: {
+        Authorization: `Bearer ${this.getToken()?.access_token}`,
+      },
     });
   }
 
   /**
    * @description Refresh the access token
-   * @param {string} refreshToken Refresh token
    * @returns {Promise<boolean>} True if refresh was successful
    * @throws {AxiosError} API Error if token refresh was not successful
    * @memberof API
    */
-  async refreshToken() {
-    return new Promise((resolve, reject) => {
+  async refreshToken(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       axios
         .post(`${this.baseUrl}/${this.apiVersion}/auth/refresh`, {
           refresh_token: this.getToken()?.refresh_token,
@@ -83,6 +73,7 @@ export default class API {
   /**
    * @description Login to the API and save the access token
    * @param {SignInDto} loginDto Login data (username, password)
+   * @param {VueCookies} cookiesInstance VueCookies instance
    * @returns {Promise<boolean>} True if login was successful
    * @throws {AxiosError} API Error if login was not successful
    * @memberof API
