@@ -107,7 +107,7 @@
             </v-alert>
             <v-checkbox :disabled="loading" :rules="[validateEula]">
               <template #label>
-                <div>
+                <p class="text-on-surface">
                   Ich habe die
                   <a
                     class="text-decoration-none text-indigo-lighten-1"
@@ -117,7 +117,7 @@
                     >Datenschutzerklärung</a
                   >
                   gelesen und akzeptiere diese.
-                </div>
+                </p>
               </template>
             </v-checkbox>
             <v-btn

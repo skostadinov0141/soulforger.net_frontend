@@ -9,6 +9,7 @@
         elevation="3"
         color="surface-lighten-1"
       >
+		<!--TODO: change image source due to slow loading-->
         <v-img
           height="160px"
           cover
