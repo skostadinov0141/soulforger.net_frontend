@@ -106,25 +106,25 @@
               {{ apiError.message }}
             </v-alert>
             <v-checkbox color="white" :disabled="loading" :rules="[validateEula]">
-<!--              <template #label>-->
-<!--                <p class="text-white">-->
-<!--                  Ich habe die-->
-<!--                  <a-->
-<!--                    class="text-decoration-none text-indigo-lighten-1"-->
-<!--                    target="_blank"-->
-<!--                    href="https://soulforger.net/legal/privacy-agreement"-->
-<!--                    @click.stop-->
-<!--                    >Datenschutzerklärung</a-->
-<!--                  >-->
-<!--                  gelesen und akzeptiere diese.-->
-<!--                </p>-->
-<!--              </template>-->
+              <template #label>
+                <p class="text-white">
+                  Ich habe die
+                  <a
+                    class="text-decoration-none text-indigo-lighten-1"
+                    target="_blank"
+                    href="https://soulforger.net/legal/privacy-agreement"
+                    @click.stop
+                    >Datenschutzerklärung</a
+                  >
+                  gelesen und akzeptiere diese.
+                </p>
+              </template>
             </v-checkbox>
             <v-btn
               :disabled="loading"
               class="mb-4"
               append-icon="mdi-account-plus"
-              color="indigo-darken-2"
+              color="primary"
               style="width: 100%"
               type="submit"
             >

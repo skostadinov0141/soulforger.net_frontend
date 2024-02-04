@@ -65,7 +65,7 @@
             <v-btn
               class="mb-4"
               append-icon="mdi-login"
-              color="indigo-darken-2"
+              color="primary"
               style="width: 100%"
               type="submit"
             >
