@@ -1,4 +1,4 @@
-import { NirveTypes } from "./dto/nirve-common.dto";
+import {NirveTypes} from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
 
 export class NirveCommon {
   _id: string;

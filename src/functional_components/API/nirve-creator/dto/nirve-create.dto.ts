@@ -1,5 +1,3 @@
-import { NirveTypes } from "./nirve-common.dto";
-
 export class NirveCreateDto {
   name: string;
   description: string;
@@ -7,3 +5,13 @@ export class NirveCreateDto {
   creatorNotes: string;
   type: NirveTypes;
 }
+
+export type NirveTypes =
+    | "bending-skill"
+    | "character-class"
+    | "disadvantage"
+    | "item"
+    | "race"
+    | "religion"
+    | "skill"
+    | "spell";
