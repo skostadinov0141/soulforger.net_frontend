@@ -2,6 +2,8 @@ import BaseService from "../abstract.service";
 import User from "./user.class";
 import API from "@/functional_components/API/api";
 import { CreateUserDto } from "@/functional_components/API/user/dto/create-user.dto";
+import {plainToInstance} from "class-transformer";
+import {AxiosError} from "axios";
 export class UserService extends BaseService<User> {
   constructor(apiInstance: API) {
     super(apiInstance, "user", User);

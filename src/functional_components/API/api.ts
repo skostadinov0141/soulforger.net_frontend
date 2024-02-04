@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { TokenDto } from "./dto/token.dto";
-import { SignInDto } from "./dto/sign-in.dto";
+import { LoginDto } from "./dto/login.dto";
 import { VueCookies } from "vue-cookies";
 import { UserService } from "./user/user.service";
 import { ProfileService } from "./profile/profile.service";
@@ -72,14 +72,14 @@ export default class API {
 
   /**
    * @description Login to the API and save the access token
-   * @param {SignInDto} loginDto Login data (username, password)
+   * @param {LoginDto} loginDto Login data (username, password)
    * @param {VueCookies} cookiesInstance VueCookies instance
    * @returns {Promise<boolean>} True if login was successful
    * @throws {AxiosError} API Error if login was not successful
    * @memberof API
    */
   async login(
-    loginDto: SignInDto,
+    loginDto: LoginDto,
     cookiesInstance: VueCookies
   ): Promise<boolean> {
     this.cookies = cookiesInstance;
@@ -92,7 +92,7 @@ export default class API {
           resolve(true);
         })
         .catch((err: AxiosError) => {
-          reject(err.message);
+          reject(err);
         });
     });
   }

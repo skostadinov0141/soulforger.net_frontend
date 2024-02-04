@@ -105,20 +105,20 @@
             >
               {{ apiError.message }}
             </v-alert>
-            <v-checkbox :disabled="loading" :rules="[validateEula]">
-              <template #label>
-                <p class="text-on-surface">
-                  Ich habe die
-                  <a
-                    class="text-decoration-none text-indigo-lighten-1"
-                    target="_blank"
-                    href="https://soulforger.net/legal/privacy-agreement"
-                    @click.stop
-                    >Datenschutzerklärung</a
-                  >
-                  gelesen und akzeptiere diese.
-                </p>
-              </template>
+            <v-checkbox color="white" :disabled="loading" :rules="[validateEula]">
+<!--              <template #label>-->
+<!--                <p class="text-white">-->
+<!--                  Ich habe die-->
+<!--                  <a-->
+<!--                    class="text-decoration-none text-indigo-lighten-1"-->
+<!--                    target="_blank"-->
+<!--                    href="https://soulforger.net/legal/privacy-agreement"-->
+<!--                    @click.stop-->
+<!--                    >Datenschutzerklärung</a-->
+<!--                  >-->
+<!--                  gelesen und akzeptiere diese.-->
+<!--                </p>-->
+<!--              </template>-->
             </v-checkbox>
             <v-btn
               :disabled="loading"
@@ -187,7 +187,7 @@ function onSubmit() {
       (error: AxiosError) => {
         loading.value = false;
         apiError.status = true;
-        apiError.message = (error.response?.data as any).detail;
+        apiError.message = error.message;
       }
     );
   }

@@ -124,14 +124,14 @@ function onSubmit() {
   if (valid.value) {
     store.api
       .login({ email: uname.value, password: pw.value }, $cookies)
-      .then((res: boolean) => {
+      .then(() => {
         loading.value = false;
         store.authed = true;
         router.push("/dashboard");
       })
       .catch((err: AxiosError) => {
         apiError.status = true;
-        apiError.message = err.message;
+        apiError.message = (err.response!.data as any).message;
         loading.value = false;
       });
   }

@@ -35,7 +35,7 @@ export default createVuetify({
           "surface-lighten-1": "#141414",
           "on-surface": "#FFFFFF",
 
-          primary: "#7E57C2",
+          primary: "#283593",
           "on-primary": "#FFFFFF",
 
           secondary: "#80DEEA",
