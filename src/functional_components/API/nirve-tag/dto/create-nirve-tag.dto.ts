@@ -1,3 +1,3 @@
-export class CreateNirveTagDto{
-    tag: string;
+export class CreateNirveTagDto {
+  tag: string;
 }

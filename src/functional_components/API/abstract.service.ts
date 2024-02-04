@@ -1,7 +1,7 @@
 import API from "./api";
 import { Queries } from "./query.types";
-import {plainToInstance} from "class-transformer";
-import {AxiosError} from "axios";
+import { plainToInstance } from "class-transformer";
+import { AxiosError } from "axios";
 
 export default class BaseService<T> {
   api: API;
@@ -25,13 +25,13 @@ export default class BaseService<T> {
     return new Promise((resolve, reject) => {
       try {
         axiosInstance
-            .post(`${this.uri}`, data)
-            .then((res) => {
-              resolve(plainToInstance(this.classType, res.data));
-            })
-            .catch((err: AxiosError) => {
-              reject(err);
-            });
+          .post(`${this.uri}`, data)
+          .then((res) => {
+            resolve(plainToInstance(this.classType, res.data));
+          })
+          .catch((err: AxiosError) => {
+            reject(err);
+          });
       } catch (err) {
         reject(err);
       }
@@ -49,13 +49,13 @@ export default class BaseService<T> {
     return new Promise((resolve, reject) => {
       try {
         axiosInstance
-            .get(`${this.uri}/${id}`)
-            .then((res) => {
-              resolve(plainToInstance(this.classType, res.data));
-            })
-            .catch((err: AxiosError) => {
-              reject(err);
-            });
+          .get(`${this.uri}/${id}`)
+          .then((res) => {
+            resolve(plainToInstance(this.classType, res.data));
+          })
+          .catch((err: AxiosError) => {
+            reject(err);
+          });
       } catch (err) {
         reject(err);
       }
@@ -71,31 +71,31 @@ export default class BaseService<T> {
    * @throws AxiosError If the request fails.
    */
   async search(
-      query?: Partial<{ [K in keyof T]: Queries }>,
-      limit: number = 50,
-      skip: number = 0
+    query?: Partial<{ [K in keyof T]: Queries }>,
+    limit: number = 50,
+    skip: number = 0
   ): Promise<T[]> {
     const axiosInstance = await this.api.getAxios();
     return new Promise((resolve, reject) => {
       try {
         axiosInstance
-            .post(`${this.uri}/search`, query, {
-              params: {
-                limit: limit,
-                skip: skip,
-              },
-            })
-            .then((res) => {
-              const result = plainToInstance(this.classType, res.data);
-              if (result instanceof Array) {
-                resolve(result);
-              } else {
-                resolve([result]);
-              }
-            })
-            .catch((err: AxiosError) => {
-              reject(err);
-            });
+          .post(`${this.uri}/search`, query, {
+            params: {
+              limit: limit,
+              skip: skip,
+            },
+          })
+          .then((res) => {
+            const result = plainToInstance(this.classType, res.data);
+            if (result instanceof Array) {
+              resolve(result);
+            } else {
+              resolve([result]);
+            }
+          })
+          .catch((err: AxiosError) => {
+            reject(err);
+          });
       } catch (err) {
         reject(err);
       }
@@ -114,13 +114,13 @@ export default class BaseService<T> {
     return new Promise((resolve, reject) => {
       try {
         axiosInstance
-            .patch(`${this.uri}/${id}`, data)
-            .then((res) => {
-              resolve(plainToInstance(this.classType, res.data));
-            })
-            .catch((err: AxiosError) => {
-              reject(err);
-            });
+          .patch(`${this.uri}/${id}`, data)
+          .then((res) => {
+            resolve(plainToInstance(this.classType, res.data));
+          })
+          .catch((err: AxiosError) => {
+            reject(err);
+          });
       } catch (err) {
         reject(err);
       }
@@ -138,13 +138,13 @@ export default class BaseService<T> {
     return new Promise((resolve, reject) => {
       try {
         axiosInstance
-            .delete(`${this.uri}/${id}`)
-            .then((res) => {
-              resolve(plainToInstance(this.classType, res.data));
-            })
-            .catch((err: AxiosError) => {
-              reject(err);
-            });
+          .delete(`${this.uri}/${id}`)
+          .then((res) => {
+            resolve(plainToInstance(this.classType, res.data));
+          })
+          .catch((err: AxiosError) => {
+            reject(err);
+          });
       } catch (err) {
         reject(err);
       }

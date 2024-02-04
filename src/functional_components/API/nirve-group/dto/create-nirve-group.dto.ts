@@ -1,4 +1,4 @@
 export class CreateNirveGroupDto {
-    name: string;
-    description: string;
+  name: string;
+  description: string;
 }

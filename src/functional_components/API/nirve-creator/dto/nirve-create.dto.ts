@@ -7,11 +7,11 @@ export class NirveCreateDto {
 }
 
 export type NirveTypes =
-    | "bending-skill"
-    | "character-class"
-    | "disadvantage"
-    | "item"
-    | "race"
-    | "religion"
-    | "skill"
-    | "spell";
+  | "bending-skill"
+  | "character-class"
+  | "disadvantage"
+  | "item"
+  | "race"
+  | "religion"
+  | "skill"
+  | "spell";
