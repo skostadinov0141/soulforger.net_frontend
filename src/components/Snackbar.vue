@@ -6,16 +6,17 @@
 
 <script setup lang="ts">
 import { useSnackbarStore } from "@/store/snackbar";
-import { ref } from "vue";
+import {ref, watch} from "vue";
+import {storeToRefs} from "pinia";
 
 const snackbarStore = useSnackbarStore();
 
 const showSnackbar = ref(false);
 const snackbarColor = ref("error");
 
-snackbarStore.$subscribe((mutation, state) => {
+watch(storeToRefs(snackbarStore).snackbar, (newVal) => {
   showSnackbar.value = true;
-  snackbarColor.value = state.snackbar.type;
+  snackbarColor.value = newVal.type;
 });
 </script>
 

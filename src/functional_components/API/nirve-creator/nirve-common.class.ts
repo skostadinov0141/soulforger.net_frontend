@@ -11,4 +11,6 @@ export class NirveCommon {
   creationPhase: number;
   creatorNotes: string;
   type: NirveTypes;
+  tags: string[];
+  groups: string[];
 }
