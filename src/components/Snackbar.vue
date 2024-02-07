@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { useSnackbarStore } from "@/store/snackbar";
-import {ref, watch} from "vue";
-import {storeToRefs} from "pinia";
+import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
 
 const snackbarStore = useSnackbarStore();
 

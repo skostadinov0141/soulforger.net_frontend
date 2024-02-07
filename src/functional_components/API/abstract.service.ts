@@ -114,7 +114,11 @@ export default class BaseService<T> {
    * @returns A Promise that resolves with the updated object.
    * @throws AxiosError If the request fails.
    */
-  async patch(id: string, data: Partial<T>, isPublic: boolean = false): Promise<T> {
+  async patch(
+    id: string,
+    data: Partial<T>,
+    isPublic: boolean = false
+  ): Promise<T> {
     const axiosInstance = await this.api.getAxios(isPublic);
     return new Promise((resolve, reject) => {
       try {

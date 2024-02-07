@@ -105,7 +105,11 @@
             >
               {{ apiError.message }}
             </v-alert>
-            <v-checkbox color="white" :disabled="loading" :rules="[validateEula]">
+            <v-checkbox
+              color="white"
+              :disabled="loading"
+              :rules="[validateEula]"
+            >
               <template #label>
                 <p class="text-white">
                   Ich habe die

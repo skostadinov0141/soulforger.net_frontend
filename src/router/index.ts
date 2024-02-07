@@ -4,9 +4,8 @@ import { useSnackbarStore } from "@/store/snackbar";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { useApiStore } from "@/store/api";
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
-    default: true,
     path: "/",
     component: () => import("@/views/Dashboard.vue"),
   },
@@ -31,12 +30,24 @@ const routes = [
     component: () => import("@/views/Error.vue"),
   },
   {
-    path: "/creator/nirve",
-    component: () => import("@/views/NirveCreator.vue"),
+    path: "/nirve",
     meta: {
-      authLevels: [50],
       requiresAuth: true,
     },
+    children: [
+      {
+        path: "manage-commons",
+        component: () => import("@/views/nirve/ManageCommons.vue"),
+      },
+      {
+        path: "manage-tags",
+        component: () => import("@/views/nirve/ManageTags.vue"),
+      },
+      {
+        path: "manage-groups",
+        component: () => import("@/views/nirve/ManageGroups.vue"),
+      },
+    ],
   },
 ];
 

@@ -7,8 +7,8 @@ import { ProfileService } from "./profile/profile.service";
 import { NirveCreatorService } from "./nirve-creator/nirve-creator.service";
 import jwtDecode from "jwt-decode";
 import { useApiStore } from "@/store/api";
-import {NirveGroupService} from "@/functional_components/API/nirve-group/nirve-group.service";
-import {NirveTagService} from "@/functional_components/API/nirve-tag/nirve-tag.service";
+import { NirveGroupService } from "@/functional_components/API/nirve-group/nirve-group.service";
+import { NirveTagService } from "@/functional_components/API/nirve-tag/nirve-tag.service";
 
 export default class API {
   cookies: VueCookies;

@@ -1,9 +1,9 @@
 import BaseService from "../abstract.service";
 import { Profile } from "./profile.class";
 import API from "@/functional_components/API/api";
-import {Queries} from "@/functional_components/API/query.types";
+import { Queries } from "@/functional_components/API/query.types";
 
-export type ProfileQuery = Partial<{ [K in keyof Profile]: Queries }>
+export type ProfileQuery = Partial<{ [K in keyof Profile]: Queries }>;
 
 export class ProfileService extends BaseService<Profile> {
   constructor(apiInstance: API) {

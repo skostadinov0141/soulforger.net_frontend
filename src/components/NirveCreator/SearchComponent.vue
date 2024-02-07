@@ -72,7 +72,7 @@ import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveCommonQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import { computed, ref, watch } from "vue";
-import {useApiStore} from "@/store/api";
+import { useApiStore } from "@/store/api";
 
 const apiStore = useApiStore();
 const props = defineProps<{
@@ -101,17 +101,24 @@ const query = computed<NirveCommonQuery>(() => ({
   type: {
     $regex: selectedType.value,
   },
-  tags: selectedTags.value.length === 0 ? undefined : {
-    $in: selectedTags.value,
-  },
-  groups: selectedGroups.value.length === 0 ? undefined : {
-    $in: selectedGroups.value,
-  },
+  tags:
+    selectedTags.value.length === 0
+      ? undefined
+      : {
+          $in: selectedTags.value,
+        },
+  groups:
+    selectedGroups.value.length === 0
+      ? undefined
+      : {
+          $in: selectedGroups.value,
+        },
   name: {
     $regex: searchTerm.value || ".*",
   },
 }));
 
+// TODO: Outsource logic to ManageCommons.vue (emits)
 async function search() {
   await apiStore.api.nirveCreatorService.search(query.value);
 }

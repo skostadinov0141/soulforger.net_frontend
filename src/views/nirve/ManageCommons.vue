@@ -12,7 +12,7 @@ import { onMounted, ref } from "vue";
 import { useApiStore } from "@/store/api";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
-import {useSnackbarStore} from "@/store/snackbar";
+import { useSnackbarStore } from "@/store/snackbar";
 
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
@@ -24,16 +24,18 @@ onMounted(() => {
   Promise.all([
     apiStore.api.nirveTagService.search(),
     apiStore.api.nirveGroupService.search(),
-  ]).then(([tagsRes, groupsRes]) => {
-    tags.value = tagsRes;
-    groups.value = groupsRes;
-  }).catch(() => {
-    snackbarStore.snackbar = {
-      title: "Fehler",
-      message: "Fehler beim Laden der Tags und Gruppen",
-      type: "error"
-    }
-  })
+  ])
+    .then(([tagsRes, groupsRes]) => {
+      tags.value = tagsRes;
+      groups.value = groupsRes;
+    })
+    .catch(() => {
+      snackbarStore.snackbar = {
+        title: "Fehler",
+        message: "Fehler beim Laden der Tags und Gruppen",
+        type: "error",
+      };
+    });
 });
 </script>
 
