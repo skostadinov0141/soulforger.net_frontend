@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import SearchComponent from "@/components/NirveCreator/SearchComponent.vue";
+import SearchComponent from "@/components/Nirve/SearchComponent.vue";
 import { onMounted, ref } from "vue";
 import { useApiStore } from "@/store/api";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
