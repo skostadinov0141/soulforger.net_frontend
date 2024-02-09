@@ -83,11 +83,11 @@
     </v-sheet>
     <v-sheet color="surface mb-4 d-flex align-center" rounded>
       <v-data-table
-        :headers="headers"
-        :items="groups"
-        :items-per-page="20"
-        :items-per-page-options="[]"
-        class="elevation-1"
+          :headers="headers"
+          :items="groups"
+          :items-per-page="20"
+          :items-per-page-options="[]"
+          class="elevation-1"
       >
         <template v-slot:item.createdAt="{ item }">
           <span>{{ new Date(item.createdAt).toLocaleString("DE-de") }}</span>
@@ -129,60 +129,60 @@ const createValid = ref(false);
 const editValid = ref(false);
 
 const headers = ref([
-  { title: "Gruppe", value: "name" },
-  { title: "Erstellt am", value: "createdAt" },
-  { title: "Bearbeitet am", value: "updatedAt" },
-  { title: "Aktionen", value: "actions", sortable: false },
+  {title: "Gruppe", value: "name"},
+  {title: "Erstellt am", value: "createdAt"},
+  {title: "Bearbeitet am", value: "updatedAt"},
+  {title: "Aktionen", value: "actions", sortable: false},
 ]);
 
 onMounted(() => {
   apiStore.api.nirveGroupService
-    .search()
-    .then((tagsRes) => {
-      groups.value = tagsRes;
-    })
-    .catch(() => {
-      console.log("Error");
-    });
+      .search()
+      .then((tagsRes) => {
+        groups.value = tagsRes;
+      })
+      .catch(() => {
+        console.log("Error");
+      });
 });
 
 function createGroup() {
   if (!createValid.value) return;
   apiStore.api.nirveGroupService
-    .post(group.value)
-    .then((tag) => {
-      group.value = { name: "", description: "" };
-      refreshGroups();
-    })
-    .catch(() => {
-      console.log("Error");
-    });
+      .post(group.value)
+      .then((tag) => {
+        group.value = {name: "", description: ""};
+        refreshGroups();
+      })
+      .catch(() => {
+        console.log("Error");
+      });
 }
 
 function refreshGroups() {
   apiStore.api.nirveGroupService
-    .search()
-    .then((tagsRes) => {
-      groups.value = tagsRes;
-    })
-    .catch(() => {
-      console.log("Error");
-    });
+      .search()
+      .then((tagsRes) => {
+        groups.value = tagsRes;
+      })
+      .catch(() => {
+        console.log("Error");
+      });
 }
 
 function deleteGroup(group: NirveGroup) {
   apiStore.api.nirveGroupService
-    .deleteById(group._id)
-    .then(() => {
-      refreshGroups();
-    })
-    .catch(() => {
-      console.log("Error");
-    });
+      .deleteById(group._id)
+      .then(() => {
+        refreshGroups();
+      })
+      .catch(() => {
+        console.log("Error");
+      });
 }
 
 function openEditDialog(group: NirveGroup) {
-  editingGroup.value = { ...group };
+  editingGroup.value = {...group};
   dialogOpen.value = true;
 }
 
@@ -190,17 +190,17 @@ function editGroup() {
   if (!editValid.value) return;
   if (editingGroup.value) {
     apiStore.api.nirveGroupService
-      .patch(editingGroup.value._id, {
-        name: editingGroup.value.name,
-        description: editingGroup.value.description,
-      })
-      .then(() => {
-        refreshGroups();
-        dialogOpen.value = false;
-      })
-      .catch(() => {
-        console.log("Error");
-      });
+        .patch(editingGroup.value._id, {
+          name: editingGroup.value.name,
+          description: editingGroup.value.description,
+        })
+        .then(() => {
+          refreshGroups();
+          dialogOpen.value = false;
+        })
+        .catch(() => {
+          console.log("Error");
+        });
   }
 }
 </script>
