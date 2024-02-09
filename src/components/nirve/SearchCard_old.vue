@@ -94,7 +94,6 @@
 
 <script setup lang="ts">
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
-import { NirveCreatorSearchQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import { useApiStore } from "@/store/api";
 import { computed } from "vue";
 import { ref } from "vue";
@@ -138,7 +137,7 @@ const nirveTypes = [
 ];
 
 function getItems() {
-  let query: NirveCreatorSearchQuery = {};
+  let query: any = {};
   query.type = {
     $in: selectedCategories.value!,
   };

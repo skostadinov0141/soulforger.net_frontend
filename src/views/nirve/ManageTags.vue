@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <v-container>
     <v-dialog width="500" v-model="dialogOpen">
@@ -32,7 +33,7 @@
       >
       </v-btn>
     </v-sheet>
-    <v-sheet color="surface pa-2 mb-4 d-flex align-center" rounded>
+    <v-sheet color="surface mb-4 d-flex align-center" rounded>
       <v-data-table
         :headers="headers"
         :items="tags"

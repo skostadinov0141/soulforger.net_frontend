@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import SearchCard from "@/components/Nirve/SearchCard_old.vue";
-import CreateElementCard from "@/components/Nirve/CreateElementCard_old.vue";
+import SearchCard from "@/components/nirve/SearchCard_old.vue";
+import CreateElementCard from "@/components/nirve/CreateElementCard_old.vue";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 
 const searchCardRef = ref<InstanceType<typeof SearchCard>>();
