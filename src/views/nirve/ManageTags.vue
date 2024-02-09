@@ -3,35 +3,48 @@
   <v-container>
     <v-dialog width="500" v-model="dialogOpen">
       <v-sheet class="pa-4">
-        <v-text-field
-          hide-details
-          variant="solo-filled"
-          density="comfortable"
-          label="Tag bearbeiten"
-          v-model="editTagName"
-          class="mb-2"
-        ></v-text-field>
-        <v-btn color="primary" @click="editTag" :block="true">Speichern</v-btn>
+        <v-form v-model="editValid" @submit.prevent="editTag">
+          <v-text-field
+            hide-details="auto"
+            hint="Drücke Enter zum Speichern"
+            variant="solo-filled"
+            density="comfortable"
+            label="Tag Name bearbeiten"
+            v-model="editTagName"
+            class="mb-2"
+            :rules="[required]"
+          ></v-text-field>
+          <v-btn color="primary" :block="true">Speichern</v-btn>
+        </v-form>
       </v-sheet>
     </v-dialog>
-    <v-sheet color="surface pa-2 mb-4 mt-8 d-flex align-center" rounded>
-      <v-text-field
-        hide-details
-        variant="solo-filled"
-        density="comfortable"
-        label="Tag erstellen"
-        class="ma-2"
-        v-model="tagName"
-      ></v-text-field>
-      <v-btn
-        rounded
-        height="50"
-        class="ma-2"
-        icon="mdi-plus"
-        color="primary"
-        @click="createTag"
+    <v-sheet color="surface pa-2 mb-4 mt-8" rounded>
+      <v-form
+        v-model="createValid"
+        class="d-flex align-start"
+        @submit.prevent="createTag"
       >
-      </v-btn>
+        <v-text-field
+          @keydown.enter.prevent="createTag"
+          hide-details="auto"
+          hint="Drücke Enter zum Erstellen"
+          variant="solo-filled"
+          density="comfortable"
+          label="Tag Name"
+          class="ma-2"
+          v-model="tagName"
+          :rules="[required]"
+        ></v-text-field>
+        <v-btn
+          type="submit"
+          rounded
+          height="50"
+          class="ma-2"
+          icon="mdi-plus"
+          color="primary"
+        >
+        </v-btn>
+      </v-form>
     </v-sheet>
     <v-sheet color="surface mb-4 d-flex align-center" rounded>
       <v-data-table
@@ -65,6 +78,7 @@ import { useApiStore } from "@/store/api";
 import { onMounted, ref } from "vue";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { VDataTable } from "vuetify/labs/VDataTable";
+import { required } from "@/validators";
 
 const apiStore = useApiStore();
 
@@ -73,6 +87,8 @@ const tagName = ref<string>("");
 const dialogOpen = ref(false);
 const editingTag = ref<NirveTag | null>(null);
 const editTagName = ref<string>("");
+const createValid = ref(false);
+const editValid = ref(false);
 
 const headers = ref([
   { title: "Tag", value: "tag" },
@@ -93,6 +109,7 @@ onMounted(() => {
 });
 
 function createTag() {
+  if (!createValid.value) return;
   apiStore.api.nirveTagService
     .post({ tag: tagName.value })
     .then((tag) => {
@@ -132,6 +149,7 @@ function openEditDialog(tag: NirveTag) {
 }
 
 function editTag() {
+  if (!editValid.value) return;
   if (editingTag.value) {
     apiStore.api.nirveTagService
       .patch(editingTag.value._id, { tag: editTagName.value })
