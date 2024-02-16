@@ -2,6 +2,7 @@
   <v-row no-gutters>
     <v-col cols="12" md="3" order="1" order-md="0">
       <v-select
+        v-model="selectedType"
         hide-details
         variant="solo-filled"
         density="comfortable"
@@ -10,30 +11,29 @@
         item-title="title"
         item-value="value"
         :items="types"
-        v-model="selectedType"
-      ></v-select>
+      />
     </v-col>
     <v-col class="d-flex align-center" order="0" order-md="1">
       <v-text-field
+        v-model="searchTerm"
         hide-details
         variant="solo-filled"
         density="comfortable"
         label="Suchbegriff"
         class="ma-2"
-        v-model="searchTerm"
-      ></v-text-field>
+      />
       <v-btn
-        @click="search"
         rounded
         height="50"
         class="ma-2"
         icon="mdi-magnify"
         color="primary"
-      >
-      </v-btn>
+        @click="search"
+      />
     </v-col>
     <v-col cols="12" order="2">
       <v-autocomplete
+        v-model="selectedTags"
         hide-details
         multiple
         chips
@@ -44,12 +44,11 @@
         item-title="tag"
         item-value="_id"
         :items="tags"
-        v-model="selectedTags"
-      >
-      </v-autocomplete>
+      />
     </v-col>
     <v-col cols="12" order="3">
       <v-autocomplete
+        v-model="selectedGroups"
         multiple
         hide-details
         chips
@@ -60,9 +59,7 @@
         item-title="name"
         item-value="_id"
         :items="groups"
-        v-model="selectedGroups"
-      >
-      </v-autocomplete>
+      />
     </v-col>
   </v-row>
 </template>
@@ -71,7 +68,7 @@
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveCommonQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useApiStore } from "@/store/api";
 
 const apiStore = useApiStore();

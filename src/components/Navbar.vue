@@ -21,24 +21,21 @@
           :to="locations[0].path"
           :prepend-icon="locations[0].icon"
           :title="locations[0].title"
-        ></v-list-item>
+        />
         <v-list-group :value="locations[1].title">
           <template #activator="{ props }">
             <v-list-item
               prepend-icon="mdi-fountain-pen-tip"
               v-bind="props"
               :title="locations[1].title"
-            ></v-list-item>
+            />
           </template>
           <v-list-group
             v-for="subLocation in locations[1].subLocations"
             :key="subLocation.id"
           >
             <template #activator="{ props }">
-              <v-list-item
-                v-bind="props"
-                :title="subLocation.title"
-              ></v-list-item>
+              <v-list-item v-bind="props" :title="subLocation.title" />
             </template>
             <v-list-item
               v-for="subSubLocation in subLocation.subLocations"
@@ -46,7 +43,7 @@
               :to="subSubLocation.path"
               :title="subSubLocation.title"
               :prepend-icon="subSubLocation.icon"
-            ></v-list-item>
+            />
           </v-list-group>
         </v-list-group>
       </v-list>

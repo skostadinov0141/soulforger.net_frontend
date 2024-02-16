@@ -38,7 +38,7 @@ onMounted(() => {
 });
 
 function selectItemForEdit(item: NirveCommon) {
-  createCardRef.value?.openDialog(item);
+  //createCardRef.value?.openDialog(item);
   createCardRef.value?.load(item);
 }
 </script>

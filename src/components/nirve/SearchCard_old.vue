@@ -69,7 +69,7 @@
           <template #append>
             <v-tooltip location="start">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> mdi-information-outline</v-icon>
+                <v-icon v-bind="props"> mdi-information-outline </v-icon>
               </template>
               <p>
                 ID: {{ item._id }}

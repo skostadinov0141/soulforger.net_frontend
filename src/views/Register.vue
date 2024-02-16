@@ -152,20 +152,15 @@
 </template>
 
 <script setup lang="ts">
-import API from "@/functional_components/API/api";
-import { useAppStore } from "@/store/app";
 import { AxiosError } from "axios";
 import { reactive } from "vue";
-import { inject, ref } from "vue";
-import { VueCookies } from "vue-cookies";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import * as validator from "@/validators";
-import { RegistrationData } from "@/functional_components/interfaces/api";
 import { CreateUserDto } from "@/functional_components/API/user/dto/create-user.dto";
 import { useApiStore } from "@/store/api";
 
 const apiStore = useApiStore();
-const $cookies = inject("$cookies") as VueCookies;
 
 const router = useRouter();
 const apiError = reactive({

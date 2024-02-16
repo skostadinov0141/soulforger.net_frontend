@@ -88,9 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import API from "@/functional_components/API/api";
 import { useApiStore } from "@/store/api";
-import { useAppStore } from "@/store/app";
 import { AxiosError } from "axios";
 import { reactive } from "vue";
 import { inject, ref } from "vue";

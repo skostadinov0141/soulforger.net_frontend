@@ -1,4 +1,4 @@
-import { test, expect, assert } from "vitest";
+import { test, expect } from "vitest";
 import Character from "../src/functional_components/nirve/nirve_character_v3/Character";
 import { IModifier } from "../src/functional_components/nirve/nirve_character_v3/Modifier";
 import { IRequirement } from "../src/functional_components/nirve/nirve_character_v3/Requirement";

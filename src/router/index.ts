@@ -1,5 +1,4 @@
 // Composables
-import { useAppStore } from "@/store/app";
 import { useSnackbarStore } from "@/store/snackbar";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { useApiStore } from "@/store/api";
@@ -56,7 +55,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const store = useApiStore();
   const snackbarStore = useSnackbarStore();
   if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
