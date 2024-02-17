@@ -13,7 +13,7 @@
                   label="Name"
                   class="ma-2"
                   :rules="[required]"
-                  v-model="localModelValue.name"
+                  v-model="createCommon.name"
                 />
               </v-col>
               <v-col cols="12" class="d-flex align-center">
@@ -22,7 +22,7 @@
                   variant="solo-filled"
                   density="comfortable"
                   label="Kategorie"
-                  v-model="localModelValue.type"
+                  v-model="createCommon.type"
                   :items="nirveTypes"
                   item-title="title"
                   item-value="value"
@@ -38,7 +38,7 @@
                   variant="solo-filled"
                   density="comfortable"
                   label="Tags"
-                  v-model="localModelValue.tags"
+                  v-model="createCommon.tags"
                   :items="tags"
                   item-title="tag"
                   item-value="_id"
@@ -53,7 +53,7 @@
                   variant="solo-filled"
                   density="comfortable"
                   label="Gruppen"
-                  v-model="localModelValue.groups"
+                  v-model="createCommon.groups"
                   :items="groups"
                   item-title="name"
                   item-value="_id"
@@ -69,7 +69,7 @@
                   density="comfortable"
                   label="Beschreibung"
                   class="ma-2"
-                  v-model="localModelValue.description"
+                  v-model="createCommon.description"
                 />
               </v-col>
               <v-col cols="12" class="d-flex align-center">
@@ -81,7 +81,7 @@
                   density="comfortable"
                   label="Notizen des Erstellers"
                   class="ma-2"
-                  v-model="localModelValue.creatorNotes"
+                  v-model="createCommon.creatorNotes"
                 />
               </v-col>
               <v-col class="ma-2">
@@ -99,13 +99,14 @@
 
 <script setup lang="ts">
 import { required } from "@/validators";
-import { reactive, ref, watch } from "vue";
+import { ref, defineModel } from "vue";
 import { NirveCreateDto } from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 
 const dialogOpen = ref<boolean>(true);
 const valid = ref<boolean>(false);
+const createCommon = defineModel<NirveCreateDto>({ required: true });
 
 const nirveTypes = [
   { value: "bending-skill", title: "Bändigerkunst" },
@@ -119,25 +120,13 @@ const nirveTypes = [
 ];
 
 const props = defineProps<{
-  modelValue: NirveCreateDto;
   tags: NirveTag[];
   groups: NirveGroup[];
 }>();
 
-const localModelValue = reactive<NirveCreateDto>(props.modelValue);
-
 const emit = defineEmits<{
-  (event: "update:modelValue", value: NirveCreateDto): void;
   (event: "save"): void;
 }>();
-
-watch(
-  localModelValue,
-  () => {
-    emit("update:modelValue", localModelValue);
-  },
-  { deep: true }
-);
 </script>
 
 <style scoped></style>
