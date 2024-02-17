@@ -37,14 +37,23 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "manage-commons",
         component: () => import("@/views/nirve/ManageCommons.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "manage-tags",
         component: () => import("@/views/nirve/ManageTags.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "manage-groups",
         component: () => import("@/views/nirve/ManageGroups.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -55,12 +64,12 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const store = useApiStore();
   const snackbarStore = useSnackbarStore();
   if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
     try {
-      store.api.getAxios();
+      await store.api.getAxios();
     } catch (err) {
       snackbarStore.$patch({
         snackbar: {
