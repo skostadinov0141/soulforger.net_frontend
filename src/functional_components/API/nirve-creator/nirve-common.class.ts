@@ -10,7 +10,7 @@ export class NirveCommon {
   updatedAt: Date;
   creationPhase: number;
   creatorNotes: string;
-  type: NirveTypes;
+  type: string;
   tags: string[];
   groups: string[];
 }

@@ -1,9 +1,10 @@
 export class NirveCreateDto {
   name: string;
   description: string;
-  updatedAt: Date;
   creatorNotes: string;
   type: NirveTypes;
+  tags: string[];
+  groups: string[];
 }
 
 export type NirveTypes =

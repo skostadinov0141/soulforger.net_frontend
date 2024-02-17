@@ -29,16 +29,16 @@ export default createVuetify({
         dark: true,
         colors: {
           background: "#0a0a0a",
-          "on-background": "#FFFFFF",
+          "on-background": "#c7c7c7",
 
           surface: "#0f0f0f",
           "surface-lighten-1": "#141414",
-          "on-surface": "#FFFFFF",
+          "on-surface": "#c7c7c7",
 
           primary: "#283593",
-          "on-primary": "#FFFFFF",
+          "on-primary": "#c7c7c7",
 
-          secondary: "#ded8d2",
+          secondary: "#c7c7c7",
           "on-secondary": "#000000",
 
           success: "#A5D6A7",

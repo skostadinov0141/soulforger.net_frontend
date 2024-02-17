@@ -61,6 +61,12 @@
         :items="groups"
       />
     </v-col>
+    <v-col class="pa-2 d-flex justify-end" cols="12" order="4">
+      <v-btn variant="text" size="small" icon="mdi-refresh" class="mr-2" />
+      <v-btn append-icon="mdi-plus-box-outline" color="primary">
+        Common erstellen
+      </v-btn>
+    </v-col>
   </v-row>
 </template>
 
@@ -94,7 +100,7 @@ const selectedTags = ref<string[]>([]);
 const selectedGroups = ref<string[]>([]);
 const searchTerm = ref<string>("");
 
-const query = computed<NirveCommonQuery>(() => ({
+const searchQuery = computed<NirveCommonQuery>(() => ({
   type: {
     $regex: selectedType.value,
   },
@@ -115,9 +121,14 @@ const query = computed<NirveCommonQuery>(() => ({
   },
 }));
 
+const emit = defineEmits<{
+  (event: "search", value: NirveCommonQuery): void;
+}>();
+
 // TODO: Outsource logic to ManageCommons.vue (emits)
 async function search() {
-  await apiStore.api.nirveCreatorService.search(query.value);
+  console.log(searchQuery.value);
+  emit("search", searchQuery.value);
 }
 </script>
 

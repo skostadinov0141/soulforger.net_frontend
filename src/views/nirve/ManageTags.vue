@@ -1,21 +1,25 @@
 <template>
   <v-container>
-    <v-dialog v-model="dialogOpen" width="500">
-      <v-sheet class="pa-4">
-        <v-form v-model="editValid" @submit.prevent="editTag">
-          <v-text-field
-            v-model="editTagName"
-            hide-details="auto"
-            hint="Drücke Enter zum Speichern"
-            variant="solo-filled"
-            density="comfortable"
-            label="Tag Name bearbeiten"
-            class="mb-2"
-            :rules="[required]"
-          />
-          <v-btn color="primary" :block="true"> Speichern </v-btn>
-        </v-form>
-      </v-sheet>
+    <v-dialog v-model="dialogOpen">
+      <v-row justify="center">
+        <v-col cols="12" md="6">
+          <v-sheet class="pa-4">
+            <v-form v-model="editValid" @submit.prevent="editTag">
+              <v-text-field
+                v-model="editTagName"
+                hide-details="auto"
+                hint="Drücke Enter zum Speichern"
+                variant="solo-filled"
+                density="comfortable"
+                label="Tag Name bearbeiten"
+                class="mb-2"
+                :rules="[required]"
+              />
+              <v-btn color="primary" :block="true"> Speichern</v-btn>
+            </v-form>
+          </v-sheet>
+        </v-col>
+      </v-row>
     </v-dialog>
     <v-sheet color="surface pa-2 mb-4 mt-8" rounded>
       <v-form

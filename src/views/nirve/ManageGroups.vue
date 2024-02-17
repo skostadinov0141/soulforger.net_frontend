@@ -1,43 +1,47 @@
 <template>
   <v-container>
     <v-dialog v-model="dialogOpen" width="500">
-      <v-sheet class="pa-4">
-        <v-form v-model="editValid">
-          <v-row no-gutters>
-            <v-col cols="12" class="d-flex align-center">
-              <v-text-field
-                v-model="editingGroup!.name"
-                hint="Drücke Enter zum Speichern"
-                hide-details="auto"
-                variant="solo-filled"
-                density="comfortable"
-                label="Gruppenname"
-                class="ma-2"
-                :rules="[required]"
-                @keydown.enter.prevent="editGroup"
-              />
-            </v-col>
-            <v-col cols="12" class="d-flex align-center">
-              <v-textarea
-                v-model="editingGroup!.description"
-                :no-resize="true"
-                rows="5"
-                hide-details="auto"
-                hint="Feld ist optional"
-                variant="solo-filled"
-                density="comfortable"
-                label="Beschreibung"
-                class="ma-2"
-              />
-            </v-col>
-            <v-col class="ma-2">
-              <v-btn color="primary" :block="true" @click="editGroup">
-                Speichern
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-sheet>
+      <v-row justify="center">
+        <v-col cols="12" md="6">
+          <v-sheet class="pa-4">
+            <v-form v-model="editValid">
+              <v-row no-gutters>
+                <v-col cols="12" class="d-flex align-center">
+                  <v-text-field
+                    v-model="editingGroup!.name"
+                    hint="Drücke Enter zum Speichern"
+                    hide-details="auto"
+                    variant="solo-filled"
+                    density="comfortable"
+                    label="Gruppenname"
+                    class="ma-2"
+                    :rules="[required]"
+                    @keydown.enter.prevent="editGroup"
+                  />
+                </v-col>
+                <v-col cols="12" class="d-flex align-center">
+                  <v-textarea
+                    v-model="editingGroup!.description"
+                    :no-resize="true"
+                    rows="5"
+                    hide-details="auto"
+                    hint="Feld ist optional"
+                    variant="solo-filled"
+                    density="comfortable"
+                    label="Beschreibung"
+                    class="ma-2"
+                  />
+                </v-col>
+                <v-col class="ma-2">
+                  <v-btn color="primary" :block="true" @click="editGroup">
+                    Speichern
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-sheet>
+        </v-col>
+      </v-row>
     </v-dialog>
     <v-sheet color="surface pa-2 mb-4 mt-8" rounded>
       <v-form v-model="createValid" @submit.prevent="createGroup">
