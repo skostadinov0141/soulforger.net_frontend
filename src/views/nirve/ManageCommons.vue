@@ -1,10 +1,13 @@
 <template>
   <v-container class="mt-6">
     <CommonDataDialog
-      @save="save()"
+      v-model:create-common="createCommon"
+      v-model:edit-common="editCommon"
+      v-model:mode="dialogMode"
+      v-model="dialogOpen"
       :groups="groups"
       :tags="tags"
-      v-model="createCommon"
+      @save="save()"
     />
     <v-sheet color="surface pa-2">
       <SearchComponent
@@ -26,12 +29,15 @@ import { useSnackbarStore } from "@/store/snackbar";
 import { NirveCommonQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import CommonDataDialog from "@/components/nirve/CommonDataDialog.vue";
 import { NirveCreateDto } from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
+import {NirveCommon} from "@/functional_components/API/nirve-creator/nirve-common.class";
 
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
 
 const tags = ref<NirveTag[]>([]);
 const groups = ref<NirveGroup[]>([]);
+const dialogOpen = ref(true);
+const dialogMode = ref<"create" | "edit">("create");
 
 const createCommon = reactive<NirveCreateDto>({
   name: "",
@@ -41,6 +47,7 @@ const createCommon = reactive<NirveCreateDto>({
   tags: [],
   groups: [],
 });
+const editCommon = reactive<NirveCommon>(new NirveCommon());
 
 onMounted(() => {
   Promise.all([

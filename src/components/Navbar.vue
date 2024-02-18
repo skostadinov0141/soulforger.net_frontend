@@ -1,21 +1,36 @@
 <template>
   <!-- DESKTOP -->
-  <v-navigation-drawer v-model="drawer" width="350">
+  <v-navigation-drawer
+    v-model="drawer"
+    width="350"
+  >
     <v-list base-color="secondary">
       <v-list>
         <v-list-item prepend-avatar="/logo.png">
           <v-list-item-action style="display: flex; gap: 8px">
-            <v-btn size="small" variant="text" to="/register">
+            <v-btn
+              size="small"
+              variant="text"
+              to="/register"
+            >
               Registrieren
             </v-btn>
-            <v-btn size="small" color="primary" variant="elevated" to="/login">
+            <v-btn
+              size="small"
+              color="primary"
+              variant="elevated"
+              to="/login"
+            >
               Anmelden
             </v-btn>
           </v-list-item-action>
         </v-list-item>
       </v-list>
       <v-divider />
-      <v-list density="compact" :nav="true">
+      <v-list
+        density="compact"
+        :nav="true"
+      >
         <v-list-item
           :key="locations[0].id"
           :to="locations[0].path"
@@ -35,7 +50,10 @@
             :key="subLocation.id"
           >
             <template #activator="{ props }">
-              <v-list-item v-bind="props" :title="subLocation.title" />
+              <v-list-item
+                v-bind="props"
+                :title="subLocation.title"
+              />
             </template>
             <v-list-item
               v-for="subSubLocation in subLocation.subLocations"
@@ -49,7 +67,10 @@
       </v-list>
     </v-list>
   </v-navigation-drawer>
-  <v-app-bar v-if="windowSize.width.value < 1280" class="d-xs-flex d-lg-none">
+  <v-app-bar
+    v-if="windowSize.width.value < 1280"
+    class="d-xs-flex d-lg-none"
+  >
     <v-img
       src="/logo.png"
       class="mx-1"

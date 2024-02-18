@@ -1,6 +1,12 @@
 <template>
-  <v-dialog v-model="opened" width="1024">
-    <v-card :elevation="5" :title="id ? 'Bearbeiten' : 'Erstellen'">
+  <v-dialog
+    v-model="opened"
+    width="1024"
+  >
+    <v-card
+      :elevation="5"
+      :title="id ? 'Bearbeiten' : 'Erstellen'"
+    >
       <v-divider />
       <v-card-text>
         <v-form v-model="valid">
