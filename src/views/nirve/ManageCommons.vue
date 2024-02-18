@@ -7,7 +7,7 @@
       v-model="dialogOpen"
       :groups="groups"
       :tags="tags"
-      @save="save()"
+      @on-submit="submitDialog"
     />
     <v-sheet color="surface pa-2">
       <SearchComponent
@@ -29,7 +29,7 @@ import { useSnackbarStore } from "@/store/snackbar";
 import { NirveCommonQuery } from "@/functional_components/API/nirve-creator/nirve-creator.service";
 import CommonDataDialog from "@/components/nirve/CommonDataDialog.vue";
 import { NirveCreateDto } from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
-import {NirveCommon} from "@/functional_components/API/nirve-creator/nirve-common.class";
+import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
@@ -67,8 +67,12 @@ onMounted(() => {
     });
 });
 
-function save() {
-  console.log(createCommon);
+function submitDialog(mode: string) {
+  if (mode === "create") {
+    console.log(createCommon);
+  } else {
+    console.log(editCommon);
+  }
 }
 
 async function search(query: NirveCommonQuery) {

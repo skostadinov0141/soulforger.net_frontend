@@ -8,7 +8,7 @@
         <v-sheet class="pa-4">
           <v-form
             v-model="valid"
-            @submit.prevent="emit('save')"
+            @submit.prevent="emit('on-submit', mode)"
           >
             <v-row no-gutters>
               <v-col
@@ -16,13 +16,16 @@
                 class="d-flex align-center"
               >
                 <v-text-field
-                  v-model="createCommon.name"
+                  :model-value="
+                    mode === 'create' ? createCommon.name : editCommon.name
+                  "
                   hide-details="auto"
                   variant="solo-filled"
                   density="comfortable"
                   label="Name"
                   class="ma-2"
                   :rules="[required]"
+                  @input="(value: string) => mode === 'create' ? createCommon.name = value : editCommon.name = value"
                 />
               </v-col>
               <v-col
@@ -30,7 +33,9 @@
                 class="d-flex align-center"
               >
                 <v-select
-                  v-model="createCommon.type"
+                  :model-value="
+                    mode === 'create' ? createCommon.type : editCommon.type
+                  "
                   :hide-details="true"
                   variant="solo-filled"
                   density="comfortable"
@@ -40,6 +45,7 @@
                   item-value="value"
                   class="ma-2"
                   :rules="[required]"
+                  @input="(value: NirveTypes) => mode === 'create' ? createCommon.type = value : editCommon.type = value"
                 />
               </v-col>
               <v-col
@@ -47,7 +53,9 @@
                 class="d-flex align-center"
               >
                 <v-autocomplete
-                  v-model="createCommon.tags"
+                  :model-value="
+                    mode === 'create' ? createCommon.tags : editCommon.tags
+                  "
                   :multiple="true"
                   :chips="true"
                   :hide-details="true"
@@ -58,6 +66,7 @@
                   item-title="tag"
                   item-value="_id"
                   class="ma-2"
+                  @input="(value: string[]) => mode === 'create' ? createCommon.tags = value : editCommon.tags = value"
                 />
               </v-col>
               <v-col
@@ -65,7 +74,9 @@
                 class="d-flex align-center"
               >
                 <v-autocomplete
-                  v-model="createCommon.groups"
+                  :model-value="
+                    mode === 'create' ? createCommon.groups : editCommon.groups
+                  "
                   :multiple="true"
                   :chips="true"
                   :hide-details="true"
@@ -76,6 +87,7 @@
                   item-title="name"
                   item-value="_id"
                   class="ma-2"
+                  @input="(value: string[]) => mode === 'create' ? createCommon.groups = value : editCommon.groups = value"
                 />
               </v-col>
               <v-col
@@ -83,7 +95,11 @@
                 class="d-flex align-center"
               >
                 <v-textarea
-                  v-model="createCommon.description"
+                  :model-value="
+                    mode === 'create'
+                      ? createCommon.description
+                      : editCommon.description
+                  "
                   :no-resize="true"
                   rows="5"
                   hide-details="auto"
@@ -91,6 +107,7 @@
                   density="comfortable"
                   label="Beschreibung"
                   class="ma-2"
+                  @input="(value: string) => mode === 'create' ? createCommon.description = value : editCommon.description = value"
                 />
               </v-col>
               <v-col
@@ -98,7 +115,11 @@
                 class="d-flex align-center"
               >
                 <v-textarea
-                  v-model="createCommon.creatorNotes"
+                  :model-value="
+                    mode === 'create'
+                      ? createCommon.creatorNotes
+                      : editCommon.creatorNotes
+                  "
                   :no-resize="true"
                   rows="5"
                   hide-details="auto"
@@ -106,6 +127,7 @@
                   density="comfortable"
                   label="Notizen des Erstellers"
                   class="ma-2"
+                  @input="(value: string) => mode === 'create' ? createCommon.creatorNotes = value : editCommon.creatorNotes = value"
                 />
               </v-col>
               <v-col class="ma-2">
@@ -128,7 +150,10 @@
 <script setup lang="ts">
 import { required } from "@/validators";
 import { ref, defineModel } from "vue";
-import { NirveCreateDto } from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
+import {
+  NirveCreateDto,
+  NirveTypes,
+} from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
@@ -158,7 +183,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: "save"): void;
+  (event: "on-submit", mode: string): void;
 }>();
 </script>
 
