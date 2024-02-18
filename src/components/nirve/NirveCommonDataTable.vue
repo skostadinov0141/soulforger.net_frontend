@@ -12,26 +12,14 @@
     <template #[`item.updatedAt`]="{ item }">
       <span>{{ new Date(item.updatedAt).toLocaleString("DE-de") }}</span>
     </template>
-    <!--      <template #[`item.actions`]="{ item }">-->
-    <!--        <v-btn-->
-    <!--            variant="text"-->
-    <!--            icon-->
-    <!--            @click="deleteGroup(item)"-->
-    <!--        >-->
-    <!--          <v-icon color="error">-->
-    <!--            mdi-delete-->
-    <!--          </v-icon>-->
-    <!--        </v-btn>-->
-    <!--        <v-btn-->
-    <!--            variant="text"-->
-    <!--            icon-->
-    <!--            @click="openEditDialog(item)"-->
-    <!--        >-->
-    <!--          <v-icon color="secondary">-->
-    <!--            mdi-pencil-->
-    <!--          </v-icon>-->
-    <!--        </v-btn>-->
-    <!--      </template>-->
+    <template #[`item.actions`]="{ item }">
+      <v-btn variant="text" icon @click="emit('delete', item)">
+        <v-icon color="error"> mdi-delete </v-icon>
+      </v-btn>
+      <v-btn variant="text" icon @click="emit('edit', item)">
+        <v-icon color="secondary"> mdi-pencil </v-icon>
+      </v-btn>
+    </template>
   </v-data-table>
 </template>
 
@@ -42,6 +30,11 @@ import { ref } from "vue";
 
 const props = defineProps<{
   commons: NirveCommon[];
+}>();
+
+const emit = defineEmits<{
+  (event: "edit", payload: NirveCommon): void;
+  (event: "delete", payload: NirveCommon): void;
 }>();
 
 const headers = ref([

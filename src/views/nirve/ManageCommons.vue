@@ -14,18 +14,18 @@
         :tags="tags"
         :groups="groups"
         @search="(value) => search(value)"
-        @create="dialogOpen = true"
+        @create="openCreateDialog"
       />
     </v-sheet>
     <v-sheet color="surface mt-4 mb-4 d-flex align-center" rounded>
-      <NirveCommonDataTable :commons="commons" />
+      <NirveCommonDataTable :commons="commons" @edit="openEditDialog" />
     </v-sheet>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import SearchComponent from "@/components/nirve/SearchComponent.vue";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useApiStore } from "@/store/api";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
@@ -53,14 +53,14 @@ const createCommon = reactive<NirveCreateDto>({
   tags: [],
   groups: [],
 });
-const editCommon = reactive<NirveCommon>(new NirveCommon());
+let editCommon = reactive<NirveCommon>(new NirveCommon());
 const commons = ref<NirveCommon[]>([]);
 
 onMounted(() => {
   Promise.all([
     apiStore.api.nirveTagService.search(),
     apiStore.api.nirveGroupService.search(),
-    search({})
+    search({}),
   ])
     .then(([tagsRes, groupsRes]) => {
       tags.value = tagsRes;
@@ -75,13 +75,41 @@ onMounted(() => {
     });
 });
 
+function openEditDialog(common: NirveCommon) {
+  dialogMode.value = "edit";
+  editCommon = reactive<NirveCommon>({ ...common });
+  dialogOpen.value = true;
+}
+
 function submitDialog(mode: string) {
   if (mode === "create") {
     create();
   } else {
-    console.log(editCommon);
+    edit();
   }
 }
+
+function edit() {
+  apiStore.api.nirveCreatorService
+    .patch(editCommon._id, editCommon)
+    .then(() => {
+      search(lastExecutedQuery.value);
+      dialogOpen.value = false;
+    })
+    .catch(() => {
+      snackbarStore.snackbar = {
+        title: "Fehler",
+        message: "Fehler beim Bearbeiten des Eintrags",
+        type: "error",
+      };
+    });
+}
+
+watch(dialogOpen, (value) => {
+  if (!value) {
+    resetCreateCommon();
+  }
+});
 
 function create() {
   apiStore.api.nirveCreatorService
@@ -107,6 +135,11 @@ function resetCreateCommon() {
   createCommon.type = "bending-skill";
   createCommon.tags = [];
   createCommon.groups = [];
+}
+
+function openCreateDialog() {
+  dialogMode.value = "create";
+  dialogOpen.value = true;
 }
 
 async function search(query: NirveCommonQuery) {

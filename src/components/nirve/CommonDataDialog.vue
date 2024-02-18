@@ -12,6 +12,7 @@
                   density="comfortable"
                   label="Name"
                   class="ma-2"
+                  hide-details="auto"
                   :rules="[required]"
                 />
               </v-col>
@@ -115,6 +116,7 @@
               <v-col cols="12" class="d-flex align-center">
                 <v-text-field
                   v-model="editCommon.name"
+                  hide-details="auto"
                   variant="solo-filled"
                   density="comfortable"
                   label="Name"
@@ -226,7 +228,7 @@ import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 
-const valid = ref<boolean>(false);
+const valid = ref<boolean>();
 const dialogOpen = defineModel<boolean>({ required: true });
 const mode = defineModel<"create" | "edit">("mode", { required: true });
 const createCommon = defineModel<NirveCreateDto>("createCommon", {
