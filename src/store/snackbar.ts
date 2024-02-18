@@ -1,10 +1,10 @@
 // Utilities
 import SnackBar from "@/functional_components/interfaces/snackbar";
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 export const useSnackbarStore = defineStore("snackbar", () => {
-  const snackbar = reactive<SnackBar>({
+  const snackbar = ref<SnackBar>({
     title: "",
     message: "",
     type: "success",

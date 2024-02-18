@@ -1,5 +1,10 @@
 <template>
-  <v-snackbar v-model="showSnackbar" variant="tonal" :color="snackbarColor">
+  <v-snackbar
+    v-model="showSnackbar"
+    timeout="3000"
+    variant="tonal"
+    :color="snackbarColor"
+  >
     {{ snackbarStore.snackbar.message }}
   </v-snackbar>
 </template>

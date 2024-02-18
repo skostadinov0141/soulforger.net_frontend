@@ -95,6 +95,11 @@ function edit() {
     .then(() => {
       search(lastExecutedQuery.value);
       dialogOpen.value = false;
+      snackbarStore.snackbar = {
+        title: "Erfolg",
+        message: "Eintrag erfolgreich bearbeitet",
+        type: "success",
+      };
     })
     .catch(() => {
       snackbarStore.snackbar = {
@@ -118,6 +123,11 @@ function create() {
       resetCreateCommon();
       search(lastExecutedQuery.value);
       dialogOpen.value = false;
+      snackbarStore.snackbar = {
+        title: "Erfolg",
+        message: "Eintrag erfolgreich erstellt",
+        type: "success",
+      };
     })
     .catch(() => {
       snackbarStore.snackbar = {

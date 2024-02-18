@@ -12,6 +12,9 @@
     <template #[`item.updatedAt`]="{ item }">
       <span>{{ new Date(item.updatedAt).toLocaleString("DE-de") }}</span>
     </template>
+    <template #[`item.type`]="{ item }">
+      <span>{{ types.find((v) => v.value === item.type)!.title }}</span>
+    </template>
     <template #[`item.actions`]="{ item }">
       <v-btn variant="text" icon @click="emit('delete', item)">
         <v-icon color="error"> mdi-delete </v-icon>
@@ -39,11 +42,22 @@ const emit = defineEmits<{
 
 const headers = ref([
   { title: "Titel", value: "name" },
-  { title: "Typ", value: "type" },
+  { title: "Kategorie", value: "type" },
   { title: "Erstellt am", value: "createdAt" },
   { title: "Bearbeitet am", value: "updatedAt" },
   { title: "Aktionen", value: "actions", sortable: false },
 ]);
+
+const types = [
+  { value: "bending-skill", title: "Bändigerkünst" },
+  { value: "character-class", title: "Klasse" },
+  { value: "disadvantage", title: "Nachteil" },
+  { value: "item", title: "Ausrüstung" },
+  { value: "race", title: "Rasse" },
+  { value: "religion", title: "Religion" },
+  { value: "skill", title: "Fähigkeit" },
+  { value: "spell", title: "Zauber" },
+];
 </script>
 
 <style scoped></style>
