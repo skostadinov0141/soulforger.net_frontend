@@ -1,41 +1,23 @@
 <template>
-  <v-dialog v-model="dialogOpen">
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        md="6"
-      >
+  <v-dialog v-if="mode === 'create'" v-model="dialogOpen">
+    <v-row>
+      <v-col cols="12" md="6" offset="0" offset-md="3">
         <v-sheet class="pa-4">
-          <v-form
-            v-model="valid"
-            @submit.prevent="emit('on-submit', mode)"
-          >
+          <v-form v-model="valid" @submit.prevent="emit('on-submit', mode)">
             <v-row no-gutters>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-text-field
-                  :model-value="
-                    mode === 'create' ? createCommon.name : editCommon.name
-                  "
-                  hide-details="auto"
+                  v-model="createCommon.name"
                   variant="solo-filled"
                   density="comfortable"
                   label="Name"
                   class="ma-2"
                   :rules="[required]"
-                  @input="(value: string) => mode === 'create' ? createCommon.name = value : editCommon.name = value"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-select
-                  :model-value="
-                    mode === 'create' ? createCommon.type : editCommon.type
-                  "
+                  v-model="createCommon.type"
                   :hide-details="true"
                   variant="solo-filled"
                   density="comfortable"
@@ -45,17 +27,11 @@
                   item-value="value"
                   class="ma-2"
                   :rules="[required]"
-                  @input="(value: NirveTypes) => mode === 'create' ? createCommon.type = value : editCommon.type = value"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-autocomplete
-                  :model-value="
-                    mode === 'create' ? createCommon.tags : editCommon.tags
-                  "
+                  v-model="createCommon.tags"
                   :multiple="true"
                   :chips="true"
                   :hide-details="true"
@@ -66,17 +42,11 @@
                   item-title="tag"
                   item-value="_id"
                   class="ma-2"
-                  @input="(value: string[]) => mode === 'create' ? createCommon.tags = value : editCommon.tags = value"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-autocomplete
-                  :model-value="
-                    mode === 'create' ? createCommon.groups : editCommon.groups
-                  "
+                  v-model="createCommon.groups"
                   :multiple="true"
                   :chips="true"
                   :hide-details="true"
@@ -87,19 +57,11 @@
                   item-title="name"
                   item-value="_id"
                   class="ma-2"
-                  @input="(value: string[]) => mode === 'create' ? createCommon.groups = value : editCommon.groups = value"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-textarea
-                  :model-value="
-                    mode === 'create'
-                      ? createCommon.description
-                      : editCommon.description
-                  "
+                  v-model="createCommon.description"
                   :no-resize="true"
                   rows="5"
                   hide-details="auto"
@@ -107,19 +69,11 @@
                   density="comfortable"
                   label="Beschreibung"
                   class="ma-2"
-                  @input="(value: string) => mode === 'create' ? createCommon.description = value : editCommon.description = value"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                class="d-flex align-center"
-              >
+              <v-col cols="12" class="d-flex align-center">
                 <v-textarea
-                  :model-value="
-                    mode === 'create'
-                      ? createCommon.creatorNotes
-                      : editCommon.creatorNotes
-                  "
+                  v-model="createCommon.creatorNotes"
                   :no-resize="true"
                   rows="5"
                   hide-details="auto"
@@ -127,14 +81,128 @@
                   density="comfortable"
                   label="Notizen des Erstellers"
                   class="ma-2"
-                  @input="(value: string) => mode === 'create' ? createCommon.creatorNotes = value : editCommon.creatorNotes = value"
                 />
               </v-col>
-              <v-col class="ma-2">
+              <v-col class="ma-2 d-flex">
+                <v-btn
+                  variant="tonal"
+                  class="flex-1-0 mr-1"
+                  @click="dialogOpen = false"
+                >
+                  Abbrechen
+                </v-btn>
                 <v-btn
                   color="primary"
-                  :block="true"
                   type="submit"
+                  class="flex-1-0 ml-1"
+                  append-icon="mdi-content-save"
+                >
+                  Speichern
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-dialog>
+  <v-dialog v-else v-model="dialogOpen">
+    <v-row>
+      <v-col cols="12" md="6" offset="0" offset-md="3">
+        <v-sheet class="pa-4">
+          <v-form v-model="valid" @submit.prevent="emit('on-submit', mode)">
+            <v-row no-gutters>
+              <v-col cols="12" class="d-flex align-center">
+                <v-text-field
+                  v-model="editCommon.name"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Name"
+                  class="ma-2"
+                  :rules="[required]"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center">
+                <v-select
+                  v-model="editCommon.type"
+                  :hide-details="true"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Kategorie"
+                  :items="nirveTypes"
+                  item-title="title"
+                  item-value="value"
+                  class="ma-2"
+                  :rules="[required]"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center">
+                <v-autocomplete
+                  v-model="editCommon.tags"
+                  :multiple="true"
+                  :chips="true"
+                  :hide-details="true"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Tags"
+                  :items="tags"
+                  item-title="tag"
+                  item-value="_id"
+                  class="ma-2"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center">
+                <v-autocomplete
+                  v-model="editCommon.groups"
+                  :multiple="true"
+                  :chips="true"
+                  :hide-details="true"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Gruppen"
+                  :items="groups"
+                  item-title="name"
+                  item-value="_id"
+                  class="ma-2"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center">
+                <v-textarea
+                  v-model="editCommon.description"
+                  :no-resize="true"
+                  rows="5"
+                  hide-details="auto"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Beschreibung"
+                  class="ma-2"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center">
+                <v-textarea
+                  v-model="editCommon.creatorNotes"
+                  :no-resize="true"
+                  rows="5"
+                  hide-details="auto"
+                  variant="solo-filled"
+                  density="comfortable"
+                  label="Notizen des Erstellers"
+                  class="ma-2"
+                />
+              </v-col>
+              <v-col class="ma-2 d-flex">
+                <v-btn
+                  variant="tonal"
+                  class="flex-1-0 mr-1"
+                  @click="dialogOpen = false"
+                >
+                  Abbrechen
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  type="submit"
+                  class="flex-1-0 ml-1"
+                  append-icon="mdi-content-save"
                 >
                   Speichern
                 </v-btn>
@@ -149,7 +217,7 @@
 
 <script setup lang="ts">
 import { required } from "@/validators";
-import { ref, defineModel } from "vue";
+import { ref, defineModel, computed } from "vue";
 import {
   NirveCreateDto,
   NirveTypes,

@@ -21,12 +21,6 @@ async function test() {
 
 <template>
   <div class="input-container">
-    <v-btn
-      variant="flat"
-      color="primary"
-      @click="test"
-    >
-      TEST
-    </v-btn>
+    <v-btn variant="flat" color="primary" @click="test"> TEST </v-btn>
   </div>
 </template>

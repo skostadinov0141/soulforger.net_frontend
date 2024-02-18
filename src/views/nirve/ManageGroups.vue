@@ -1,21 +1,12 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialogOpen"
-      width="500"
-    >
+    <v-dialog v-model="dialogOpen" width="500">
       <v-row justify="center">
-        <v-col
-          cols="12"
-          md="6"
-        >
+        <v-col cols="12" md="6">
           <v-sheet class="pa-4">
             <v-form v-model="editValid">
               <v-row no-gutters>
-                <v-col
-                  cols="12"
-                  class="d-flex align-center"
-                >
+                <v-col cols="12" class="d-flex align-center">
                   <v-text-field
                     v-model="editingGroup!.name"
                     hint="Drücke Enter zum Speichern"
@@ -28,10 +19,7 @@
                     @keydown.enter.prevent="editGroup"
                   />
                 </v-col>
-                <v-col
-                  cols="12"
-                  class="d-flex align-center"
-                >
+                <v-col cols="12" class="d-flex align-center">
                   <v-textarea
                     v-model="editingGroup!.description"
                     :no-resize="true"
@@ -45,11 +33,7 @@
                   />
                 </v-col>
                 <v-col class="ma-2">
-                  <v-btn
-                    color="primary"
-                    :block="true"
-                    @click="editGroup"
-                  >
+                  <v-btn color="primary" :block="true" @click="editGroup">
                     Speichern
                   </v-btn>
                 </v-col>
@@ -59,19 +43,10 @@
         </v-col>
       </v-row>
     </v-dialog>
-    <v-sheet
-      color="surface pa-2 mb-4 mt-8"
-      rounded
-    >
-      <v-form
-        v-model="createValid"
-        @submit.prevent="createGroup"
-      >
+    <v-sheet color="surface pa-2 mb-4 mt-8" rounded>
+      <v-form v-model="createValid" @submit.prevent="createGroup">
         <v-row no-gutters>
-          <v-col
-            cols="12"
-            class="d-flex align-start"
-          >
+          <v-col cols="12" class="d-flex align-start">
             <v-text-field
               v-model="group.name"
               hint="Drücke Enter zum Erstellen"
@@ -92,10 +67,7 @@
               color="primary"
             />
           </v-col>
-          <v-col
-            cols="12"
-            class="d-flex align-center"
-          >
+          <v-col cols="12" class="d-flex align-center">
             <v-textarea
               v-model="group.description"
               hint="Feld ist optional"
@@ -111,10 +83,7 @@
         </v-row>
       </v-form>
     </v-sheet>
-    <v-sheet
-      color="surface mb-4 d-flex align-center"
-      rounded
-    >
+    <v-sheet color="surface mb-4 d-flex align-center" rounded>
       <v-data-table
         :headers="headers"
         :items="groups"
@@ -129,23 +98,11 @@
           <span>{{ new Date(item.updatedAt).toLocaleString("DE-de") }}</span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            variant="text"
-            icon
-            @click="deleteGroup(item)"
-          >
-            <v-icon color="error">
-              mdi-delete
-            </v-icon>
+          <v-btn variant="text" icon @click="deleteGroup(item)">
+            <v-icon color="error"> mdi-delete </v-icon>
           </v-btn>
-          <v-btn
-            variant="text"
-            icon
-            @click="openEditDialog(item)"
-          >
-            <v-icon color="secondary">
-              mdi-pencil
-            </v-icon>
+          <v-btn variant="text" icon @click="openEditDialog(item)">
+            <v-icon color="secondary"> mdi-pencil </v-icon>
           </v-btn>
         </template>
       </v-data-table>

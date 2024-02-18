@@ -1,11 +1,6 @@
 <template>
   <v-row no-gutters>
-    <v-col
-      cols="12"
-      md="3"
-      order="1"
-      order-md="0"
-    >
+    <v-col cols="12" md="3" order="1" order-md="0">
       <v-select
         v-model="selectedType"
         hide-details
@@ -18,11 +13,7 @@
         :items="types"
       />
     </v-col>
-    <v-col
-      class="d-flex align-center"
-      order="0"
-      order-md="1"
-    >
+    <v-col class="d-flex align-center" order="0" order-md="1">
       <v-text-field
         v-model="searchTerm"
         hide-details
@@ -40,10 +31,7 @@
         @click="search"
       />
     </v-col>
-    <v-col
-      cols="12"
-      order="2"
-    >
+    <v-col cols="12" order="2">
       <v-autocomplete
         v-model="selectedTags"
         hide-details
@@ -58,10 +46,7 @@
         :items="tags"
       />
     </v-col>
-    <v-col
-      cols="12"
-      order="3"
-    >
+    <v-col cols="12" order="3">
       <v-autocomplete
         v-model="selectedGroups"
         multiple
@@ -76,20 +61,12 @@
         :items="groups"
       />
     </v-col>
-    <v-col
-      class="pa-2 d-flex justify-end"
-      cols="12"
-      order="4"
-    >
-      <v-btn
-        variant="text"
-        size="small"
-        icon="mdi-refresh"
-        class="mr-2"
-      />
+    <v-col class="pa-2 d-flex justify-end" cols="12" order="4">
+      <v-btn variant="text" size="small" icon="mdi-refresh" class="mr-2" />
       <v-btn
         append-icon="mdi-plus-box-outline"
         color="primary"
+        @click="() => emit('create')"
       >
         Common erstellen
       </v-btn>
@@ -150,6 +127,7 @@ const searchQuery = computed<NirveCommonQuery>(() => ({
 
 const emit = defineEmits<{
   (event: "search", value: NirveCommonQuery): void;
+  (event: "create"): void;
 }>();
 
 // TODO: Outsource logic to ManageCommons.vue (emits)

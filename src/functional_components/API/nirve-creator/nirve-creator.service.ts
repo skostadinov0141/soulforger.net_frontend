@@ -14,4 +14,8 @@ export class NirveCreatorService extends BaseService<NirveCommon> {
   async post(data: NirveCreateDto): Promise<NirveCommon> {
     return super.post(data);
   }
+
+  async search(query: NirveCommonQuery): Promise<NirveCommon[]> {
+    return super.search(query);
+  }
 }
