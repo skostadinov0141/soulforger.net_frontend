@@ -1,3 +1,3 @@
 export default class Motivation {
-	// location: obj.motivation
+  // location: obj.motivation
 }
