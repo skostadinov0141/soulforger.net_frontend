@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { inject, onMounted } from "vue";
-import Navbar from "./components/Navbar.vue";
+import Navbar from "./components/navbar/Navbar.vue";
 import { VueCookies } from "vue-cookies";
 import Snackbar from "./components/Snackbar.vue";
 import { useApiStore } from "./store/api";

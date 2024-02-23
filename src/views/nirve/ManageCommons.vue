@@ -18,7 +18,11 @@
       />
     </v-sheet>
     <v-sheet color="surface mt-4 mb-4 d-flex align-center" rounded>
-      <NirveCommonDataTable :commons="commons" @edit="openEditDialog" />
+      <NirveCommonDataTable
+        :commons="commons"
+        @edit="openEditDialog"
+        @delete="deleteCommon"
+      />
     </v-sheet>
   </v-container>
 </template>
@@ -87,6 +91,26 @@ function submitDialog(mode: string) {
   } else {
     edit();
   }
+}
+
+function deleteCommon(common: NirveCommon) {
+  apiStore.api.nirveCreatorService
+    .deleteById(common._id)
+    .then(() => {
+      search(lastExecutedQuery.value);
+      snackbarStore.snackbar = {
+        title: "Erfolg",
+        message: "Eintrag erfolgreich gelöscht",
+        type: "success",
+      };
+    })
+    .catch(() => {
+      snackbarStore.snackbar = {
+        title: "Fehler",
+        message: "Fehler beim Löschen des Eintrags",
+        type: "error",
+      };
+    });
 }
 
 function edit() {

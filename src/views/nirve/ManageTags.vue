@@ -115,6 +115,7 @@ function createTag() {
   apiStore.api.nirveTagService
     .post({ tag: tagName.value })
     .then(() => {
+      tagName.value = "";
       refreshTags();
     })
     .catch(() => {
