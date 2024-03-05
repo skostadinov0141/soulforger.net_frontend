@@ -219,7 +219,7 @@
 
 <script setup lang="ts">
 import { required } from "@/validators";
-import { ref, defineModel, computed } from "vue";
+import { ref, computed } from "vue";
 import {
   NirveCreateDto,
   NirveTypes,
