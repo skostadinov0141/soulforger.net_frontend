@@ -5,7 +5,7 @@
     width="350"
   >
     <v-list>
-      <NavbarLoggedInHeader />
+      <NavBarHeader />
       <v-divider />
       <v-list
         density="compact"
@@ -82,7 +82,7 @@
 import { ref } from "vue";
 import { useWindowSize } from "vue-window-size";
 import { v4 } from "uuid";
-import NavbarLoggedInHeader from "@/components/navbar/NavbarLoggedInHeader.vue";
+import NavBarHeader from '@/components/navbar/NavBarHeader.vue'
 
 interface Location {
   id: string;

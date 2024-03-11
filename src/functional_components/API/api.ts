@@ -71,17 +71,8 @@ export default class API {
         })
         .then((res: AxiosResponse) => {
           this.cookies.set("token", res.data, res.data.expires_at);
-          this.apiStore.api.userService
-            .getById(this.decodeToken().sub)
-            .then((user) => {
-              this.cookies.set("currentUser", user);
-              useApiStore().authed = true;
-              resolve(true);
-            })
-            .catch((err) => {
-              reject(err);
-              this.apiStore.authed = false;
-            });
+          useApiStore().authed = true;
+          resolve(true);
         })
         .catch((err: AxiosError) => {
           reject(err);
@@ -108,17 +99,8 @@ export default class API {
         .post(`${this.baseUrl}/${this.apiVersion}/auth/sign-in`, loginDto)
         .then((res: AxiosResponse) => {
           this.cookies.set("token", res.data, res.data.expires_at);
-          this.apiStore.api.userService
-            .getById(this.decodeToken().sub)
-            .then((user) => {
-              this.cookies.set("currentUser", user);
-              useApiStore().authed = true;
-              resolve(true);
-            })
-            .catch((err) => {
-              reject(err);
-              this.apiStore.authed = false;
-            });
+          useApiStore().authed = true;
+          resolve(true);
         })
         .catch((err: AxiosError) => {
           reject(err);
@@ -146,14 +128,6 @@ export default class API {
   decodeToken(): any {
     if (!this.getToken()?.access_token) throw new Error("No token found!");
     return jwtDecode(this.getToken()?.access_token!);
-  }
-
-  /**
-   * Retrieves the current user from the cookies.
-   * @returns The current user if it exists, otherwise undefined.
-   */
-  getCurrentUser(): User | undefined {
-    return this.cookies.get("currentUser");
   }
 
   /**
