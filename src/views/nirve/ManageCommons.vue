@@ -17,7 +17,10 @@
         @create="openCreateDialog"
       />
     </v-sheet>
-    <v-sheet color="surface mt-4 mb-4 d-flex align-center" rounded>
+    <v-sheet
+      color="surface mt-4 mb-4 d-flex align-center"
+      rounded
+    >
       <NirveCommonDataTable
         :commons="commons"
         @edit="openEditDialog"

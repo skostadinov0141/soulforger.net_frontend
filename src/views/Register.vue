@@ -1,6 +1,12 @@
 <template>
   <v-row style="height: 100%">
-    <v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+    <v-col
+      v-for="n in 3"
+      :key="n"
+      cols="12"
+      lg="4"
+      align-self="center"
+    >
       <v-card
         v-if="n == 2"
         class="text-secondary ma-8 ma-lg-0"
@@ -15,7 +21,10 @@
           src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
         />
         <v-card-item class="pb-4 pt-6">
-          <v-form v-model="valid" @submit.prevent="onSubmit">
+          <v-form
+            v-model="valid"
+            @submit.prevent="onSubmit"
+          >
             <v-text-field
               v-model="data.email"
               density="compact"
@@ -118,8 +127,7 @@
                     target="_blank"
                     href="https://soulforger.net/legal/privacy-agreement"
                     @click.stop
-                    >Datenschutzerklärung</a
-                  >
+                  >Datenschutzerklärung</a>
                   gelesen und akzeptiere diese.
                 </p>
               </template>
@@ -129,7 +137,7 @@
               class="mb-4"
               append-icon="mdi-account-plus"
               color="primary"
-              style="width: 100%"
+              :block="true"
               type="submit"
             >
               Registrieren
@@ -138,8 +146,8 @@
               :disabled="loading"
               append-icon="mdi-login"
               color="indigo-lighten-3"
-              style="width: 100%"
-              type="submit"
+              :block="true"
+              to="/login"
               variant="text"
             >
               Anmelden

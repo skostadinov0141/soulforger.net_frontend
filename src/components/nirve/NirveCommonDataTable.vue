@@ -16,11 +16,23 @@
       <span>{{ types.find((v) => v.value === item.type)!.title }}</span>
     </template>
     <template #[`item.actions`]="{ item }">
-      <v-btn variant="text" icon @click="emit('delete', item)">
-        <v-icon color="error"> mdi-delete </v-icon>
+      <v-btn
+        variant="text"
+        icon
+        @click="emit('delete', item)"
+      >
+        <v-icon color="error">
+          mdi-delete
+        </v-icon>
       </v-btn>
-      <v-btn variant="text" icon @click="emit('edit', item)">
-        <v-icon color="secondary"> mdi-pencil </v-icon>
+      <v-btn
+        variant="text"
+        icon
+        @click="emit('edit', item)"
+      >
+        <v-icon color="secondary">
+          mdi-pencil
+        </v-icon>
       </v-btn>
     </template>
   </v-data-table>

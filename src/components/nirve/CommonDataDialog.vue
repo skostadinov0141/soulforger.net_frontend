@@ -1,11 +1,25 @@
 <template>
-  <v-dialog v-if="mode === 'create'" v-model="dialogOpen">
+  <v-dialog
+    v-if="mode === 'create'"
+    v-model="dialogOpen"
+  >
     <v-row>
-      <v-col cols="12" md="6" offset="0" offset-md="3">
+      <v-col
+        cols="12"
+        md="6"
+        offset="0"
+        offset-md="3"
+      >
         <v-sheet class="pa-4">
-          <v-form v-model="valid" @submit.prevent="emit('on-submit', mode)">
+          <v-form
+            v-model="valid"
+            @submit.prevent="emit('on-submit', mode)"
+          >
             <v-row no-gutters>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-text-field
                   v-model="createCommon.name"
                   variant="solo-filled"
@@ -16,7 +30,10 @@
                   :rules="[required]"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-select
                   v-model="createCommon.type"
                   :hide-details="true"
@@ -30,7 +47,10 @@
                   :rules="[required]"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-autocomplete
                   v-model="createCommon.tags"
                   :multiple="true"
@@ -45,7 +65,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-autocomplete
                   v-model="createCommon.groups"
                   :multiple="true"
@@ -60,7 +83,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-textarea
                   v-model="createCommon.description"
                   :no-resize="true"
@@ -72,7 +98,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-textarea
                   v-model="createCommon.creatorNotes"
                   :no-resize="true"
@@ -107,13 +136,27 @@
       </v-col>
     </v-row>
   </v-dialog>
-  <v-dialog v-else v-model="dialogOpen">
+  <v-dialog
+    v-else
+    v-model="dialogOpen"
+  >
     <v-row>
-      <v-col cols="12" md="6" offset="0" offset-md="3">
+      <v-col
+        cols="12"
+        md="6"
+        offset="0"
+        offset-md="3"
+      >
         <v-sheet class="pa-4">
-          <v-form v-model="valid" @submit.prevent="emit('on-submit', mode)">
+          <v-form
+            v-model="valid"
+            @submit.prevent="emit('on-submit', mode)"
+          >
             <v-row no-gutters>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-text-field
                   v-model="editCommon.name"
                   hide-details="auto"
@@ -124,7 +167,10 @@
                   :rules="[required]"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-select
                   v-model="editCommon.type"
                   :hide-details="true"
@@ -138,7 +184,10 @@
                   :rules="[required]"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-autocomplete
                   v-model="editCommon.tags"
                   :multiple="true"
@@ -153,7 +202,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-autocomplete
                   v-model="editCommon.groups"
                   :multiple="true"
@@ -168,7 +220,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-textarea
                   v-model="editCommon.description"
                   :no-resize="true"
@@ -180,7 +235,10 @@
                   class="ma-2"
                 />
               </v-col>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col
+                cols="12"
+                class="d-flex align-center"
+              >
                 <v-textarea
                   v-model="editCommon.creatorNotes"
                   :no-resize="true"

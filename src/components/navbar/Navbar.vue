@@ -1,10 +1,17 @@
 <template>
   <!-- DESKTOP -->
-  <v-navigation-drawer v-model="drawer" width="350">
+  <v-navigation-drawer
+    v-model="drawer"
+    width="350"
+  >
     <v-list>
       <NavbarLoggedInHeader />
       <v-divider />
-      <v-list density="compact" :nav="true" color="secondary">
+      <v-list
+        density="compact"
+        :nav="true"
+        color="secondary"
+      >
         <v-list-item
           :key="locations[0].id"
           :to="locations[0].path"
@@ -24,7 +31,10 @@
             :key="subLocation.id"
           >
             <template #activator="{ props }">
-              <v-list-item v-bind="props" :title="subLocation.title" />
+              <v-list-item
+                v-bind="props"
+                :title="subLocation.title"
+              />
             </template>
             <v-list-item
               v-for="subSubLocation in subLocation.subLocations"
@@ -38,7 +48,10 @@
       </v-list>
     </v-list>
   </v-navigation-drawer>
-  <v-app-bar v-if="windowSize.width.value < 1280" class="d-xs-flex d-lg-none">
+  <v-app-bar
+    v-if="windowSize.width.value < 1280"
+    class="d-xs-flex d-lg-none"
+  >
     <v-img
       src="/logo.png"
       class="mx-1"
