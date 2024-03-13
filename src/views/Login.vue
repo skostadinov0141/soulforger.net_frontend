@@ -1,6 +1,12 @@
 <template>
   <v-row style="height: 100%">
-    <v-col v-for="n in 3" :key="n" cols="12" lg="4" align-self="center">
+    <v-col
+      v-for="n in 3"
+      :key="n"
+      cols="12"
+      lg="4"
+      align-self="center"
+    >
       <v-card
         v-if="n == 2"
         class="text-secondary ma-8 ma-lg-0"
@@ -12,8 +18,8 @@
         <!--TODO: change image source due to slow loading-->
         <v-img
           height="160px"
-          cover
-          src="https://cdn.midjourney.com/4555e0ec-4fa3-4bb0-af76-098dc9ee2993/0_0.png"
+          :cover="true"
+          src="@/assets/images/login_background_01.png"
         />
         <v-card-item class="pb-4 pt-6">
           <v-form

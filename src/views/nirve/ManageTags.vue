@@ -2,9 +2,15 @@
   <v-container>
     <v-dialog v-model="dialogOpen">
       <v-row justify="center">
-        <v-col cols="12" md="6">
+        <v-col
+          cols="12"
+          md="6"
+        >
           <v-sheet class="pa-4">
-            <v-form v-model="editValid" @submit.prevent="editTag">
+            <v-form
+              v-model="editValid"
+              @submit.prevent="editTag"
+            >
               <v-text-field
                 v-model="editTagName"
                 hide-details="auto"
@@ -15,13 +21,21 @@
                 class="mb-2"
                 :rules="[required]"
               />
-              <v-btn color="primary" :block="true"> Speichern </v-btn>
+              <v-btn
+                color="primary"
+                :block="true"
+              >
+                Speichern
+              </v-btn>
             </v-form>
           </v-sheet>
         </v-col>
       </v-row>
     </v-dialog>
-    <v-sheet color="surface pa-2 mb-4 mt-8" rounded>
+    <v-sheet
+      color="surface pa-2 mb-4 mt-8"
+      rounded
+    >
       <v-form
         v-model="createValid"
         class="d-flex align-start"
@@ -48,7 +62,10 @@
         />
       </v-form>
     </v-sheet>
-    <v-sheet color="surface mb-4 d-flex align-center" rounded>
+    <v-sheet
+      color="surface mb-4 d-flex align-center"
+      rounded
+    >
       <v-data-table
         :headers="headers"
         :items="tags"
@@ -63,11 +80,23 @@
           <span>{{ new Date(item.updatedAt).toLocaleString("DE-de") }}</span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn variant="text" icon @click="deleteTag(item)">
-            <v-icon color="error"> mdi-delete </v-icon>
+          <v-btn
+            variant="text"
+            icon
+            @click="deleteTag(item)"
+          >
+            <v-icon color="error">
+              mdi-delete
+            </v-icon>
           </v-btn>
-          <v-btn variant="text" icon @click="openEditDialog(item)">
-            <v-icon color="secondary"> mdi-pencil </v-icon>
+          <v-btn
+            variant="text"
+            icon
+            @click="openEditDialog(item)"
+          >
+            <v-icon color="secondary">
+              mdi-pencil
+            </v-icon>
           </v-btn>
         </template>
       </v-data-table>

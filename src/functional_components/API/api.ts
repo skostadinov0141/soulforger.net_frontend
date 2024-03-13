@@ -9,11 +9,15 @@ import jwtDecode from "jwt-decode";
 import { useApiStore } from "@/store/api";
 import { NirveGroupService } from "@/functional_components/API/nirve-group/nirve-group.service";
 import { NirveTagService } from "@/functional_components/API/nirve-tag/nirve-tag.service";
+import { useAppStore } from "@/store/app";
+import User from "@/functional_components/API/user/user.class";
 
 export default class API {
   cookies: VueCookies;
   baseUrl: string = import.meta.env.VITE_API_URL;
   apiVersion: string = import.meta.env.VITE_API_VERSION;
+
+  apiStore = useApiStore();
 
   userService: UserService = new UserService(this);
   profileService: ProfileService = new ProfileService(this);
@@ -44,6 +48,7 @@ export default class API {
     if (this.getToken()!.expires_at < Date.now()) {
       await this.refreshToken();
     }
+    this.apiStore.authed = true;
     return axios.create({
       baseURL: `${this.baseUrl}/${this.apiVersion}`,
       headers: {
@@ -66,10 +71,12 @@ export default class API {
         })
         .then((res: AxiosResponse) => {
           this.cookies.set("token", res.data, res.data.expires_at);
+          useApiStore().authed = true;
           resolve(true);
         })
         .catch((err: AxiosError) => {
           reject(err);
+          this.apiStore.authed = false;
         });
     });
   }
@@ -99,6 +106,18 @@ export default class API {
           reject(err);
         });
     });
+  }
+
+  /**
+   * @description Logout from the API and remove the access token
+   * @returns {Promise<boolean>} True if logout was successful
+   * @memberof API
+   */
+  async logout(): Promise<boolean> {
+    this.cookies.remove("token");
+    this.cookies.remove("currentUser");
+    useApiStore().authed = false;
+    return true;
   }
 
   /**
