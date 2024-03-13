@@ -69,6 +69,7 @@
               variant="text"
               color="error"
               :icon="true"
+              @click="logout"
             >
               <v-icon>mdi-logout</v-icon>
             </v-btn>
