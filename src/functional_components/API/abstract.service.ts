@@ -46,7 +46,7 @@ export default class BaseService<T> {
    * @returns A Promise that resolves with the retrieved User object, or rejects with an error.
    * @throws AxiosError If the request fails.
    */
-  async getById(id: string, isPublic: boolean = false): Promise<T> {
+  async getById(id: string, isPublic: boolean = true): Promise<T> {
     const axiosInstance = await this.api.getAxios(isPublic);
     return new Promise((resolve, reject) => {
       try {
