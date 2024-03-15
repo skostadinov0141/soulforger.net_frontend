@@ -1,14 +1,23 @@
 <template>
-  <p>{{ userProfile.displayName }}</p>
-  <p>{{ userProfile.owner }}</p>
+  <v-container class="h-100">
+    <v-row
+      class="h-100"
+      align="center"
+    >
+      <v-col cols="6">
+        <BasicInfoCard :user-profile="userProfile" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApiStore } from '@/store/api'
 import { Profile } from '@/functional_components/API/profile/profile.class'
 import { useSnackbarStore } from '@/store/snackbar'
+import BasicInfoCard from '@/components/user/BasicInfoCard.vue'
 
 const route = useRoute();
 const router = useRouter();
