@@ -20,7 +20,6 @@ export default class API {
   apiStore = useApiStore();
 
   userService: UserService = new UserService(this);
-  profileService: ProfileService = new ProfileService(this);
   nirveCreatorService: NirveCreatorService = new NirveCreatorService(this);
   nirveGroupService: NirveGroupService = new NirveGroupService(this);
   nirveTagService: NirveTagService = new NirveTagService(this);

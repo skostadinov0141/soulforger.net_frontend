@@ -14,6 +14,14 @@ export class ProfileService extends BaseService<Profile> {
    * NOT SUPPORTED, DO NOT USE
    * @throws Error
    */
+  async getById(id: string): Promise<Profile> {
+    throw new Error("Not supported by the Profile service");
+  }
+
+  /**
+   * NOT SUPPORTED, DO NOT USE
+   * @throws Error
+   */
   async post(): Promise<Profile> {
     throw new Error("Not supported by the Profile service");
   }

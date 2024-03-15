@@ -107,7 +107,6 @@ function logout() {
 }
 
 watch(storeToRefs(apiStore).authed, (newVal, oldVal) => {
-  console.log(newVal, oldVal);
   if (newVal && !oldVal) {
     apiStore.api.userService.getProfileByUserId(apiStore.api.decodeToken().sub).then((res) => {
       userProfile.value = res;
