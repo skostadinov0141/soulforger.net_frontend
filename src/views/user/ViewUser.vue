@@ -5,7 +5,10 @@
       align="center"
     >
       <v-col cols="6">
-        <BasicInfoCard :user-profile="userProfile" />
+        <BasicInfoCard
+          :own-user="ownUser"
+          :user-profile="userProfile"
+        />
       </v-col>
     </v-row>
   </v-container>
