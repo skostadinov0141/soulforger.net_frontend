@@ -4,7 +4,10 @@
       class="h-100"
       align="center"
     >
-      <v-col cols="6">
+      <v-col
+        cols="12"
+        lg="6"
+      >
         <BasicInfoCard
           :own-user="ownUser"
           :user-profile="userProfile"

@@ -6,7 +6,7 @@
     rounded="lg"
   >
     <template #subtitle>
-      <p class="text-secondary">
+      <p class="text-secondary text-wrap">
         Beigetreten am: {{ new Date(userProfile.createdAt).toLocaleString() }}
         <br>
         Lieblingsregelwerk: {{ userProfile.favoriteRulebook ?? "Alle" }}
@@ -26,21 +26,23 @@
         </v-chip>
       </div>
     </template>
-    <template #append>
+    <v-divider />
+    <template #actions>
+      <v-spacer />
       <v-btn
         v-if="ownUser"
         class="align-self-start"
         color="secondary"
         variant="text"
-        icon
+        append-icon="mdi-pencil"
         @click="openDialog"
       >
-        <v-icon>mdi-pencil</v-icon>
+        Bearbeiten
       </v-btn>
     </template>
     <template #prepend>
       <v-avatar
-        size="160"
+        :size="avatarSize"
         :image="userProfile.avatarUrl"
       />
     </template>
@@ -61,8 +63,8 @@
               Profil bearbeiten
             </v-card-title>
             <v-divider />
-            <v-card-text>
-              <v-form v-model="valid">
+            <v-form v-model="valid">
+              <v-card-text>
                 <v-file-input
                   v-model="newProfileImage"
                   :multiple="false"
@@ -70,12 +72,6 @@
                   variant="solo-filled"
                   density="comfortable"
                   hide-details="auto"
-                />
-                <!--TODO: Show the new profile image-->
-                <v-img
-                  v-if="newProfileImage !== undefined"
-                  :image="newProfileImage[0]"
-                  height="200"
                 />
                 <v-text-field
                   v-model="workingCopyProfile.displayName"
@@ -117,8 +113,28 @@
                   density="comfortable"
                   :hide-details="true"
                 />
-              </v-form>
-            </v-card-text>
+              </v-card-text>
+              <v-divider />
+              <v-card-actions class="ma-2">
+                <v-spacer />
+                <v-btn
+                  variant="text"
+                  color="error"
+                  append-icon="mdi-close"
+                  @click="dialogOpen = false"
+                >
+                  Abbrechen
+                </v-btn>
+                <v-btn
+                  variant="flat"
+                  color="primary"
+                  append-icon="mdi-content-save"
+                  @click="dialogOpen = false"
+                >
+                  Speichern
+                </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-col>
       </v-row>
@@ -128,8 +144,11 @@
 
 <script setup lang="ts">
 import { Profile } from '@/functional_components/API/profile/profile.class'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { max, min, required } from '@/validators'
+import { useDisplay } from 'vuetify'
+
+const { smAndDown } = useDisplay();
 
 const props = defineProps<{
   ownUser: boolean;
@@ -140,6 +159,14 @@ const dialogOpen = ref<boolean>(false);
 const workingCopyProfile = ref<Profile>(new Profile());
 const valid = ref<boolean>(false);
 const newProfileImage = ref<File[]>();
+const avatarSize = computed(() => {
+  if (smAndDown.value) return 80;
+  return 160;
+});
+
+watch(smAndDown, (newval) => {
+  console.log(newval);
+});
 
 watch(newProfileImage, (prev, newval) => {
   console.log(prev, newval);
