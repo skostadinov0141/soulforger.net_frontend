@@ -2,7 +2,7 @@
   <v-card
     :title="userProfile.displayName"
     :subtitle="new Date(userProfile.createdAt).toLocaleString()"
-    class="py-1"
+    class="py-1 h-100 d-flex flex-column"
     rounded="lg"
   >
     <template #title>
@@ -22,7 +22,7 @@
         class="d-flex flex-wrap mt-2"
       >
         <v-chip
-          v-for="role in 0"
+          v-for="role in 20"
           :key="role"
           size="small"
           class="ma-1"
@@ -39,7 +39,7 @@
         class="d-flex flex-wrap mt-2"
       >
         <v-chip
-          v-for="role in 1"
+          v-for="role in 20"
           :key="role"
           size="small"
           class="ma-1"
@@ -51,7 +51,7 @@
       </div>
     </template>
     <v-divider />
-    <template #actions>
+    <v-card-actions class="justify-self-end">
       <v-spacer />
       <v-btn
         v-if="ownUser"
@@ -63,7 +63,7 @@
       >
         Bearbeiten
       </v-btn>
-    </template>
+    </v-card-actions>
     <template #prepend>
       <v-avatar
         :size="avatarSize"

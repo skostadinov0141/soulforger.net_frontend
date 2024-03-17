@@ -1,17 +1,27 @@
 <template>
-  <v-container class="h-100">
+  <v-container class="h-100 d-flex align-center">
     <v-row
-      class="h-100"
       align="center"
     >
       <v-col
         cols="12"
         lg="6"
+        align-self="stretch"
       >
         <BasicInfoCard
           :own-user="ownUser"
           :user-profile="userProfile"
           @saved="(newProfile) => userProfile = newProfile"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        lg="6"
+        align-self="stretch"
+      >
+        <AboutMeCard
+          :own-user="ownUser"
+          :user-profile="userProfile"
         />
       </v-col>
     </v-row>
@@ -25,6 +35,7 @@ import { useApiStore } from '@/store/api'
 import { Profile } from '@/functional_components/API/user/profile.class'
 import { useSnackbarStore } from '@/store/snackbar'
 import BasicInfoCard from '@/components/user/BasicInfoCard.vue'
+import AboutMeCard from '@/components/user/AboutMeCard.vue'
 
 const route = useRoute();
 const router = useRouter();
