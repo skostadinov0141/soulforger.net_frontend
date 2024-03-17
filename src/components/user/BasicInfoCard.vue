@@ -157,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { Profile } from '@/functional_components/API/profile/profile.class'
+import { Profile } from '@/functional_components/API/user/profile.class'
 import { computed, ref, watch } from 'vue'
 import { max, min, required } from '@/validators'
 import { useDisplay } from 'vuetify'

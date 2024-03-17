@@ -21,7 +21,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApiStore } from '@/store/api'
-import { Profile } from '@/functional_components/API/profile/profile.class'
+import { Profile } from '@/functional_components/API/user/profile.class'
 import { useSnackbarStore } from '@/store/snackbar'
 import BasicInfoCard from '@/components/user/BasicInfoCard.vue'
 
