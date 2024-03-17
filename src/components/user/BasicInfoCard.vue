@@ -5,8 +5,12 @@
     class="py-1"
     rounded="lg"
   >
+    <template #title>
+      {{ userProfile.displayName }}
+    </template>
     <template #subtitle>
       <p class="text-secondary text-wrap">
+        <span class="text-secondary text-subtitle-2 text-info">{{ userProfile.preferredRole }}</span><br>
         Beigetreten am: {{ new Date(userProfile.createdAt).toLocaleString() }}
         <br>
         Lieblingsregelwerk: {{ userProfile.favoriteRulebook ?? "Alle" }}
@@ -18,7 +22,7 @@
         class="d-flex flex-wrap mt-2"
       >
         <v-chip
-          v-for="role in 10"
+          v-for="role in 0"
           :key="role"
           size="small"
           class="ma-1"
@@ -35,7 +39,7 @@
         class="d-flex flex-wrap mt-2"
       >
         <v-chip
-          v-for="role in 10"
+          v-for="role in 1"
           :key="role"
           size="small"
           class="ma-1"
