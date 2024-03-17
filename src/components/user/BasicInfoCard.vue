@@ -50,11 +50,13 @@
         </v-chip>
       </div>
     </template>
-    <v-divider />
-    <v-card-actions class="justify-self-end">
+    <v-divider v-if="ownUser" />
+    <v-card-actions
+      v-if="ownUser"
+      class="justify-self-end"
+    >
       <v-spacer />
       <v-btn
-        v-if="ownUser"
         class="align-self-start"
         color="secondary"
         variant="text"

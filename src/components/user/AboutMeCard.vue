@@ -1,7 +1,7 @@
 <template>
   <v-card
     rounded="lg"
-    class="h-100"
+    class="h-100 d-flex flex-column"
   >
     <v-card-title>
       Über mich
@@ -10,6 +10,17 @@
     <v-card-text>
       {{ userProfile.bio }}
     </v-card-text>
+    <v-divider v-if="ownUser" />
+    <v-card-actions v-if="ownUser">
+      <v-spacer />
+      <v-btn
+        color="secondary"
+        variant="text"
+        append-icon="mdi-pencil"
+      >
+        Bearbeiten
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
