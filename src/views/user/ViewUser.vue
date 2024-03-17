@@ -22,6 +22,7 @@
         <AboutMeCard
           :own-user="ownUser"
           :user-profile="userProfile"
+          @saved="(newProfile) => userProfile = newProfile"
         />
       </v-col>
     </v-row>
@@ -29,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApiStore } from '@/store/api'
 import { Profile } from '@/functional_components/API/user/profile.class'
