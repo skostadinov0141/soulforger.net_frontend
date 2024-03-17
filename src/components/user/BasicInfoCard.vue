@@ -13,7 +13,10 @@
         <br>
         Präferierte Sprache: {{ userProfile.preferredLanguage ?? "Deutsch" }}
       </p>
-      <div v-if="!smAndDown" class="d-flex flex-wrap mt-2">
+      <div
+        v-if="!smAndDown"
+        class="d-flex flex-wrap mt-2"
+      >
         <v-chip
           v-for="role in 10"
           :key="role"
@@ -27,7 +30,10 @@
       </div>
     </template>
     <template #text>
-      <div v-if="smAndDown" class="d-flex flex-wrap mt-2">
+      <div
+        v-if="smAndDown"
+        class="d-flex flex-wrap mt-2"
+      >
         <v-chip
           v-for="role in 10"
           :key="role"
@@ -57,8 +63,17 @@
     <template #prepend>
       <v-avatar
         :size="avatarSize"
-        :image="userProfile.avatarUrl"
-      />
+        :image="userProfile.avatarUrl === '' ? undefined : userProfile.avatarUrl"
+        :variant="userProfile.avatarUrl === '' ? 'outlined' : 'flat'"
+      >
+        <v-icon
+          v-if="userProfile.avatarUrl === ''"
+          class="pt-4"
+          :size="avatarSize + 50"
+        >
+          mdi-account
+        </v-icon>
+      </v-avatar>
     </template>
   </v-card>
 
