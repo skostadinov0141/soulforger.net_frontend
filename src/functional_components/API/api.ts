@@ -3,14 +3,11 @@ import { TokenDto } from "./dto/token.dto";
 import { LoginDto } from "./dto/login.dto";
 import { VueCookies } from "vue-cookies";
 import { UserService } from "./user/user.service";
-import { ProfileService } from "./profile/profile.service";
 import { NirveCreatorService } from "./nirve-creator/nirve-creator.service";
 import jwtDecode from "jwt-decode";
 import { useApiStore } from "@/store/api";
 import { NirveGroupService } from "@/functional_components/API/nirve-group/nirve-group.service";
 import { NirveTagService } from "@/functional_components/API/nirve-tag/nirve-tag.service";
-import { useAppStore } from "@/store/app";
-import User from "@/functional_components/API/user/user.class";
 
 export default class API {
   cookies: VueCookies;
@@ -20,7 +17,6 @@ export default class API {
   apiStore = useApiStore();
 
   userService: UserService = new UserService(this);
-  profileService: ProfileService = new ProfileService(this);
   nirveCreatorService: NirveCreatorService = new NirveCreatorService(this);
   nirveGroupService: NirveGroupService = new NirveGroupService(this);
   nirveTagService: NirveTagService = new NirveTagService(this);

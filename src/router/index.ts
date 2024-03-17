@@ -21,8 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/PrivacyAgreement.vue"),
   },
   {
-    path: "/profile",
-    component: () => import("@/views/Profile.vue"),
+    path: "/user",
+    component: () => import("@/views/user/ViewUser.vue"),
+    children: [
+
+    ]
   },
   {
     path: "/error",
