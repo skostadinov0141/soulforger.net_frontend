@@ -158,7 +158,7 @@
                   variant="flat"
                   color="primary"
                   append-icon="mdi-content-save"
-                  @click="dialogOpen = false"
+                  @click="saveProfile"
                 >
                   Speichern
                 </v-btn>
@@ -176,8 +176,11 @@ import { Profile } from '@/functional_components/API/user/profile.class'
 import { computed, ref, watch } from 'vue'
 import { max, min, required } from '@/validators'
 import { useDisplay } from 'vuetify'
+import { useApiStore } from '@/store/api'
+import { UpdateProfileDto } from '@/functional_components/API/user/dto/update-profile.dto'
 
 const { smAndDown } = useDisplay();
+const apiStore = useApiStore();
 
 const props = defineProps<{
   ownUser: boolean;
@@ -185,7 +188,7 @@ const props = defineProps<{
 const userProfile = defineModel<Profile>("userProfile", { required: true });
 
 const dialogOpen = ref<boolean>(false);
-const workingCopyProfile = ref<Profile>(new Profile());
+const workingCopyProfile = ref<UpdateProfileDto>(new UpdateProfileDto());
 const valid = ref<boolean>(false);
 const newProfileImage = ref<File[]>();
 const avatarSize = computed(() => {
@@ -224,8 +227,16 @@ const possibleRoles = [
   "Erfahrener Spieler",
 ];
 
+function saveProfile() {
+  apiStore.api.userService.updateUserProfile(userProfile.value.owner,workingCopyProfile.value).then((res) => {
+    console.log(res);
+    dialogOpen.value = false;
+  });
+}
+
 function openDialog() {
   workingCopyProfile.value = {... userProfile.value };
+  newProfileImage.value = undefined;
   dialogOpen.value = true;
 }
 
