@@ -1,14 +1,25 @@
 <template>
-  <v-container class="h-100">
+  <v-container class="h-100 d-flex align-center">
     <v-row
-      class="h-100"
       align="center"
     >
       <v-col
         cols="12"
         lg="6"
+        align-self="stretch"
       >
         <BasicInfoCard
+          :own-user="ownUser"
+          :user-profile="userProfile"
+          @saved="(newProfile) => userProfile = newProfile"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        lg="6"
+        align-self="stretch"
+      >
+        <AboutMeCard
           :own-user="ownUser"
           :user-profile="userProfile"
           @saved="(newProfile) => userProfile = newProfile"
@@ -19,12 +30,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApiStore } from '@/store/api'
 import { Profile } from '@/functional_components/API/user/profile.class'
 import { useSnackbarStore } from '@/store/snackbar'
 import BasicInfoCard from '@/components/user/BasicInfoCard.vue'
+import AboutMeCard from '@/components/user/AboutMeCard.vue'
 
 const route = useRoute();
 const router = useRouter();
