@@ -187,7 +187,9 @@ const snackbarStore = useSnackbarStore();
 const props = defineProps<{
   ownUser: boolean;
 }>();
-const emit = defineEmits(["saved"]);
+const emit = defineEmits<{
+  (e: 'saved', newProfile: Profile): void;
+}>();
 const userProfile = defineModel<Profile>("userProfile", { required: true });
 
 const dialogOpen = ref<boolean>(false);
@@ -237,7 +239,7 @@ function saveProfile() {
       message: "Profil wurde erfolgreich gespeichert.",
       type: "success",
     }
-    emit("saved");
+    emit("saved", res);
     dialogOpen.value = false;
   });
 }

@@ -11,7 +11,7 @@
         <BasicInfoCard
           :own-user="ownUser"
           :user-profile="userProfile"
-          @saved="refreshProfile"
+          @saved="(newProfile) => userProfile = newProfile"
         />
       </v-col>
     </v-row>
@@ -51,20 +51,6 @@ onMounted(() => {
     }
   });
 });
-
-function refreshProfile() {
-  const userId: string = (route.query.userId ?? apiStore.api.decodeToken().sub) as string;
-  apiStore.api.userService.getProfileByUserId(userId).then((profile) => {
-    userProfile.value = profile;
-  }).catch(() => {
-    snackbarStore.snackbar = {
-      title: "Fehler",
-      message: "Nutzer wurde nicht gefunden.",
-      type: "error",
-    }
-  });
-}
-
 </script>
 
 <style scoped>
