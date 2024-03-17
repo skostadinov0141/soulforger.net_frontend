@@ -7,7 +7,10 @@
       Über mich
     </v-card-title>
     <v-divider />
-    <v-card-text>
+    <v-card-text
+      :class="ownUser ? 'overflow-auto' : 'overflow-auto mb-4'"
+      style="max-height: 250px"
+    >
       {{ userProfile.bio }}
     </v-card-text>
     <v-divider v-if="ownUser" />
