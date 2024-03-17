@@ -40,4 +40,23 @@ export class UserService extends BaseService<User> {
       })
     })
   }
+
+  async updateUserProfileAvatar(id: string, file: File): Promise<Profile> {
+    return new Promise<Profile>((resolve, reject) => {
+      this.api.getAxios().then((axios) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
+        axios
+          .patch(`/user/${id}/profile/update-avatar`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((res) => {
+            resolve(plainToInstance(Profile, res.data))
+          })
+          .catch((err) => reject(err))
+      })
+    })
+  }
 }

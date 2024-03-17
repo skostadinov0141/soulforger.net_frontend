@@ -63,7 +63,6 @@
     <template #prepend>
       <v-avatar
         :size="avatarSize"
-        :image="userProfile.avatarUrl === '' ? undefined : userProfile.avatarUrl"
         :variant="userProfile.avatarUrl === '' ? 'outlined' : 'flat'"
       >
         <v-icon
@@ -73,6 +72,11 @@
         >
           mdi-account
         </v-icon>
+        <v-img
+          v-else
+          :cover="true"
+          :src="userProfile.avatarUrl"
+        />
       </v-avatar>
     </template>
   </v-card>
@@ -232,20 +236,37 @@ const possibleRoles = [
   "Erfahrener Spieler",
 ];
 
-function saveProfile() {
+async function saveProfile() {
+  if (newProfileImage.value){
+    try {
+      await apiStore.api.userService.updateUserProfileAvatar(userProfile.value.owner,newProfileImage.value[0]);
+    } catch (error) {
+      snackbarStore.snackbar = {
+        title: "Fehler",
+        message: "Profilbild konnte nicht gespeichert werden.",
+        type: "error",
+      }
+    }
+  }
   apiStore.api.userService.updateUserProfile(userProfile.value.owner,workingCopyProfile.value).then((res) => {
     snackbarStore.snackbar = {
       title: "Erfolg",
       message: "Profil wurde erfolgreich gespeichert.",
       type: "success",
     }
+    userProfile.value = res;
     emit("saved", res);
     dialogOpen.value = false;
   });
 }
 
 function openDialog() {
-  workingCopyProfile.value = {... userProfile.value };
+  workingCopyProfile.value = {
+    displayName: userProfile.value.displayName,
+    favoriteRulebook: userProfile.value.favoriteRulebook,
+    preferredLanguage: userProfile.value.preferredLanguage,
+    preferredRole: userProfile.value.preferredRole,
+  };
   newProfileImage.value = undefined;
   dialogOpen.value = true;
 }
