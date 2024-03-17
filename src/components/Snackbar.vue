@@ -2,7 +2,7 @@
   <v-snackbar
     v-model="showSnackbar"
     timeout="3000"
-    variant="flat"
+    variant="tonal"
     :color="snackbarColor"
   >
     <div class="d-flex">

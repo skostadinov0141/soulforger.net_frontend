@@ -178,13 +178,16 @@ import { max, min, required } from '@/validators'
 import { useDisplay } from 'vuetify'
 import { useApiStore } from '@/store/api'
 import { UpdateProfileDto } from '@/functional_components/API/user/dto/update-profile.dto'
+import { useSnackbarStore } from '@/store/snackbar'
 
 const { smAndDown } = useDisplay();
 const apiStore = useApiStore();
+const snackbarStore = useSnackbarStore();
 
 const props = defineProps<{
   ownUser: boolean;
 }>();
+const emit = defineEmits(["saved"]);
 const userProfile = defineModel<Profile>("userProfile", { required: true });
 
 const dialogOpen = ref<boolean>(false);
@@ -229,7 +232,12 @@ const possibleRoles = [
 
 function saveProfile() {
   apiStore.api.userService.updateUserProfile(userProfile.value.owner,workingCopyProfile.value).then((res) => {
-    console.log(res);
+    snackbarStore.snackbar = {
+      title: "Erfolg",
+      message: "Profil wurde erfolgreich gespeichert.",
+      type: "success",
+    }
+    emit("saved");
     dialogOpen.value = false;
   });
 }
