@@ -13,7 +13,21 @@
         <br>
         Präferierte Sprache: {{ userProfile.preferredLanguage ?? "Deutsch" }}
       </p>
-      <div class="d-flex flex-wrap mt-2">
+      <div v-if="!smAndDown" class="d-flex flex-wrap mt-2">
+        <v-chip
+          v-for="role in 10"
+          :key="role"
+          size="small"
+          class="ma-1"
+          variant="flat"
+          color="primary"
+        >
+          Badge
+        </v-chip>
+      </div>
+    </template>
+    <template #text>
+      <div v-if="smAndDown" class="d-flex flex-wrap mt-2">
         <v-chip
           v-for="role in 10"
           :key="role"
@@ -162,10 +176,6 @@ const newProfileImage = ref<File[]>();
 const avatarSize = computed(() => {
   if (smAndDown.value) return 80;
   return 160;
-});
-
-watch(smAndDown, (newval) => {
-  console.log(newval);
 });
 
 watch(newProfileImage, (prev, newval) => {
