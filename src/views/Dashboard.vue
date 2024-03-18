@@ -4,13 +4,6 @@ import { useApiStore } from "@/store/api";
 const appStore = useApiStore();
 
 async function test() {
-  // await appStore.api.refreshToken();
-  const profile = await appStore.api.profileService.search({
-    createdAt: {
-      $lt: Date.now() - 3600 * 1000 * 24 * 7,
-    },
-  });
-  console.log(profile);
   // let constructedQuery = new AndQuery([
   // 	new OrQuery([new EqualsQuery("owner")]),
   // 	new ExistQuery(true),
