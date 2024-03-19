@@ -13,14 +13,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          path: /home/soulforger/source
+          path: /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
   build:
     name: Build
     runs-on: self-hosted
     needs: prepare
     steps:
       - name: Create Docker Image
-        run: sudo docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/source
+        run: sudo docker build -t soulforger/frontend:latest /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
+        #run: sudo docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
   stop-old-container:
     name: Stop Old Container
     runs-on: self-hosted
@@ -36,4 +37,5 @@ jobs:
     needs: stop-old-container
     steps:
       - name: Start New Container
-        run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
+        run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:latest
+        #run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
