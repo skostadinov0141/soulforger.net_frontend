@@ -1,94 +1,145 @@
-<script setup lang="ts">
-
-import { inject, ref, type Ref } from 'vue';
-import InputField from '../components/global/inputField.vue';
-import PageSplitter from '@/components/global/pageSplitter.vue';
-import CheckBox from '@/components/global/checkBox.vue';
-import Button from '@/components/global/button.vue';
-import type axios from 'axios';
-import type { AxiosError, AxiosInstance } from 'axios';
-import { computed } from '@vue/reactivity';
-import type { Login, RegistrationError } from '@/interfaces/authentification';
-import type { ApiError } from '@/interfaces/general';
-import type { User } from '@/interfaces/authentification';
-import { useRouter } from 'vue-router';
-import { useCookies } from 'vue3-cookies';
-import FloatingHomeButton from '@/components/global/floatingHomeButton.vue';
-
-let email: Ref<string> = ref('');
-let password: Ref<string> = ref('');
-
-let emailE: Ref<Array<string>> = ref([]);
-let passwordE: Ref<Array<string>> = ref([]);
-
-let loading: Ref<boolean> = ref(false);
-
-const api : AxiosInstance = inject<AxiosInstance>('apiBase') as AxiosInstance;
-const router = useRouter();
-const { cookies } = useCookies();
-
-
-function login(){
-    loading.value = true;
-    let data: Login = <Login>{
-        email:email.value,
-        password:password.value,
-        keep_logged_in:false
-    }
-
-    emailE.value = [];
-    passwordE.value = [];
-
-    api.post(`/auth/login`, data).then((response) => {
-        loading.value = false;
-        console.log(new Date((response.data as User).expires_at));
-        router.push({name:'home'});
-    }).catch((error: AxiosError) => {
-        let error_detail : string = (error.response?.data as ApiError).detail;
-        emailE.value.push(error_detail);
-        passwordE.value.push(error_detail);
-        loading.value = false;
-    });
-}
-
-</script>
-
-
 <template>
-    <FloatingHomeButton></FloatingHomeButton>
-    <div class="main-container">
-        <div class="form-container">
-            <PageSplitter title="Anmelden" margin-top="0" margin-bottom="16px">Logge dich in dein Account ein, um die volle Kapazität von Soulforger zu nutzen.</PageSplitter>
-            <InputField :errors="emailE" label="E-Mail" placeholder="" type="email" v-model="email"></InputField>
-            <InputField :errors="passwordE" label="Passwort" placeholder="" type="password" v-model="password"></InputField>
-            <div style="height: 8px;"></div>
-            <Button :loading="loading" @pressed="login()">Anmelden</Button>
-        </div>
-    </div>
+  <v-row style="height: 100%">
+    <v-col
+      v-for="n in 3"
+      :key="n"
+      cols="12"
+      lg="4"
+      align-self="center"
+    >
+      <v-card
+        v-if="n == 2"
+        class="text-secondary ma-8 ma-lg-0"
+        variant="elevated"
+        rounded="md"
+        elevation="3"
+        color="surface-lighten-1"
+      >
+        <!--TODO: change image source due to slow loading-->
+        <v-img
+          height="160px"
+          :cover="true"
+          src="@/assets/images/login_background_01.png"
+        />
+        <v-card-item class="pb-4 pt-6">
+          <v-form
+            v-model="valid"
+            :disabled="loading"
+            @submit.prevent="onSubmit"
+          >
+            <v-text-field
+              v-model="uname"
+              density="compact"
+              class="mb-2"
+              :rules="[required]"
+              bg-color="surface-lighten-2"
+              variant="solo"
+              prepend-inner-icon="mdi-account"
+              required
+              label="E-Mail"
+              placeholder="musterman@gmail.com"
+              type="email"
+              clearable
+            />
+            <v-text-field
+              v-model="pw"
+              density="compact"
+              :rules="[required]"
+              bg-color="surface-lighten-2"
+              variant="solo"
+              prepend-inner-icon="mdi-lock"
+              :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              required
+              label="Passwort"
+              :type="showPassword ? 'text' : 'password'"
+              @click:append-inner="showPassword = !showPassword"
+            />
+            <v-checkbox
+              v-model="remember"
+              :disabled="loading"
+              label="Angemeldet bleiben"
+            />
+            <v-alert
+              v-if="apiError.status"
+              icon="mdi-alert-circle"
+              class="mb-4"
+              color="error"
+              dense
+            >
+              {{ apiError.message }}
+            </v-alert>
+            <v-btn
+              class="mb-4"
+              append-icon="mdi-login"
+              color="primary"
+              style="width: 100%"
+              type="submit"
+            >
+              Anmelden
+            </v-btn>
+            <v-btn
+              append-icon="mdi-account-plus"
+              color="indigo-lighten-3"
+              style="width: 100%"
+              variant="text"
+              @click="router.push('/register')"
+            >
+              Registrieren
+            </v-btn>
+          </v-form>
+        </v-card-item>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
+<script setup lang="ts">
+import { useApiStore } from "@/store/api";
+import { AxiosError } from "axios";
+import { reactive } from "vue";
+import { inject, ref } from "vue";
+import { VueCookies } from "vue-cookies";
+import { useRouter } from "vue-router";
 
-<style scoped>
+const store = useApiStore();
+const $cookies = inject("$cookies") as VueCookies;
 
-.title{
-    display: flex;
-    align-items: center;
+const router = useRouter();
+const apiError = reactive({
+  status: false,
+  message: "",
+});
+const valid = ref(false);
+const showPassword = ref(false);
+const uname = ref("");
+const pw = ref("");
+const remember = ref(false);
+const loading = ref(false);
+
+function required(value: string) {
+  if (value) {
+    return true;
+  }
+  return "Feld darf nicht leer sein";
 }
 
-.main-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 100vh;
+function onSubmit() {
+  loading.value = true;
+  if (valid.value) {
+    store.api
+      .login({ email: uname.value, password: pw.value }, $cookies)
+      .then(() => {
+        loading.value = false;
+        store.authed = true;
+        router.push("/dashboard");
+      })
+      .catch((err: AxiosError) => {
+        apiError.status = true;
+        apiError.message = (err.response!.data as any).message;
+        loading.value = false;
+      });
+  }
 }
+</script>
 
-.form-container{
-    width: 416px;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    gap: 8px;
-}
-
-</style>
+<style scoped></style>

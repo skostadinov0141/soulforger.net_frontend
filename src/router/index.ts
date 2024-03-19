@@ -1,90 +1,104 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import CharacterCreation from '../views/CharacterCreation.vue'
-import Register from '../views/Register.vue'
-import Login from '../views/Login.vue'
-import LandingPage from '../views/LandingPage.vue';
-import Contribute from '../views/Contribute.vue';
-import Wiki from '../views/Wiki.vue';
-import Test from '../views/Test.vue';
-import axios, { type AxiosInstance } from 'axios'
-import { inject } from 'vue';
-import { useCookies } from 'vue3-cookies';
-import type { User } from '@/interfaces/authentification';
-import data from '../../config.json';
+// Composables
+import { useSnackbarStore } from "@/store/snackbar";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
+import { useApiStore } from "@/store/api";
+
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/",
+    component: () => import("@/views/Dashboard.vue"),
+  },
+  {
+    path: "/login",
+    component: () => import("@/views/Login.vue"),
+  },
+  {
+    path: "/register",
+    component: () => import("@/views/Register.vue"),
+  },
+  {
+    path: "/legal/privacy-agreement",
+    component: () => import("@/views/PrivacyAgreement.vue"),
+  },
+  {
+    path: "/user",
+    component: () => import("@/views/user/ViewUser.vue"),
+    children: [
+
+    ]
+  },
+  {
+    path: "/error",
+    component: () => import("@/views/Error.vue"),
+  },
+  {
+    path: "/nirve",
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: "manage-commons",
+        component: () => import("@/views/nirve/ManageCommons.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "manage-tags",
+        component: () => import("@/views/nirve/ManageTags.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "manage-groups",
+        component: () => import("@/views/nirve/ManageGroups.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: LandingPage,
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: Test,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-    },
-    {
-      path: '/characters/create',
-      name: 'create_character',
-      component: CharacterCreation,
-      meta:{
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/wiki',
-      name: 'wiki',
-      component: Wiki,
-      meta:{
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/contribute',
-      name: 'Contribute',
-      component: Contribute,
-      meta:{
-        requiresAuth: true
-      }
-    },
-  ]
-})
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+});
 
-router.beforeEach((to, from, next) => {
-  // import cookies to check if the user is authed
-  const { cookies } = useCookies();
-  if (to.matched.some(record => record.meta.requiresAuth)){
-    // if user cookie exists the user is authenticated and can move to the page
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    const api : AxiosInstance = axios.create({
-      baseURL: data.api_base_url,
-      withCredentials: true,
-      headers:{
-        Accept:'applications/json',
-      }
-    });
-    api.get('/auth/validate-session').then((data) => {
-      next();
-    }).catch(error => {
-      console.log(error)
-      next({path:'/login'});
-    });
-  } else {
-    next() // does not require auth, make sure to always call next()!
+router.beforeEach(async (to) => {
+  const store = useApiStore();
+  const snackbarStore = useSnackbarStore();
+  if (!store.authed && to.meta.requiresAuth && to.path !== "/login") {
+    try {
+      await store.api.getAxios();
+    } catch (err) {
+      snackbarStore.$patch({
+        snackbar: {
+          message: "Du musst dich zuerst einloggen!",
+          type: "warning",
+        },
+      });
+      return "/login";
+    }
   }
-})
+});
 
-export default router
+// router.beforeEach((to, from) => {
+// 	const store = useApiStore();
+// 	const snackbarStore = useSnackbarStore();
+// 	if (to.meta.authLevels) {
+// 		if (!store.api.validatePrivileges(to.meta.authLevels as Array<number>)) {
+// 			snackbarStore.$patch({
+// 				snackbar: {
+// 					message: "Du hast keine ausreichenden Berechtigungen!",
+// 					type: "warning",
+// 				},
+// 			});
+// 			return false;
+// 		}
+// 	}
+// });
+
+export default router;

@@ -1,13 +1,27 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
-
-  <RouterView />
-
+  <v-app>
+    <v-locale-provider locale="de">
+      <Snackbar />
+      <Navbar>
+        <RouterView />
+      </Navbar>
+    </v-locale-provider>
+  </v-app>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { inject, onMounted } from "vue";
+import Navbar from "./components/navbar/Navbar.vue";
+import { VueCookies } from "vue-cookies";
+import Snackbar from "./components/Snackbar.vue";
+import { useApiStore } from "./store/api";
 
-</style>
+const $cookies: VueCookies = inject("$cookies") as VueCookies;
+const apiStore = useApiStore();
+
+onMounted(async () => {
+  if ($cookies.isKey("token")) {
+    await apiStore.api.getAxios();
+  }
+});
+</script>
