@@ -1,24 +1,39 @@
-name: Deploy
-on:
-  push:
-    branches: [master]
+name: Deploy Stable Frontend
+on: workflow_dispatch
+#  release:
+#    types: [published]
 
 jobs:
-  job_one:
-    name: Deploy
-    runs-on: ubuntu-latest
+  prepare:
+    name: Prepare
+    runs-on: self-hosted
     steps:
-      - name: testing ssh connection
-        uses: appleboy/ssh-action@master
+      - name: Create Source Directory
+        run: mkdir -p /home/soulforger/source
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
-          host: soulforger.net
-          username: simeon
-          key: ${{ secrets.SSH_KEY }}
-          port: 25540
-          script: |
-            cd dsa.soulforger.net/frontend/
-            git pull origin master
-            npm i
-            npm run build
-            rm -r /var/www/soulforger.net/*
-            cp -r dist/* /var/www/soulforger.net/
+          path: /home/soulforger/source
+  build:
+    name: Build
+    runs-on: self-hosted
+    needs: prepare
+    steps:
+      - name: Create Docker Image
+        run: sudo docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/source
+  stop-old-container:
+    name: Stop Old Container
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Stop Old Container
+        run: sudo docker stop soulforger-frontend || true
+      - name: Remove Old Container
+        run: sudo docker rm soulforger-frontend || true
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    needs: stop-old-container
+    steps:
+      - name: Start New Container
+        run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
