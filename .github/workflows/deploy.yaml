@@ -43,14 +43,7 @@ jobs:
     needs: build
     steps:
       - name: Create or renew certs
-        run: |
-          if [ -f "/home/soulforger/certbot/conf/live/soulforger.net/fullchain.pem" ] && [ -f "/home/soulforger/certbot/conf/live/soulforger.net/privkey.pem" ]; then
-            echo "Certificates exist, attempting to renew..."
-            docker compose run certbot renew --webroot --webroot-path /var/www/certbot/ -d soulforger.net
-          else
-            echo "Certificates do not exist, creating..."
-            docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
-          fi
+        run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
         #run:  docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
