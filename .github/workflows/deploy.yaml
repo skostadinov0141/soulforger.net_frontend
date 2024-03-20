@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Create Source Directory
         run: mkdir -p /home/soulforger/source
+      - name: Create nginx Directory
+        run: mkdir -p /home/soulforger/nginx/conf
+      - name: Create Certbot Directory
+        run: mkdir -p /home/soulforger/certbot/www
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -19,23 +23,23 @@ jobs:
     runs-on: self-hosted
     needs: prepare
     steps:
-      - name: Create Docker Image
-        run: sudo docker build -t soulforger/frontend:latest /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
+      - name: Docker Compose Up
+        run: sudo docker compose -p soulforger/frontend up /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
         #run: sudo docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
-  stop-old-container:
-    name: Stop Old Container
+#  stop-old-container:
+#    name: Stop Old Container
+#    runs-on: self-hosted
+#    needs: build
+#    steps:
+#      - name: Stop Old Container
+#        run: sudo docker stop soulforger-frontend || true
+#      - name: Remove Old Container
+#        run: sudo docker rm soulforger-frontend || true
+  secure:
+    name: Secure and Deploy
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Stop Old Container
-        run: sudo docker stop soulforger-frontend || true
-      - name: Remove Old Container
-        run: sudo docker rm soulforger-frontend || true
-  deploy:
-    name: Deploy
-    runs-on: self-hosted
-    needs: stop-old-container
-    steps:
-      - name: Start New Container
-        run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:latest
+      - name: Create certs
+        run: sudo docker compose run --rm certbot certonly -m soulforger.net@gmail.com --webroot --webroot-path /var/www/certbot/ -d soulforger.net
         #run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
