@@ -19,7 +19,7 @@ jobs:
         with:
           path: /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
       - name: Copy Nginx Config
-        run: cp /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/soulforger.conf /home/soulforger/nginx/conf.d/soulforger.conf
+        run: cp /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/soulforger.conf /home/soulforger/nginx/conf/soulforger.conf
   build:
     name: Build
     runs-on: self-hosted
