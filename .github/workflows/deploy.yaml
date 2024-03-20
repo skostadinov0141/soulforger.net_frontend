@@ -38,12 +38,12 @@ jobs:
     steps:
       - name: Create or renew certs
         run: |
-          if [ ! -d /home/soulforger/certbot/conf/live/soulforger.net ]; then
+          if [[ ! -d /home/soulforger/certbot/conf/live/soulforger.net ]]
+          then
             echo "Creating new certificate"
             docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
           else
-            echo "Renewing certificate"
-            docker compose run certbot certonly renew
+            echo "Cert already exists, no action needed"
           fi
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
