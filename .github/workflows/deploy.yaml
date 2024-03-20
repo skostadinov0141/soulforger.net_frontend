@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Create or renew certs
 #        Check if cert exists
-        if: hashFiles(/home/soulforger/certbot/conf/live/soulforger.net) != ''
+        if: hashFiles('/home/soulforger/certbot/conf/live/soulforger.net') != ''
         run: docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
