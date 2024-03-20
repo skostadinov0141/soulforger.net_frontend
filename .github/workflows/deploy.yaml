@@ -25,25 +25,26 @@ jobs:
     runs-on: self-hosted
     needs: prepare
     steps:
+      - name: Stop old containers
+        run: docker compose -p soulforger-frontend -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml down
+      - name: Delete old containers
+        run: docker compose -p soulforger-frontend -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml rm
       - name: Docker Compose Up
         run: docker compose -p soulforger-frontend -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml up -d
-        #run:  docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
-#  stop-old-container:
-#    name: Stop Old Container
-#    runs-on: self-hosted
-#    needs: build
-#    steps:
-#      - name: Stop Old Container
-#        run:  docker stop soulforger-frontend || true
-#      - name: Remove Old Container
-#        run:  docker rm soulforger-frontend || true
   secure:
     name: Secure and Deploy
     runs-on: self-hosted
     needs: build
     steps:
-#      - name: Create or renew certs
-#        run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
+      - name: Create or renew certs
+        run: |
+          if [ ! -d /home/soulforger/certbot/conf/live/soulforger.net ]; then
+            echo "Creating new certificate"
+            docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
+          else
+            echo "Renewing certificate"
+            docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot renew
+          fi
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
         #run:  docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
