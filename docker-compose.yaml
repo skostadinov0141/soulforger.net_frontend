@@ -9,11 +9,11 @@ services:
     restart: always
     container_name: soulforger-frontend
     volumes:
-      - /home/soulforger/nginx/conf:/etc/nginx/conf.d/
-      - /home/soulforger/certbot/www/:/var/www/certbot/
+      - /home/soulforger/nginx/conf:/etc/nginx/conf.d/:ro
+      - /home/soulforger/certbot/www/:/var/www/certbot/:ro
   certbot:
     container_name: soulforger-certbot
     image: certbot/certbot:latest
     volumes:
-      - /home/soulforger/certbot/www/:/var/www/certbot/
-      - /home/soulforger/certbot/conf/:/etc/letsencrypt/
+      - /home/soulforger/certbot/www/:/var/www/certbot/:rw
+      - /home/soulforger/certbot/conf/:/etc/letsencrypt/:rw
