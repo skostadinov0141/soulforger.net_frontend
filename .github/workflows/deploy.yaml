@@ -24,22 +24,22 @@ jobs:
     needs: prepare
     steps:
       - name: Docker Compose Up
-        run: sudo docker compose -p soulforger/frontend up /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
-        #run: sudo docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
+        run: docker compose -p soulforger/frontend up /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
+        #run:  docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
 #  stop-old-container:
 #    name: Stop Old Container
 #    runs-on: self-hosted
 #    needs: build
 #    steps:
 #      - name: Stop Old Container
-#        run: sudo docker stop soulforger-frontend || true
+#        run:  docker stop soulforger-frontend || true
 #      - name: Remove Old Container
-#        run: sudo docker rm soulforger-frontend || true
+#        run:  docker rm soulforger-frontend || true
   secure:
     name: Secure and Deploy
     runs-on: self-hosted
     needs: build
     steps:
       - name: Create certs
-        run: sudo docker compose run --rm certbot certonly -m soulforger.net@gmail.com --webroot --webroot-path /var/www/certbot/ -d soulforger.net
-        #run: sudo docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
+        run: docker compose run --rm certbot certonly -m soulforger.net@gmail.com --webroot --webroot-path /var/www/certbot/ -d soulforger.net
+        #run:  docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
