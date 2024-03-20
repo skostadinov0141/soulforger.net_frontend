@@ -36,8 +36,8 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Create or renew certs
-        run: if [ ! -d /home/soulforger/certbot/conf/live/soulforger.net ]; then docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net; fi
+#      - name: Create or renew certs
+#        run: docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
         #run:  docker run -d -p 80:80 --name soulforger-frontend soulforger/frontend:${{ github.ref_name }}
