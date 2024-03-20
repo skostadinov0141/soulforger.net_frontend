@@ -40,10 +40,10 @@ jobs:
         run: |
           if [ ! -d /home/soulforger/certbot/conf/live/soulforger.net ]; then
             echo "Creating new certificate"
-            docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
+            docker compose run certbot certonly -m soulforger.net@gmail.com --agree-tos --webroot --webroot-path /var/www/certbot/ -d soulforger.net
           else
             echo "Renewing certificate"
-            docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml run certbot renew
+            docker compose run certbot certonly renew
           fi
       - name: Restart Nginx
         run: docker compose -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml restart
