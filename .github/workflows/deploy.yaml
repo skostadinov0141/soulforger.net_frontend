@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Create or renew certs
         run: |
-          if [ -f "/etc/letsencrypt/live/soulforger.net/fullchain.pem" ] && [ -f "/etc/letsencrypt/live/soulforger.net/privkey.pem" ]; then
+          if [ -f "/home/soulforger/certbot/conf/live/soulforger.net/fullchain.pem" ] && [ -f "/home/soulforger/certbot/conf/live/soulforger.net/privkey.pem" ]; then
             echo "Certificates exist, attempting to renew..."
             docker compose run certbot renew --webroot --webroot-path /var/www/certbot/ -d soulforger.net
           else
