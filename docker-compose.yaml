@@ -13,4 +13,5 @@ services:
   certbot:
     image: certbot/certbot:latest
     volumes:
+      - /home/soulforger/certbot/www/:/var/www/certbot/:rw
       - /home/soulforger/certbot/conf/:/etc/letsencrypt/:rw
