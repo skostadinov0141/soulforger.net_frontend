@@ -24,7 +24,7 @@ jobs:
     needs: prepare
     steps:
       - name: Docker Compose Up
-        run: docker compose -p soulforger-frontend -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml up
+        run: docker compose -p soulforger-frontend -f /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend/docker-compose.yaml up -d
         #run:  docker build -t soulforger/frontend:${{ github.ref_name }} /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
 #  stop-old-container:
 #    name: Stop Old Container
