@@ -37,7 +37,7 @@ jobs:
       - name: Create Final Path
         run: mkdir -p $FINAL_PATH
       - name: Copy code to final path
-        run: cp -r $CODE_PATH $FINAL_PATH
+        run: cp -r $CODE_PATH/* $FINAL_PATH
   build:
     name: Build
     runs-on: self-hosted
