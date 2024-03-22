@@ -8,10 +8,10 @@ services:
       - "443:443"
     restart: always
     volumes:
-      - /home/soulforger/nginx/conf:/etc/nginx/conf.d/:ro
-      - /home/soulforger/certbot/conf/:/var/www/certbot/:ro
+      - /home/soulforger/frontend-deployments/nginx/conf:/etc/nginx/conf.d/:ro
+      - /home/soulforger/frontend-deployments/certbot/conf/:/var/www/certbot/:ro
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - /home/soulforger/certbot/www/:/var/www/certbot/:rw
-      - /home/soulforger/certbot/conf/:/etc/letsencrypt/:rw
+      - /home/soulforger/frontend-deployments/certbot/www/:/var/www/certbot/:rw
+      - /home/soulforger/frontend-deployments/certbot/conf/:/etc/letsencrypt/:rw
