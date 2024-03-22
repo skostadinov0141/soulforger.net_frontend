@@ -9,7 +9,7 @@ services:
     restart: always
     volumes:
       - /home/soulforger/frontend-deployments/nginx/conf:/etc/nginx/conf.d/:ro
-      - /home/soulforger/frontend-deployments/certbot/conf/:/var/www/certbot/:ro
+      - /home/soulforger/frontend-deployments/certbot/www/:/var/www/certbot/:ro
   certbot:
     image: certbot/certbot:latest
     volumes:
