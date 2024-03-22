@@ -43,6 +43,17 @@ jobs:
     runs-on: self-hosted
     needs: prepare
     steps:
+      - run: |
+          if [[ "${{ github.ref_name }}" == *beta* ]]; then
+            echo "FINAL_PATH=/home/soulforger/frontend-deployments/beta/${{ github.ref_name }}" >> $GITHUB_ENV
+            echo $FINAL_PATH
+          elif [[ "${{ github.ref_name }}" == *stable* ]]; then
+            echo "FINAL_PATH=/home/soulforger/frontend-deployments/stable/${{ github.ref_name }}" >> $GITHUB_ENV
+            echo $FINAL_PATH
+          else
+            echo "FINAL_PATH=/home/soulforger/frontend-deployments/undefined/${{ github.ref_name }}" >> $GITHUB_ENV
+            echo $FINAL_PATH
+          fi
       - name: Remove old containers
         run: docker compose -p soulforger-frontend down
       - name: Docker Compose Up
