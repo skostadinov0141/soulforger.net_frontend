@@ -24,8 +24,8 @@ jobs:
       - name: Create Final Path
         run: mkdir -p $FINAL_PATH
       - name: Delete Old Version
-        run: | 
-          if [[ -d $FINAL_PATH ]]; then
+        run: |
+          if [[ "$(ls -A $directory_path)" ]]; then
             rm -r $FINAL_PATH/*
           fi
   build-and-deploy:
