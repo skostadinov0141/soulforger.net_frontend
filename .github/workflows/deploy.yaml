@@ -12,50 +12,33 @@ jobs:
     steps:
       - name: Set FINAL_PATH based on tag
         run: |
-          if [[ "${{ github.ref_name }}" == *beta* ]]; then
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/beta/${{ github.ref_name }}" >> $GITHUB_ENV
-          elif [[ "${{ github.ref_name }}" == *stable* ]]; then
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/stable/${{ github.ref_name }}" >> $GITHUB_ENV
+          if [[ "${{ github.ref_name }}" == *stable* ]]; then
+            echo "FINAL_PATH=/var/www/soulforger.net" >> $GITHUB_ENV
           else
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/undefined/${{ github.ref_name }}" >> $GITHUB_ENV
+            echo "FINAL_PATH=/var/www/beta.soulforger.net" >> $GITHUB_ENV
           fi
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           path: ${{ env.CODE_PATH }}
-      - name: Create nginx Directory
-        run: mkdir -p /home/soulforger/frontend-deployments/nginx/conf
-      - name: Create Certbot WWW Directory
-        run: mkdir -p /home/soulforger/frontend-deployments/certbot/www
-      - name: Create Certbot Conf Directory
-        run: mkdir -p /home/soulforger/frontend-deployments/certbot/conf
-      - name: Copy Nginx Config
-        run: cp $CODE_PATH/soulforger.conf /home/soulforger/frontend-deployments/nginx/conf/soulforger.conf
       - name: Create Final Path
         run: mkdir -p $FINAL_PATH
-      - name: Copy code to final path
-        run: cp -r $CODE_PATH/* $FINAL_PATH
-  build:
-    name: Build
+      - name: Delete Old Version
+        run: rm -r $FINAL_PATH/*
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: self-hosted
     needs: prepare
     steps:
       - run: |
-          if [[ "${{ github.ref_name }}" == *beta* ]]; then
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/beta/${{ github.ref_name }}" >> $GITHUB_ENV
-          elif [[ "${{ github.ref_name }}" == *stable* ]]; then
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/stable/${{ github.ref_name }}" >> $GITHUB_ENV
+          if [[ "${{ github.ref_name }}" == *stable* ]]; then
+            echo "FINAL_PATH=/var/www/soulforger.net" >> $GITHUB_ENV
           else
-            echo "FINAL_PATH=/home/soulforger/frontend-deployments/undefined/${{ github.ref_name }}" >> $GITHUB_ENV
+            echo "FINAL_PATH=/var/www/beta.soulforger.net" >> $GITHUB_ENV
           fi
-      - name: Remove old containers
-        run: docker compose -p soulforger-frontend down
-      - name: Docker Compose Up
-        run: docker compose -p soulforger-frontend -f $FINAL_PATH/docker-compose.yaml up -d
-  secure:
-    name: Secure and Deploy
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Restart Nginx
-        run: docker compose -p soulforger-frontend restart
+      - name: Install NPM deps
+        run: npm install --prefix ${{ env.CODE_PATH }}
+      - name: Build
+        run: npm run build --prefix ${{ env.CODE_PATH }}
+      - name: Copy to Final Path
+        run: cp -r ${{ env.CODE_PATH }}/dist/* $FINAL_PATH
