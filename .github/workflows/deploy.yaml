@@ -1,47 +1,58 @@
 name: Deploy Frontend
+
 on:
   release:
     types: [published]
+
 env:
-  VERSION: ${{ github.ref_name }}
   CODE_PATH: /home/soulforger/actions-runner/_work/soulforger.net_frontend/soulforger.net_frontend
+
 jobs:
   prepare:
     name: Prepare
     runs-on: self-hosted
     steps:
-      - name: Set FINAL_PATH based on tag
-        run: |
-          if [[ "${{ github.ref_name }}" == *stable* ]]; then
-            echo "FINAL_PATH=/var/www/soulforger.net" >> $GITHUB_ENV
+      - run: |
+          if [[ "${{ github.ref_name }}" == *beta* ]]; then
+            echo "LINE=beta-" >> $GITHUB_ENV
           else
-            echo "FINAL_PATH=/var/www/beta.soulforger.net" >> $GITHUB_ENV
+            echo "LINE=stable-" >> $GITHUB_ENV
           fi
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           path: ${{ env.CODE_PATH }}
-      - name: Create Final Path
-        run: mkdir -p $FINAL_PATH
-      - name: Delete Old Version
-        run: |
-          if [[ "$(ls -A $FINAL_PATH)" ]]; then
-            rm -r $FINAL_PATH/*
-          fi
-  build-and-deploy:
-    name: Build and Deploy
+      - name: Stop Old Container
+        run: docker stop "soulforger-${LINE}frontend" || true
+      - name: Remove Old Container
+        run: docker rm "soulforger-${LINE}frontend" || true
+      - name: Remove Old Image
+        run: docker rmi "soulforger-${LINE}frontend" || true
+  build:
+    name: Build
     runs-on: self-hosted
     needs: prepare
     steps:
       - run: |
-          if [[ "${{ github.ref_name }}" == *stable* ]]; then
-            echo "FINAL_PATH=/var/www/soulforger.net" >> $GITHUB_ENV
+          if [[ "${{ github.ref_name }}" == *beta* ]]; then
+            echo "LINE=beta-" >> $GITHUB_ENV
           else
-            echo "FINAL_PATH=/var/www/beta.soulforger.net" >> $GITHUB_ENV
+            echo "LINE=stable-" >> $GITHUB_ENV
           fi
-      - name: Install NPM deps
-        run: npm install --prefix ${{ env.CODE_PATH }}
-      - name: Build
-        run: npm run build --prefix ${{ env.CODE_PATH }}
-      - name: Copy to Final Path
-        run: cp -r ${{ env.CODE_PATH }}/dist/* $FINAL_PATH
+      - name: Build Docker Image
+        run: docker build -t "soulforger-${LINE}frontend" ${{ env.CODE_PATH }}
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - run: |
+          if [[ "${{ github.ref_name }}" == *beta* ]]; then
+            echo "LINE=beta-" >> $GITHUB_ENV
+            echo "SERVICE_PORT=8083" >> $GITHUB_ENV
+          else
+            echo "LINE=stable-" >> $GITHUB_ENV
+            echo "SERVICE_PORT=8081" >> $GITHUB_ENV
+          fi
+      - name: Run Docker Container
+        run: docker run -d --env-file "/home/soulforger/${LINE}frontend.env" --name "soulforger-${LINE}frontend" -p $SERVICE_PORT:80 "soulforger-${LINE}frontend"
