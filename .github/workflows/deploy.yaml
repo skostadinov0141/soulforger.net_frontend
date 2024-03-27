@@ -62,4 +62,4 @@ jobs:
             echo "SERVICE_PORT=8081" >> $GITHUB_ENV
           fi
       - name: Run Docker Container
-        run: docker run -d --env-file "/home/soulforger/${LINE}frontend.env" --name "soulforger-${LINE}frontend" -p $SERVICE_PORT:80 "soulforger-${LINE}frontend"
+        run: docker run -d --name "soulforger-${LINE}frontend" -p $SERVICE_PORT:80 "soulforger-${LINE}frontend"
