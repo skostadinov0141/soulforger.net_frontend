@@ -56,10 +56,10 @@ jobs:
       - run: |
           if [[ "${{ github.ref_name }}" == *beta* ]]; then
             echo "LINE=beta-" >> $GITHUB_ENV
-            echo "SERVICE_PORT=8083" >> $GITHUB_ENV
+            echo "SERVICE_PORT=8082" >> $GITHUB_ENV
           else
             echo "LINE=stable-" >> $GITHUB_ENV
-            echo "SERVICE_PORT=8081" >> $GITHUB_ENV
+            echo "SERVICE_PORT=8080" >> $GITHUB_ENV
           fi
       - name: Run Docker Container
         run: docker run -d --name "soulforger-${LINE}frontend" -p $SERVICE_PORT:80 "soulforger-${LINE}frontend"
