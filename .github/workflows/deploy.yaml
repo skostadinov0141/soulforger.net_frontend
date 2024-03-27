@@ -36,11 +36,18 @@ jobs:
       - run: |
           if [[ "${{ github.ref_name }}" == *beta* ]]; then
             echo "LINE=beta-" >> $GITHUB_ENV
+            echo "API_URL=https://api-beta.soulforger.net" >> $GITHUB_ENV
           else
             echo "LINE=stable-" >> $GITHUB_ENV
+            echo "API_URL=https://api.soulforger.net" >> $GITHUB_ENV
           fi
       - name: Build Docker Image
-        run: docker build -t "soulforger-${LINE}frontend" ${{ env.CODE_PATH }}
+        run: |
+          docker build 
+          -t "soulforger-${LINE}frontend" 
+          --build-arg VITE_API_URL=$API_URL
+          --build-arg VITE_API_VERSION=v1
+          ${{ env.CODE_PATH }}
   deploy:
     name: Deploy
     runs-on: self-hosted
