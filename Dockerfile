@@ -4,6 +4,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN rm -f .env
+ARG VITE_API_URL
+ARG VITE_API_VERSION
 RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
