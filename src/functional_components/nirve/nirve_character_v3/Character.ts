@@ -1,9 +1,8 @@
-import { type } from "os";
 import { ICharacterClass, ICharacterClassBase } from "./CharacterClass";
 import { IModifier } from "./Modifier";
 import { ICharacter } from "./ICharacter";
 import { getProperty, setProperty } from "./ObjectHelpers";
-import { BaseStats, IBaseStats } from "./BaseStats";
+import { BaseStats } from "./BaseStats";
 import { IRequirement } from "./Requirement";
 import { Roll } from "./Roll";
 
@@ -81,7 +80,7 @@ export default class Character implements ICharacter {
     if (typeof target !== typeof requirement.value) {
       return false;
     }
-    if (typeof target === "number" && typeof requirement.value === "number") {
+    if (typeof target === "number") {
       switch (requirement.mode) {
         case ">":
           return target > requirement.value;
@@ -109,7 +108,7 @@ export default class Character implements ICharacter {
     if (typeof modifier.value !== typeof target) {
       return false;
     }
-    if (typeof modifier.value === "number" && typeof target === "number") {
+    if (typeof target === "number") {
       let newValue;
       switch (modifier.mode) {
         case "+":

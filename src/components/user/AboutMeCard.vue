@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { Profile } from '@/functional_components/API/user/profile.class'
-import { max, min, required } from '@/validators'
+import { max } from '@/validators'
 import { ref } from 'vue'
 import { UpdateProfileDto } from '@/functional_components/API/user/dto/update-profile.dto'
 import { useApiStore } from '@/store/api'
@@ -94,10 +94,12 @@ import { useSnackbarStore } from '@/store/snackbar'
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   ownUser: boolean;
 }>();
 const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (e: 'saved', newProfile: Profile): void;
 }>();
 const userProfile = defineModel<Profile>("userProfile", { required: true });

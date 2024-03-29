@@ -194,10 +194,12 @@ const { smAndDown } = useDisplay();
 const apiStore = useApiStore();
 const snackbarStore = useSnackbarStore();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   ownUser: boolean;
 }>();
 const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (e: 'saved', newProfile: Profile): void;
 }>();
 const userProfile = defineModel<Profile>("userProfile", { required: true });

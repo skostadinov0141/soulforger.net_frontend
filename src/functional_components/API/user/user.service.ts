@@ -3,7 +3,7 @@ import User from './user.class'
 import API from '@/functional_components/API/api'
 import { CreateUserDto } from '@/functional_components/API/user/dto/create-user.dto'
 import { Profile } from '@/functional_components/API/user/profile.class'
-import { plainToClass, plainToInstance } from 'class-transformer'
+import { plainToInstance } from 'class-transformer'
 import { UpdateProfileDto } from '@/functional_components/API/user/dto/update-profile.dto'
 
 export class UserService extends BaseService<User> {

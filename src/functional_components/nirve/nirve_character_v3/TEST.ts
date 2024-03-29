@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import Character from "./Character";
-import { ICharacterClass, ICharacterClassBase } from "./CharacterClass";
+import { ICharacterClassBase } from "./CharacterClass";
 import { IModifier } from "./Modifier";
 import { IRequirement } from "./Requirement";
 

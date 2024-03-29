@@ -74,6 +74,7 @@ export default class BaseService<T> {
    * @throws AxiosError If the request fails.
    */
   async search(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     query?: Partial<{ [K in keyof T]: Queries }>,
     limit: number = 50,
     skip: number = 0,

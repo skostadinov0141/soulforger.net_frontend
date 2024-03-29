@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters>
+  <v-row :no-gutters="true">
     <v-col
       cols="12"
       md="3"
@@ -47,8 +47,8 @@
       <v-autocomplete
         v-model="selectedTags"
         hide-details
-        multiple
-        chips
+        :multiple="true"
+        :chips="true"
         variant="solo-filled"
         label="Tags"
         class="ma-2"
@@ -64,9 +64,9 @@
     >
       <v-autocomplete
         v-model="selectedGroups"
-        multiple
+        :multiple="true"
         hide-details
-        chips
+        :chips="true"
         variant="solo-filled"
         label="Gruppen"
         class="ma-2"
@@ -105,7 +105,9 @@ import { NirveCommonQuery } from "@/functional_components/API/nirve-creator/nirv
 import { computed, ref } from "vue";
 import { useApiStore } from "@/store/api";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const apiStore = useApiStore();
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   groups: NirveGroup[];
   tags: NirveTag[];
@@ -150,7 +152,9 @@ const searchQuery = computed<NirveCommonQuery>(() => ({
 }));
 
 const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (event: "search", value: NirveCommonQuery): void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (event: "create"): void;
 }>();
 

@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { useApiStore } from "@/store/api";
-
-const appStore = useApiStore();
-
 async function test() {
   // let constructedQuery = new AndQuery([
   // 	new OrQuery([new EqualsQuery("owner")]),

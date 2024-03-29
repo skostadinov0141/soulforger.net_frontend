@@ -43,12 +43,15 @@ import { VDataTable } from "vuetify/labs/VDataTable";
 import { NirveCommon } from "@/functional_components/API/nirve-creator/nirve-common.class";
 import { ref } from "vue";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   commons: NirveCommon[];
 }>();
 
 const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (event: "edit", payload: NirveCommon): void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (event: "delete", payload: NirveCommon): void;
 }>();
 

@@ -15,7 +15,7 @@
             v-model="valid"
             @submit.prevent="emit('on-submit', mode)"
           >
-            <v-row no-gutters>
+            <v-row :no-gutters="true">
               <v-col
                 cols="12"
                 class="d-flex align-center"
@@ -152,7 +152,7 @@
             v-model="valid"
             @submit.prevent="emit('on-submit', mode)"
           >
-            <v-row no-gutters>
+            <v-row :no-gutters="true">
               <v-col
                 cols="12"
                 class="d-flex align-center"
@@ -277,10 +277,9 @@
 
 <script setup lang="ts">
 import { required } from "@/validators";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   NirveCreateDto,
-  NirveTypes,
 } from "@/functional_components/API/nirve-creator/dto/nirve-create.dto";
 import { NirveGroup } from "@/functional_components/API/nirve-group/nirve-group.class";
 import { NirveTag } from "@/functional_components/API/nirve-tag/nirve-tag.class";
@@ -305,12 +304,14 @@ const nirveTypes = [
   { value: "spell", title: "Zauber" },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   tags: NirveTag[];
   groups: NirveGroup[];
 }>();
 
 const emit = defineEmits<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (event: "on-submit", mode: string): void;
 }>();
 </script>

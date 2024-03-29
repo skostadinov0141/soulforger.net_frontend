@@ -34,12 +34,12 @@
           class="overflow-hidden"
           style="max-width: 170px"
         >
-          <p>
+          <span>
             {{ userProfile?.displayName }}
-          </p>
-          <p class="text-caption">
+          </span>
+          <span class="text-caption">
             {{ currentTime }}
-          </p>
+          </span>
         </span>
         <div class="flex-fill" />
         <v-tooltip
@@ -53,6 +53,7 @@
               variant="text"
               color="secondary"
               :icon="true"
+              to="/user"
             >
               <v-icon>mdi-account-edit</v-icon>
             </v-btn>
@@ -83,9 +84,8 @@
 <script setup lang="ts">
 import { useApiStore } from "@/store/api";
 import { useRouter } from "vue-router";
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import User from '@/functional_components/API/user/user.class'
 import { Profile } from '@/functional_components/API/user/profile.class'
 
 const apiStore = useApiStore();
