@@ -25,8 +25,14 @@
   <v-list v-else>
     <v-sheet class="d-flex align-center w-100 px-3 py-2">
       <v-avatar
-        :image="userProfile?.avatarUrl === '' ? undefined : userProfile?.avatarUrl"
-        :icon="userProfile?.avatarUrl === '' ? 'mdi-account' : undefined"
+        v-if="userProfile?.avatarUrl || userProfile?.avatarUrl === ''"
+        :image="userProfile?.avatarUrl"
+        size="40"
+      />
+      <v-avatar
+        v-else
+        variant="tonal"
+        icon="mdi-account"
         size="40"
       />
       <v-sheet class="ml-4 d-flex align-center w-100">
