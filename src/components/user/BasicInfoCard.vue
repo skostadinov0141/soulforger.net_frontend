@@ -22,7 +22,7 @@
         class="d-flex flex-wrap mt-2"
       >
         <v-chip
-          v-for="role in 20"
+          v-for="role in 5"
           :key="role"
           size="small"
           class="ma-1"
@@ -68,18 +68,22 @@
     </v-card-actions>
     <template #prepend>
       <v-avatar
+        v-if="!userProfile.avatarUrl || userProfile.avatarUrl === ''"
+        variant="tonal"
         :size="avatarSize"
-        :variant="userProfile.avatarUrl === '' ? 'outlined' : 'flat'"
       >
         <v-icon
-          v-if="userProfile.avatarUrl === ''"
-          class="pt-4"
+          class="pt-6"
           :size="avatarSize + 50"
         >
           mdi-account
         </v-icon>
+      </v-avatar>
+      <v-avatar
+        v-else
+        :size="avatarSize"
+      >
         <v-img
-          v-else
           :cover="true"
           :src="userProfile.avatarUrl"
         />
